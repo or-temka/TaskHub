@@ -1,1 +1,48 @@
+@import 'variables';
+@import 'mixins';
 
+* {
+  font-family: var(--main-font-family);
+  color: var(--text-color);
+}
+
+// initial classes
+.h1 {
+  @include h1;
+}
+.h2 {
+  @include h2;
+}
+.h3 {
+  @include h3;
+}
+.h4 {
+  @include h4;
+}
+.h5 {
+  @include h5;
+}
+.h6 {
+  @include h6;
+}
+.text {
+  @include text;
+}
+.text-bold {
+  @include textBold;
+}
+.text-underline {
+  @include textUnderline;
+}
+.paragraph {
+  @include paragraph;
+}
+.paragraph-underline {
+  @include paragraphUnderline;
+}
+.link {
+  @include link;
+}
+.small-text {
+  @include smallText;
+}
