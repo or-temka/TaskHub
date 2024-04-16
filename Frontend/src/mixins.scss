@@ -1,0 +1,77 @@
+// shadow mixins
+@mixin simple-shadow() {
+  box-shadow: 0px 4px 20px 0px rgba(216, 222, 228, 0.5);
+}
+
+// fonts mixins
+@mixin text() {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: var(--normal-font-weight);
+}
+@mixin textBold() {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: var(--semibold-font-weight);
+}
+@mixin textUnderline() {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: var(--normal-font-weight);
+  text-decoration: underline;
+}
+
+@mixin paragraph() {
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: var(--normal-font-weight);
+}
+@mixin paragraphUnderline() {
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: var(--normal-font-weight);
+  text-decoration: underline;
+}
+
+@mixin link() {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: var(--normal-font-weight);
+}
+
+@mixin smallText() {
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: var(--normal-font-weight);
+}
+
+@mixin h1() {
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: var(--semibold-font-weight);
+}
+@mixin h2() {
+  font-size: 28px;
+  line-height: 32px;
+  font-weight: var(--semibold-font-weight);
+}
+@mixin h3() {
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: var(--semibold-font-weight);
+}
+@mixin h4() {
+  font-size: 22px;
+  line-height: 26px;
+  font-weight: var(--semibold-font-weight);
+}
+@mixin h5() {
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: var(--semibold-font-weight);
+}
+@mixin h6() {
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: var(--semibold-font-weight);
+}

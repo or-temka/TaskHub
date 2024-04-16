@@ -1,0 +1,7 @@
+.dangerButton {
+  color: var(--error-color);
+
+  &:hover {
+    border: 1px solid var(--border-color);
+  }
+}

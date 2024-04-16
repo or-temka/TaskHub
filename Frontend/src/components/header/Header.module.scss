@@ -1,0 +1,88 @@
+@import '../../mixins';
+
+.header {
+  padding: 15px 20px;
+  background-color: var(--background-focus-color);
+  @include simple-shadow;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__labelContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
+    padding: 5px 10px;
+  }
+
+  &__labelText {
+    @include h5;
+    display: block;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    user-select: none;
+    text-decoration: none;
+
+    &:hover {
+      background-color: var(--focus-color);
+    }
+  }
+
+  &__textCircle {
+    display: block;
+    width: 6px;
+    height: 6px;
+    background-color: var(--text-color);
+    border-radius: 50%;
+  }
+
+  &__nowPageName {
+    @include h6;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    user-select: none;
+    text-decoration: none;
+
+    &:hover {
+      background-color: var(--focus-color);
+    }
+  }
+
+  &__menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  &__menuButtons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  &__profile {
+    display: flex;
+    align-items: center;
+    user-select: none;
+  }
+
+  &__profilePhoto {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: contain;
+    user-select: none;
+    border: 1px solid var(--border-color);
+    margin: 1px;
+    cursor: pointer;
+
+    &:hover {
+      border: 2px solid var(--active-color);
+      margin: 0;
+    }
+  }
+}

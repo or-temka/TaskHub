@@ -1,0 +1,44 @@
+:root {
+  // colors
+  --background-color: #ffffff;
+  --background-focus-color: #f6f8fa;
+  --background-focus-2-color: #ebf0f4;
+
+  --border-color: #d8dee4;
+
+  --error-color: #ff4242;
+  --error-light-color: #ff8181;
+  --success-color: #2dff81;
+  --success-light-color: #a6ffc9;
+  --warning-color: #ffde32;
+  --warning-light-color: #ffed8f;
+
+  --active-color: #0969da;
+  --active-hover-color: #117eff;
+  --active-light-color: #c8e1ff;
+
+  --main-1-color: #353c4a;
+  --main-2-color: #656d76;
+
+  --focus-color: rgba(208, 215, 222, 0.3);
+  --element-color: rgba(175, 184, 193, 0.2);
+
+  // text colors
+  --text-color: #1f2328;
+  --light-text-color: #656d76;
+  --link-blue-color: #0969da;
+  --on-color-text-color: #ffffff;
+
+  --warning-text-color: #e4c000;
+  --on-warning-text-color: #7d6a00;
+  --error-text-color: #ff4242;
+  --success-text-color: #00bd4c;
+  --on-success-text-color: #21693e;
+
+  // font weights
+  --normal-font-weight: 400;
+  --semibold-font-weight: 600;
+
+  // font-family
+  --main-font-family: 'Noto Sans', Arial, sans-serif;
+}

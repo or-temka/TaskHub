@@ -1,0 +1,16 @@
+.dangerButtonWithIcon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &:hover {
+    border: 1px solid var(--border-color);
+  }
+
+  & svg path {
+    fill: var(--error-color);
+  }
+  & span {
+    color: var(--error-color);
+  }
+}
