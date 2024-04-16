@@ -3,6 +3,7 @@
   border-radius: 5px;
   background-color: var(--background-color);
   cursor: pointer;
+  padding: 8px 20px;
   font-size: 16px;
   line-height: 22px;
   font-weight: var(--normal-font-weight);

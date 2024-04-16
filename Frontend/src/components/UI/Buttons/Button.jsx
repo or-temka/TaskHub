@@ -1,15 +1,8 @@
 import styles from './Button.module.css'
 
-function Button({
-  title = 'Меню',
-  paddingHorizontal = 20,
-  paddingVertical = 8,
-}) {
+function Button({ title = 'Меню', buttonClassName }) {
   return (
-    <button
-      className={styles.button}
-      style={{ padding: `${paddingVertical}px ${paddingHorizontal}px` }}
-    >
+    <button className={[styles.button, buttonClassName].join(' ')}>
       {title}
     </button>
   )
