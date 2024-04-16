@@ -1,6 +1,6 @@
 import styles from './Button.module.css'
 
-function Button({ title = 'Меню', buttonClassName }) {
+function Button({ title = '', buttonClassName }) {
   return (
     <button className={[styles.button, buttonClassName].join(' ')}>
       {title}
