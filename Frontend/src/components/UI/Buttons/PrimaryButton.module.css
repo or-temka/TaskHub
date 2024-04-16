@@ -3,6 +3,9 @@
   background-color: var(--active-color);
   color: var(--on-color-text-color);
 }
+.primaryButton_passive {
+  background-color: var(--main-1-color);
+}
 .primaryButton:hover {
   border: none;
   background-color: var(--active-hover-color);

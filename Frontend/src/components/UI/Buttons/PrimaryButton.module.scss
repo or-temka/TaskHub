@@ -3,6 +3,10 @@
   background-color: var(--active-color);
   color: var(--on-color-text-color);
 
+  &_passive {
+    background-color: var(--main-1-color);
+  }
+
   &:hover {
     border: none;
     background-color: var(--active-hover-color);
