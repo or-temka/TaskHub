@@ -1,0 +1,39 @@
+.inputIndicator {
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  box-sizing: border-box;
+  height: 32px;
+
+  &__indicator {
+    background-color: var(--background-color);
+    padding: 5px 15px;
+    cursor: pointer;
+    height: 100%;
+    border-right: 1px solid var(--border-color);
+    box-sizing: border-box;
+    user-select: none;
+    min-width: 120px;
+
+    &:hover {
+      background-color: var(--background-focus-color);
+    }
+  }
+
+  &__input {
+    background-color: var(--background-color);
+    border: none;
+    outline: none;
+    height: 100%;
+    padding: 5px 10px;
+    box-sizing: border-box;
+
+    &:hover,
+    &:focus {
+      background-color: var(--background-focus-color);
+    }
+  }
+}
