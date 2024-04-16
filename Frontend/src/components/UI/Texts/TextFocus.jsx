@@ -1,6 +1,11 @@
 import styles from './TextFocus.module.css'
 
-function TextFocus({ children, className, isThin }) {
+function TextFocus({
+  children,
+  className,
+  backgroundColor = 'var(--background-focus-2-color)',
+  isThin,
+}) {
   return (
     <span
       className={[
@@ -8,6 +13,7 @@ function TextFocus({ children, className, isThin }) {
         className,
         isThin && styles.textFocus__thinText,
       ].join(' ')}
+      style={{ backgroundColor: backgroundColor }}
     >
       {children}
     </span>
