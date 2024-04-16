@@ -1,2 +1,18 @@
 .buttonWithIcon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 10px;
+
+  & svg path {
+    fill: var(--main-2-color);
+  }
+
+  &:hover {
+    background-color: var(--background-color);
+
+    & svg path {
+      fill: var(--main-1-color);
+    }
+  }
 }
