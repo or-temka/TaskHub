@@ -6,6 +6,10 @@
   color: var(--text-color);
 }
 
+body {
+  background-color: var(--background-focus-color);
+}
+
 .wrapper {
   margin: 0 auto;
   max-width: 1440px;
