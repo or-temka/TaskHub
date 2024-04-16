@@ -6,6 +6,10 @@
   color: var(--text-color);
 }
 
+a {
+  text-decoration: none;
+}
+
 // initial classes
 .h1 {
   @include h1;
