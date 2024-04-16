@@ -39,36 +39,42 @@ a {
   text-decoration: none;
 }
 
+h1,
 .h1 {
   font-size: 30px;
   line-height: 36px;
   font-weight: var(--semibold-font-weight);
 }
 
+h2,
 .h2 {
   font-size: 28px;
   line-height: 32px;
   font-weight: var(--semibold-font-weight);
 }
 
+h3,
 .h3 {
   font-size: 24px;
   line-height: 28px;
   font-weight: var(--semibold-font-weight);
 }
 
+h4,
 .h4 {
   font-size: 22px;
   line-height: 26px;
   font-weight: var(--semibold-font-weight);
 }
 
+h5,
 .h5 {
   font-size: 20px;
   line-height: 24px;
   font-weight: var(--semibold-font-weight);
 }
 
+h6,
 .h6 {
   font-size: 18px;
   line-height: 22px;
