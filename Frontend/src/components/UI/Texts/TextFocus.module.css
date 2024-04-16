@@ -1,0 +1,11 @@
+.textFocus {
+  padding: 3px 8px;
+  background-color: var(--background-focus-2-color);
+  border-radius: 3px;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: var(--semibold-font-weight);
+}
+.textFocus__thinText {
+  font-weight: var(--normal-font-weight);
+}

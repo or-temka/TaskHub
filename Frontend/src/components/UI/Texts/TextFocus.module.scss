@@ -1,0 +1,12 @@
+@import '../../../mixins';
+
+.textFocus {
+  padding: 3px 8px;
+  background-color: var(--background-focus-2-color);
+  border-radius: 3px;
+  @include textBold;
+
+  &__thinText {
+    font-weight: var(--normal-font-weight);
+  }
+}
