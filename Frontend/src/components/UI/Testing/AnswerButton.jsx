@@ -7,9 +7,13 @@ function AnswerButton({
   numberClassName,
   textClassName,
   status = 'passive',
+  onClick = () => {},
 }) {
   return (
-    <div className={[styles.answerButton, className].join(' ')}>
+    <div
+      className={[styles.answerButton, className].join(' ')}
+      onClick={onClick}
+    >
       <span
         className={[
           styles.answerButton__number,
