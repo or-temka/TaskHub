@@ -1,0 +1,17 @@
+@import '../../../mixins';
+
+.colorTextMsg {
+  padding: 5px 10px;
+  border-radius: 5px;
+  @include smallText;
+
+  &__success {
+    background-color: var(--success-light-color);
+    color: var(--on-success-text-color);
+  }
+
+  &__warning {
+    background-color: var(--warning-color);
+    color: var(--on-warning-text-color);
+  }
+}
