@@ -35,6 +35,11 @@
   color: var(--text-color);
 }
 
+.wrapper {
+  margin: 0 auto;
+  max-width: 1440px;
+}
+
 a {
   text-decoration: none;
 }
