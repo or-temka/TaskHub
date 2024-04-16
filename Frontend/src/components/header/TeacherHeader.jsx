@@ -1,8 +1,8 @@
 import Header from './Header'
-import LightButton from '../UI/Buttons/LightButton'
+import ButtonWithIcon from '../UI/Buttons/ButtonWithIcon'
 
 function TeacherHeader({ pageName }) {
-  const menuButtons = [<LightButton />, <LightButton />]
+  const menuButtons = [<ButtonWithIcon />, <ButtonWithIcon />]
 
   return <Header menuButtons={menuButtons} pageName={pageName} />
 }
