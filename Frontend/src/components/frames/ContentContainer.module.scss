@@ -1,0 +1,16 @@
+.contentContainer {
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: var(--background-color);
+
+  &__content {
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__headBorder {
+    width: 100%;
+    height: 12px;
+  }
+}
