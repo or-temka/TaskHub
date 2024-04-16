@@ -17,8 +17,6 @@ import Groups from './pages/teacher/Groups'
 import TeacherTasks from './pages/teacher/Tasks'
 import TaskInfo from './pages/teacher/TaskInfo'
 
-import './App.css'
-
 function App() {
   return (
     <BrowserRouter>

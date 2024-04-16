@@ -1,7 +1,15 @@
-
+import Header from './Header'
+import LightButton from '../UI/Buttons/LightButton'
 
 function TeacherHeader() {
-  return <div>TeacherHeader</div>
+  const menuButtons = (
+    <>
+      <LightButton />
+      <LightButton />
+    </>
+  )
+
+  return <Header menuButtons={menuButtons} />
 }
 
 export default TeacherHeader
