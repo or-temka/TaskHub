@@ -40,6 +40,7 @@
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  text-decoration: none;
 }
 .header__labelText:hover {
   background-color: var(--focus-color);
@@ -62,7 +63,44 @@
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  text-decoration: none;
 }
 .header__nowPageName:hover {
   background-color: var(--focus-color);
+}
+.header__menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 15px;
+}
+.header__menuButtons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 15px;
+}
+.header__profile {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.header__profilePhoto {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  -o-object-fit: contain;
+     object-fit: contain;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  border: 1px solid var(--border-color);
 }

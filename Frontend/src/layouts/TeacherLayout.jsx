@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom'
 import TeacherHeader from '../components/header/TeacherHeader'
 
-function TeacherLayout() {
+function TeacherLayout({ pageName }) {
   return (
     <>
-      <TeacherHeader />
+      <TeacherHeader pageName={pageName} />
       <Outlet />
     </>
   )

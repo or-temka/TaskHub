@@ -1,6 +1,6 @@
+function SignIn({ setPageName }) {
+  setPageName('Вход в аккаунт')
 
-
-function SignIn() {
   return <div>SignIn</div>
 }
 

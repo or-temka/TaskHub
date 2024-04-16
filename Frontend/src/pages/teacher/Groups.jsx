@@ -1,5 +1,6 @@
+function Groups({ setPageName }) {
+  setPageName('Группы')
 
-function Groups() {
   return <div>Groups</div>
 }
 

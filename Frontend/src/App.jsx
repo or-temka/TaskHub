@@ -16,28 +16,58 @@ import Students from './pages/teacher/Students'
 import Groups from './pages/teacher/Groups'
 import TeacherTasks from './pages/teacher/Tasks'
 import TaskInfo from './pages/teacher/TaskInfo'
+import { useState } from 'react'
 
 function App() {
+  const [pageName, setPageName] = useState('')
+
   return (
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route index element={<MainPage />}></Route>
-            <Route path="signIn" element={<SignIn />}></Route>
+          <Route path="/" element={<MainLayout pageName={pageName} />}>
+            <Route
+              index
+              element={<MainPage setPageName={setPageName} />}
+            ></Route>
+            <Route
+              path="signIn"
+              element={<SignIn setPageName={setPageName} />}
+            ></Route>
           </Route>
-          <Route path="student" element={<StudentLayout />}>
-            <Route index element={<Tasks />}></Route>
-            <Route path="task" element={<Task />}></Route>
-            <Route path="taskPerform" element={<TaskPerform />}></Route>
+          <Route path="student" element={<StudentLayout pageName={pageName} />}>
+            <Route index element={<Tasks setPageName={setPageName} />}></Route>
+            <Route
+              path="task"
+              element={<Task setPageName={setPageName} />}
+            ></Route>
+            <Route
+              path="taskPerform"
+              element={<TaskPerform setPageName={setPageName} />}
+            ></Route>
           </Route>
-          <Route path="teacher" element={<TeacherLayout />}>
-            <Route index element={<Students />}></Route>
-            <Route path="groups" element={<Groups />}></Route>
-            <Route path="tasks" element={<TeacherTasks />}></Route>
-            <Route path="task" element={<TaskInfo />}></Route>
+          <Route path="teacher" element={<TeacherLayout pageName={pageName} />}>
+            <Route
+              index
+              element={<Students setPageName={setPageName} />}
+            ></Route>
+            <Route
+              path="groups"
+              element={<Groups setPageName={setPageName} />}
+            ></Route>
+            <Route
+              path="tasks"
+              element={<TeacherTasks setPageName={setPageName} />}
+            ></Route>
+            <Route
+              path="task"
+              element={<TaskInfo setPageName={setPageName} />}
+            ></Route>
           </Route>
-          <Route path="*" element={<PageNotFound />}></Route>
+          <Route
+            path="*"
+            element={<PageNotFound setPageName={setPageName} />}
+          ></Route>
         </Routes>
       </div>
     </BrowserRouter>

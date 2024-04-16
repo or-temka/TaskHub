@@ -1,18 +1,30 @@
-
-
 import styles from './Header.module.css'
+
+import users from '../../data/users'
+import { Link, useLocation } from 'react-router-dom'
 
 function Header({
   pageName = '',
-  profileId = undefined, // <Number>
-  menuButtons = undefined, // <Array of <>>
+  profileId, // <Number>
+  menuButtons, // <Array of <>>
 }) {
+  const user = users.find((user) => user.id === profileId)
+  const nowPageLocation = useLocation().pathname
+
   return (
     <header className={styles.header}>
       <div className={styles.header__labelContainer}>
-        <span className={styles.header__labelText}>USTY TaskHub</span>
-        <span className={styles.header__textCircle}></span>
-        <span className={styles.header__nowPageName}>{pageName}</span>
+        <Link to="/" className={styles.header__labelText}>
+          USTY TaskHub
+        </Link>
+        {pageName && (
+          <>
+            <span className={styles.header__textCircle}></span>
+            <Link to={nowPageLocation} className={styles.header__nowPageName}>
+              {pageName}
+            </Link>
+          </>
+        )}
       </div>
       <div className={styles.header__menu}>
         <div className={styles.header__menuButtons}>
@@ -20,7 +32,11 @@ function Header({
         </div>
         {profileId && (
           <div className={styles.header__profile}>
-            <img src="../../assets/images/withouPhoto.jpg" alt="Имя человека" />
+            <img
+              src={require('../../assets/images/noProfilePhoto.jpg')}
+              alt={user.name}
+              className={styles.header__profilePhoto}
+            />
           </div>
         )}
       </div>

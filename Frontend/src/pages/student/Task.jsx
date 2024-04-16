@@ -1,6 +1,5 @@
-
-
-function Task() {
+function Task({ setPageName }) {
+  setPageName('Задание')
   return <div>Task</div>
 }
 

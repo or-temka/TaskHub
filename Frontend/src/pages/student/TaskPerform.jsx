@@ -1,6 +1,6 @@
+function TaskPerform({ setPageName }) {
+  setPageName('Выполнение задания')
 
-
-function TaskPerform() {
   return <div>TaskPerform</div>
 }
 

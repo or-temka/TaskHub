@@ -1,15 +1,10 @@
 import LightButton from '../UI/Buttons/LightButton'
 import Header from './Header'
 
-function StudentHeader() {
-  const menuButtons = (
-    <>
-      <LightButton />
-      <LightButton />
-    </>
-  )
+function StudentHeader({ pageName }) {
+  const menuButtons = [<LightButton />, <LightButton />]
 
-  return <Header profileId={0} menuButtons={menuButtons} />
+  return <Header profileId={1} menuButtons={menuButtons} pageName={pageName} />
 }
 
 export default StudentHeader

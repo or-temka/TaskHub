@@ -1,5 +1,6 @@
+function Students({ setPageName }) {
+  setPageName('Студенты')
 
-function Students() {
   return <div>Students</div>
 }
 

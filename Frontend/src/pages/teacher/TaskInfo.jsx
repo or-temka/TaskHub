@@ -1,6 +1,6 @@
+function TaskInfo({ setPageName }) {
+  setPageName('Задание')
 
-
-function TaskInfo() {
   return <div>TaskInfo</div>
 }
 

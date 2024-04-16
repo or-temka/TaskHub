@@ -1,6 +1,6 @@
+function TeacherTasks({ setPageName }) {
+  setPageName('Задания')
 
-
-function TeacherTasks() {
   return <div>TeacherTasks</div>
 }
 

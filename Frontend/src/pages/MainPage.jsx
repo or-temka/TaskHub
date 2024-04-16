@@ -1,4 +1,6 @@
-function MainPage() {
+function MainPage({ setPageName }) {
+  setPageName('')
+
   return <div>MainPage</div>
 }
 

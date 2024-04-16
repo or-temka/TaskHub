@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom'
 import StudentHeader from '../components/header/StudentHeader'
 
-function StudentLayout() {
+function StudentLayout({ pageName }) {
   return (
     <>
-      <StudentHeader />
+      <StudentHeader pageName={pageName} />
       <Outlet />
     </>
   )
