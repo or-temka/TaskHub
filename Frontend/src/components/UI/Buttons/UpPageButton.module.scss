@@ -1,0 +1,16 @@
+.upPageButton {
+  width: 48px;
+  height: 48px;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-image: url('../../../assets/svg/top-arrow.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+
+  &:hover {
+    border: 1px solid var(--main-2-color);
+    background-color: var(--background-focus-color);
+  }
+}
