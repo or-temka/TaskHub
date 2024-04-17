@@ -1,4 +1,4 @@
-import styles from './ContentHeader.module.css'
+import styles from './ContentHeader.module.scss'
 
 function ContentHeader({ title, children, className, classNameForContent }) {
   return (

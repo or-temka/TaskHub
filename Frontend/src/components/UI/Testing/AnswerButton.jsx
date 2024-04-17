@@ -1,4 +1,4 @@
-import styles from './AnswerButton.module.css'
+import styles from './AnswerButton.module.scss'
 
 function AnswerButton({
   number,

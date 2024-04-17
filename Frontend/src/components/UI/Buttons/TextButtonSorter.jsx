@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import styles from './TextButtonSorter.module.css'
+import styles from './TextButtonSorter.module.scss'
 
 function TextButtonSorter({
   className,

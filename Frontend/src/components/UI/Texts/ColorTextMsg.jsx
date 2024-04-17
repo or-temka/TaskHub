@@ -1,4 +1,4 @@
-import styles from './ColorTextMsg.module.css'
+import styles from './ColorTextMsg.module.scss'
 
 function ColorTextMsg({ children, className, msgType = 'success' }) {
   const textColorType =

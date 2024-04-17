@@ -1,4 +1,4 @@
-import styles from './CloseButton.module.css'
+import styles from './CloseButton.module.scss'
 
 function CloseButton({
   onClick = () => {},

@@ -1,6 +1,6 @@
 import Button from './Button'
 
-import styles from './PrimaryButton.module.css'
+import styles from './PrimaryButton.module.scss'
 
 function PrimaryButton({
   title,

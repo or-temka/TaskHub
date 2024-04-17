@@ -1,4 +1,4 @@
-import styles from './FrameContent.module.css'
+import styles from './FrameContent.module.scss'
 
 function FrameContent({
   className,

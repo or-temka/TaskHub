@@ -1,4 +1,4 @@
-import styles from './ContentContainer.module.css'
+import styles from './ContentContainer.module.scss'
 
 function ContentContainer({
   children,

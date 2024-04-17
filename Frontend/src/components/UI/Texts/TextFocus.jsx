@@ -1,4 +1,4 @@
-import styles from './TextFocus.module.css'
+import styles from './TextFocus.module.scss'
 
 function TextFocus({
   children,

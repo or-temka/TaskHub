@@ -1,4 +1,4 @@
-import styles from './FocusContainer.module.css'
+import styles from './FocusContainer.module.scss'
 
 function FocusContainer({ children, className }) {
   return (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import styles from './InputIndicator.module.css'
+import styles from './InputIndicator.module.scss'
 
 function InputIndicator({
   value = '',

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import Button from '../components/UI/Buttons/Button'
 
-import styles from './PageNotFound.module.css'
+import styles from './PageNotFound.module.scss'
 
 function PageNotFound({ setPageName }) {
   setPageName('Страница не найдена')

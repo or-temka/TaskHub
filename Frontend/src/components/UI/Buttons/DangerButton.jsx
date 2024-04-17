@@ -1,6 +1,6 @@
 import Button from './Button'
 
-import styles from './DangerButton.module.css'
+import styles from './DangerButton.module.scss'
 
 function DangerButton({ title, buttonClassName, onClick = () => {} }) {
   return (

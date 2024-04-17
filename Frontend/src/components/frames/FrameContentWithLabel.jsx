@@ -1,5 +1,5 @@
 import FrameContent from './FrameContent'
-import styles from './FrameContentWithLabel.module.css'
+import styles from './FrameContentWithLabel.module.scss'
 
 function FrameContentWithLabel({
   children,

@@ -1,4 +1,4 @@
-import styles from './ContentHeaderLabel.module.css'
+import styles from './ContentHeaderLabel.module.scss'
 
 function ContentHeaderLabel({
   title,

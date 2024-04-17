@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import styles from './Checkbox.module.css'
+import styles from './Checkbox.module.scss'
 
 function Checkbox({
   idHTML = uuidv4(),
