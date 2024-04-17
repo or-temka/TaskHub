@@ -26,7 +26,7 @@ function Checkbox({
       />
       <label
         for={idHTML}
-        className={[styles.checkbox__label, className].join(' ')}
+        className={[styles.checkbox__label, 'paragraph', className].join(' ')}
       >
         {label}
       </label>
