@@ -6,6 +6,10 @@
   color: var(--text-color);
 }
 
+body {
+  background-color: var(--background-focus-color);
+}
+
 .wrapper {
   margin: 0 auto;
   max-width: 1440px;
@@ -66,4 +70,18 @@ h6,
 }
 .small-text {
   @include smallText;
+}
+
+// other styles
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--background-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--light-text-color);
+  border-radius: 5px;
 }

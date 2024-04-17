@@ -1,0 +1,43 @@
+.answerButton {
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  user-select: none;
+  width: fit-content;
+
+  &__number {
+    padding: 4px 8px;
+    background-color: var(--main-2-color);
+    color: var(--on-color-text-color);
+
+    &_notActive {
+      background-color: var(--border-color);
+      color: var(--light-text-color);
+    }
+
+    &_active {
+      background-color: var(--active-color);
+    }
+  }
+
+  &__text {
+    padding: 4px 20px;
+    background-color: var(--background-focus-color);
+
+    &_active {
+      background-color: var(--active-light-color);
+    }
+  }
+
+  &:hover {
+    .answerButton__text {
+      background-color: var(--background-focus-2-color);
+
+      &_active {
+        background-color: var(--active-light-color);
+      }
+    }
+  }
+}

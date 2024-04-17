@@ -1,0 +1,14 @@
+.popUp {
+  background-color: var(--background-focus-color);
+  min-width: 450px;
+
+  &__header {
+    padding: 15px 20px;
+    background-color: var(--background-focus-2-color);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  &__content {
+    padding: 20px;
+  }
+}

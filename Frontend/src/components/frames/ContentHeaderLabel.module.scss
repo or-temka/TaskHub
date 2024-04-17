@@ -1,12 +1,15 @@
-.contentHeader {
+
+
+.contentHeaderLabel {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  justify-content: space-between;
+  padding: 15px 20px;
 
   &__content {
     display: flex;
     flex-direction: row;
+    align-items: center;
   }
 }

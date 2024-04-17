@@ -1,5 +1,5 @@
-import buttonStyle from './Button.module.css'
-import styles from './ButtonWithIcon.module.css'
+import buttonStyle from './Button.module.scss'
+import styles from './ButtonWithIcon.module.scss'
 
 function ButtonWithIcon({
   title,

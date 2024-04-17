@@ -1,12 +1,21 @@
 import Button from './Button'
 
-import styles from './PrimaryButton.module.css'
+import styles from './PrimaryButton.module.scss'
 
-function PrimaryButton({ title, buttonClassName, onClick = () => {} }) {
+function PrimaryButton({
+  title,
+  buttonClassName,
+  isPassive,
+  onClick = () => {},
+}) {
   return (
     <Button
       title={title}
-      buttonClassName={[styles.primaryButton, buttonClassName].join(' ')}
+      buttonClassName={[
+        styles.primaryButton,
+        buttonClassName,
+        isPassive && styles.primaryButton_passive,
+      ].join(' ')}
       onClick={onClick}
     />
   )

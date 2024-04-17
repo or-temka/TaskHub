@@ -1,0 +1,52 @@
+.textButtonSorter {
+  cursor: pointer;
+  width: fit-content;
+  padding: 5px 10px;
+  user-select: none;
+
+  &:hover {
+    > .textButtonSorter__text {
+      color: var(--text-color);
+
+      &::before {
+        background-color: var(--text-color);
+      }
+    }
+  }
+
+  &_active {
+    &:hover {
+      > .textButtonSorter__text {
+        color: var(--link-blue-color);
+
+        &::before {
+          background-color: var(--link-blue-color);
+        }
+      }
+    }
+  }
+
+  &__text {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--light-text-color);
+
+    &::before {
+      content: '';
+      display: block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background-color: var(--light-text-color);
+    }
+
+    &_active {
+      color: var(--link-blue-color);
+
+      &::before {
+        background-color: var(--link-blue-color);
+      }
+    }
+  }
+}

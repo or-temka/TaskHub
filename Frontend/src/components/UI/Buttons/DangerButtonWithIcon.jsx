@@ -1,6 +1,6 @@
 import buttonStyle from './Button.module.css'
 
-import styles from './DangerButtonWithIcon.module.css'
+import styles from './DangerButtonWithIcon.module.scss'
 
 function DangerButtonWithIcon({
   title,

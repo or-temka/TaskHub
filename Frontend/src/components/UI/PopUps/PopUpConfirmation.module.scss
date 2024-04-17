@@ -1,0 +1,29 @@
+.popUpConfirmation {
+  padding: 15px 20px;
+
+  &__contentContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 30px;
+    background-color: var(--background-focus-color);
+    min-height: 200px;
+    max-height: 300px;
+  }
+
+  &__textContent {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__text {
+    color: var(--light-text-color);
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+}

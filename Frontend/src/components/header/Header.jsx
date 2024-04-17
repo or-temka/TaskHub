@@ -1,4 +1,4 @@
-import styles from './Header.module.css'
+import styles from './Header.module.scss'
 
 import users from '../../data/users'
 import { Link, useLocation } from 'react-router-dom'

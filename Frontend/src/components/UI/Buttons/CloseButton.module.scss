@@ -1,0 +1,26 @@
+.closeButton {
+  cursor: pointer;
+  padding: 5px;
+  width: fit-content;
+
+  &_withoutPadding {
+    padding: 0;
+  }
+
+  &__cross {
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background-color: rgba($color: #000000, $alpha: 0.7);
+    background-image: url('../../../assets/svg/close-cross.svg');
+    background-position: center center;
+    background-size: 9px;
+    background-repeat: no-repeat;
+  }
+
+  &:hover {
+    .closeButton__cross {
+      background-color: rgba($color: #000000, $alpha: 0.83);
+    }
+  }
+}
