@@ -1,0 +1,47 @@
+.textButtonSorter {
+  cursor: pointer;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 5px 10px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.textButtonSorter:hover > .textButtonSorter__text {
+  color: var(--text-color);
+}
+.textButtonSorter:hover > .textButtonSorter__text::before {
+  background-color: var(--text-color);
+}
+.textButtonSorter_active:hover > .textButtonSorter__text {
+  color: var(--link-blue-color);
+}
+.textButtonSorter_active:hover > .textButtonSorter__text::before {
+  background-color: var(--link-blue-color);
+}
+.textButtonSorter__text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 7px;
+  color: var(--light-text-color);
+}
+.textButtonSorter__text::before {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--light-text-color);
+}
+.textButtonSorter__text_active {
+  color: var(--link-blue-color);
+}
+.textButtonSorter__text_active::before {
+  background-color: var(--link-blue-color);
+}
