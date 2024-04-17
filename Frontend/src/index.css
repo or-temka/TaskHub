@@ -139,3 +139,16 @@ h6,
   line-height: 14px;
   font-weight: var(--normal-font-weight);
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--background-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--light-text-color);
+  border-radius: 5px;
+}
