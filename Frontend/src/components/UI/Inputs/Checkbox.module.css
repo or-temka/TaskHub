@@ -1,0 +1,41 @@
+.checkbox {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+.checkbox__label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 10px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.checkbox__label::before {
+  content: "";
+  display: block;
+  width: 19px;
+  height: 19px;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.checkbox__label:hover::before {
+  background-color: var(--background-focus-color);
+}
+.checkbox__input {
+  display: none;
+}
+.checkbox__input:checked + .checkbox__label::before {
+  background-color: var(--active-color);
+  background-image: url("../../../assets/svg/tick.svg");
+  border: 1px solid var(--active-color);
+}
