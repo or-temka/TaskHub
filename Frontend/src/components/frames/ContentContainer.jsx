@@ -4,16 +4,13 @@ function ContentContainer({
   children,
   headBorderColor,
   className,
-  classNameForContentBox,
+  wrapperClassName,
 }) {
   if (!headBorderColor) {
     return (
-      <div className={[styles.contentContainer, className].join(' ')}>
+      <div className={[styles.contentContainer, wrapperClassName].join(' ')}>
         <div
-          className={[
-            styles.contentContainer__content,
-            classNameForContentBox,
-          ].join(' ')}
+          className={[styles.contentContainer__content, className].join(' ')}
         >
           {children}
         </div>
@@ -22,17 +19,12 @@ function ContentContainer({
   }
 
   return (
-    <div className={[styles.contentContainer, className].join(' ')}>
+    <div className={[styles.contentContainer, wrapperClassName].join(' ')}>
       <div
         className={styles.contentContainer__headBorder}
         style={{ backgroundColor: headBorderColor }}
       ></div>
-      <div
-        className={[
-          styles.contentContainer__content,
-          classNameForContentBox,
-        ].join(' ')}
-      >
+      <div className={[styles.contentContainer__content, className].join(' ')}>
         {children}
       </div>
     </div>

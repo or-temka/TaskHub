@@ -11,9 +11,10 @@ function Checkbox({
   disabled = false,
   onClick = () => {},
   onChange = () => {},
+  ...params
 }) {
   return (
-    <div className={[styles.checkbox, className].join(' ')}>
+    <div {...params} className={[styles.checkbox, className].join(' ')}>
       <input
         id={idHTML}
         type="checkbox"

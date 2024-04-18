@@ -4,16 +4,18 @@ import styles from './DangerButtonWithIcon.module.scss'
 
 function DangerButtonWithIcon({
   title,
-  buttonClassName = '',
+  className,
   svgElem,
   onClick = () => {},
+  ...params
 }) {
   return (
     <button
+      {...params}
       className={[
         buttonStyle.button,
         styles.dangerButtonWithIcon,
-        buttonClassName,
+        className,
       ].join(' ')}
       onClick={onClick}
     >

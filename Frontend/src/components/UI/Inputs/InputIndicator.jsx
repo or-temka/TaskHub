@@ -22,6 +22,7 @@ function InputIndicator({
   onChangeIndicator = () => {},
   onClickIndicator = () => {},
   onClickInput = () => {},
+  ...params
 }) {
   const lastIndicatorNum = indicators.length - 1
 
@@ -44,6 +45,7 @@ function InputIndicator({
 
   return (
     <div
+      {...params}
       className={[styles.inputIndicator, className].join(' ')}
       data-indicator-value={nowIndicator.data}
       style={style}
