@@ -1,14 +1,28 @@
 .input {
-  padding: 5px 10px;
-  background-color: var(--background-color);
-  border-radius: 3px;
-  border: 1px solid var(--border-color);
-  height: 32px;
-  box-sizing: border-box;
+  width: 100%;
 
-  &:hover,
-  &:focus {
-    background-color: var(--background-focus-color);
-    outline: none;
+  &__input {
+    width: 100%;
+    padding: 5px 10px;
+    background-color: var(--background-color);
+    border-radius: 3px;
+    border: 1px solid var(--border-color);
+    height: 32px;
+    box-sizing: border-box;
+
+    &:hover,
+    &:focus {
+      background-color: var(--background-focus-color);
+      outline: none;
+    }
+
+    &_error {
+      border: 1px solid var(--error-color);
+    }
+  }
+
+  &__errorText {
+    color: var(--error-color);
+    margin-left: 10px;
   }
 }
