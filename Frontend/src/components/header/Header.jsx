@@ -15,7 +15,7 @@ function Header({
     <header className={styles.header}>
       <div className={styles.header__labelContainer}>
         <Link to="/" className={styles.header__labelText}>
-          USTY TaskHub
+          <span className={styles.header__labelDlc}>USTY </span>TaskHub
         </Link>
         {pageName && (
           <>

@@ -12,7 +12,8 @@ body {
 
 .wrapper {
   margin: 0 auto;
-  max-width: 1440px;
+  max-width: 1480px;
+  padding: 0px 40px;
 }
 
 a {
@@ -84,4 +85,10 @@ h6,
 ::-webkit-scrollbar-thumb {
   background-color: var(--light-text-color);
   border-radius: 5px;
+}
+
+@media screen and (max-width: 576px) {
+  .wrapper {
+    padding: 0px 15px;
+  }
 }
