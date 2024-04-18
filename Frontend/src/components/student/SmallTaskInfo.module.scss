@@ -1,0 +1,127 @@
+.smallTaskInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  // header
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__labelContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: fit-content;
+
+    & svg {
+      min-width: 18px;
+    }
+  }
+
+  &__labelLink {
+  }
+
+  &__labelText {
+    &:hover {
+      color: var(--active-color);
+    }
+  }
+
+  &__headerContentContainer {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  &__headerContent {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  &__colorTextMsg {
+  }
+
+  &__date {
+    color: var(--light-text-color);
+  }
+
+  &__markContainer {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  &__markLabel {
+    color: var(--light-text-color);
+  }
+
+  &__mark {
+    &_success {
+      color: var(--success-text-color);
+    }
+    &_warning {
+      color: var(--warning-text-color);
+    }
+    &_error {
+      color: var(--error-color);
+    }
+  }
+
+  // main
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__infoContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__attemptsContainer {
+    padding: 10px 25px;
+  }
+
+  &__attemptsCount {
+    color: var(--active-color);
+  }
+
+  &__buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  &__moreButtonLink {
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .smallTaskInfo {
+    &__header {
+      flex-wrap: wrap;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .smallTaskInfo {
+    &__button {
+      width: 100%;
+    }
+    &__moreButtonLink {
+      width: 100%;
+    }
+  }
+}
