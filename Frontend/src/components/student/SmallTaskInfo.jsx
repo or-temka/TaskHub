@@ -13,7 +13,7 @@ function SmallTaskInfo({ className, task = {}, ...params }) {
     <ContentContainer
       {...params}
       headBorderColor={
-        task.mark ? 'var(--success-color)' : 'var(--warning-color)'
+        task.mark ? 'var(--success-light-color)' : 'var(--warning-light-color)'
       }
       className={[styles.smallTaskInfo, className].join(' ')}
     >
@@ -85,11 +85,11 @@ function SmallTaskInfo({ className, task = {}, ...params }) {
           </TextFocus>
         </div>
         <div className={styles.smallTaskInfo__buttons}>
-          <Link
-            to="task"
-            className={styles.smallTaskInfo__moreButtonLink}
-          >
-            <Button title="Подробнее" className={styles.smallTaskInfo__button} />
+          <Link to="task" className={styles.smallTaskInfo__moreButtonLink}>
+            <Button
+              title="Подробнее"
+              className={styles.smallTaskInfo__button}
+            />
           </Link>
 
           {task.attemptsCount > 0 && (
