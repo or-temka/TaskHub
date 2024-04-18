@@ -1,0 +1,63 @@
+@import '../mixins';
+
+.signIn {
+  &__content {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: space-between;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+  }
+
+  &__inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__inputContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__inputLabel {
+    @include text;
+    color: var(--light-text-color);
+    margin-left: 10px;
+  }
+
+  &__input {
+  }
+
+  &__sendBtnContainer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__sendBtn {
+    padding: 8px 40px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .signIn {
+    &__content {
+      flex-wrap: wrap;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .signIn {
+    &__sendBtn {
+      width: 100%;
+    }
+  }
+}
