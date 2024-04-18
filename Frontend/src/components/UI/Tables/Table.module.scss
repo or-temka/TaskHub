@@ -1,0 +1,51 @@
+@import '../../../mixins';
+
+.table {
+  display: block;
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+
+  &__thead {
+    display: block;
+    width: 100%;
+  }
+
+  &__tbody {
+    display: block;
+    width: 100%;
+  }
+
+  //tr
+  &__tr {
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid var(--border-color);
+  }
+  tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  //th td
+  &__th,
+  &__td {
+    text-align: left;
+    flex: 1;
+    padding: 5px 20px;
+    border-right: 1px solid var(--border-color);
+    @include text;
+  }
+  &__th {
+    background-color: var(--background-focus-2-color);
+    color: var(--light-text-color);
+  }
+  &__td {
+    background-color: var(--background-focus-color);
+  }
+  th:last-child,
+  td:last-child {
+    border-right: none;
+  }
+}
