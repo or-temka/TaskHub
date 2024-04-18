@@ -7,9 +7,11 @@ function Input({
   onClick = () => {},
   className,
   style,
+  ...params
 }) {
   return (
     <input
+      {...params}
       value={value}
       onChange={onChange}
       onClick={onClick}

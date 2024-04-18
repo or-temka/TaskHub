@@ -5,9 +5,11 @@ function CloseButton({
   className,
   crossClassName,
   isWithoutPadding,
+  ...params
 }) {
   return (
     <div
+      {...params}
       className={[
         styles.closeButton,
         className,

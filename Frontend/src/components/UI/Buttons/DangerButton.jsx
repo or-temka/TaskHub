@@ -2,12 +2,13 @@ import Button from './Button'
 
 import styles from './DangerButton.module.scss'
 
-function DangerButton({ title, buttonClassName, onClick = () => {} }) {
+function DangerButton({ title, className, onClick = () => {}, ...params }) {
   return (
     <Button
+      {...params}
       title={title}
       onClick={onClick}
-      buttonClassName={[styles.dangerButton, buttonClassName].join(' ')}
+      className={[styles.dangerButton, className].join(' ')}
     />
   )
 }

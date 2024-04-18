@@ -1,13 +1,10 @@
 import styles from './Button.module.scss'
 
-function Button({
-  title = '',
-  buttonClassName,
-  onClick = () => {},
-}) {
+function Button({ title = '', className, onClick = () => {}, ...params }) {
   return (
     <button
-      className={[styles.button, buttonClassName].join(' ')}
+      {...params}
+      className={[styles.button, className].join(' ')}
       onClick={onClick}
     >
       {title}

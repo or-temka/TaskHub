@@ -4,16 +4,16 @@ import styles from './ButtonWithIcon.module.scss'
 function ButtonWithIcon({
   title,
   svgElem,
-  buttonClassName,
+  className,
   onClick = () => {},
+  ...params
 }) {
   return (
     <button
-      className={[
-        buttonStyle.button,
-        styles.buttonWithIcon,
-        buttonClassName,
-      ].join(' ')}
+      {...params}
+      className={[buttonStyle.button, styles.buttonWithIcon, className].join(
+        ' '
+      )}
       onClick={onClick}
     >
       {svgElem}
