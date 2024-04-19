@@ -1,4 +1,3 @@
-import ContentContainer from '../../components/frames/ContentContainer'
 import ContentHeader from '../../components/frames/ContentHeader'
 import ContentHeaderLabel from '../../components/frames/ContentHeaderLabel'
 import TaskInfo from '../../components/student/TaskInfo'
@@ -8,6 +7,7 @@ import { tasks } from '../../data/tasks'
 import { files } from '../../data/files'
 
 import styles from './Task.module.scss'
+import TaskAdoptStatistic from '../../components/student/TaskAdoptStatistic'
 
 function Task({ setPageName }) {
   setPageName('Задание')
@@ -20,14 +20,15 @@ function Task({ setPageName }) {
     <div className={['wrapper', styles.task].join(' ')}>
       <ContentHeader title="Задание"></ContentHeader>
 
-      <div>
-        <TaskInfo
-          task={userTask}
-          originalTask={taskInfo}
-          taskFiles={taskFiles}
-        />
-        <ContentHeaderLabel title="Статистика по заданию" />
-      </div>
+      <TaskInfo task={userTask} originalTask={taskInfo} taskFiles={taskFiles} />
+      <ContentHeaderLabel
+        title="Статистика по заданию"
+        className={styles.task__fieldHeader}
+      />
+      <TaskAdoptStatistic
+        taskStatistic={taskInfo.statistic}
+        questionsCount={taskInfo.questions.length}
+      />
     </div>
   )
 }
