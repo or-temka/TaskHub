@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import ContentContainer from '../frames/ContentContainer'
 import ColorTextMsg from '../UI/Texts/ColorTextMsg'
 import Button from '../UI/Buttons/Button'
@@ -6,7 +7,7 @@ import TextFocus from '../UI/Texts/TextFocus'
 import { ReactComponent as TaskSVG } from '../../assets/svg/tasks.svg'
 
 import styles from './SmallTaskInfo.module.scss'
-import { Link } from 'react-router-dom'
+
 
 function SmallTaskInfo({ className, task = {}, ...params }) {
   return (
