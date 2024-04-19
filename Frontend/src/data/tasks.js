@@ -6,7 +6,6 @@ export const tasks = [
     instruction:
       'Пойти налево, а затем пойти направо, но уже намного быстрее, чем до этого',
     filesId: [1],
-    text: 'Пойти налево, а затем направо',
     questions: [
       {
         id: 1,
@@ -31,11 +30,43 @@ export const tasks = [
         ],
         trueAnswerId: 2,
       },
+      {
+        id: 2,
+        questionText: 'Как посадить дерево?',
+        answers: [
+          {
+            id: 1,
+            text: 'В один присест',
+          },
+          {
+            id: 2,
+            text: 'В два присеста',
+          },
+          {
+            id: 3,
+            text: 'Не садить',
+          },
+          {
+            id: 4,
+            text: 'Посадить стоя',
+          },
+        ],
+        trueAnswerId: 4,
+      },
     ],
     practiceQuestions: [
       {
         id: 1,
       },
     ],
+    statistic: {
+      usersExecuted: 2,
+      executedCount: 4,
+      avarageMark: 3.6,
+      avarageTimeTask: 620,
+      avarageTimeQuestion: 23,
+      leastCorrectAnswers: 7,
+      mostCorrectAnswers: 29,
+    },
   },
 ]
