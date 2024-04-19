@@ -8,13 +8,9 @@ import { ReactComponent as TaskSVG } from '../../assets/svg/tasks.svg'
 
 import styles from './TaskInfo.module.scss'
 import File from '../UI/Files/File'
+import getTimeExecuteInfo from '../../utils/getTimeExecuteInfo'
 
 function TaskInfo({ task, originalTask, taskFiles, className, ...params }) {
-  // Расчёт времени выполнения задания
-  const taskExecuteMinutes = Math.floor(originalTask.timeForExecute / 60)
-  const taskExecuteSeconds =
-    originalTask.timeForExecute - taskExecuteMinutes * 60
-
   return (
     <ContentContainer
       {...params}
@@ -50,12 +46,12 @@ function TaskInfo({ task, originalTask, taskFiles, className, ...params }) {
           </div>
           {task.mark && (
             <div className={styles.taskInfo__markContainer}>
-              <div>
+              {/* <div>
                 <TextFocus>
                   <span className={styles.taskInfo__termLabel}>Срок: </span>
                   <span>до 15 марта</span>
                 </TextFocus>
-              </div>
+              </div> */}
 
               <div>
                 <TextFocus className={styles.taskInfo__markLabel}>
@@ -130,15 +126,14 @@ function TaskInfo({ task, originalTask, taskFiles, className, ...params }) {
                   Времени на выполнение:{' '}
                 </span>
                 <span className={'text-bold'}>
-                  {taskExecuteMinutes} минут{' '}
-                  {taskExecuteSeconds > 0 && taskExecuteSeconds + ' секунд'}
+                  {getTimeExecuteInfo(originalTask.timeForExecute)}
                 </span>
               </TextFocus>
             </div>
           </div>
           <TextFocus className={styles.taskInfo__focusContainer}>
             <span className={'text-bold'}>Инструкции: </span>
-            <span className={'paragraph'}>{originalTask.text}</span>
+            <span className={'paragraph'}>{originalTask.instruction}</span>
           </TextFocus>
           <TextFocus
             className={[
