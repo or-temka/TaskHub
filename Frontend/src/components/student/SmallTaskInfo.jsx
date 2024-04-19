@@ -8,8 +8,7 @@ import { ReactComponent as TaskSVG } from '../../assets/svg/tasks.svg'
 
 import styles from './SmallTaskInfo.module.scss'
 
-
-function SmallTaskInfo({ className, task = {}, ...params }) {
+function SmallTaskInfo({ className, task = {}, originalTask = {}, ...params }) {
   return (
     <ContentContainer
       {...params}
@@ -22,7 +21,9 @@ function SmallTaskInfo({ className, task = {}, ...params }) {
         <div className={styles.smallTaskInfo__labelContainer}>
           <TaskSVG />
           <Link to="task" className={styles.smallTaskInfo__labelLink}>
-            <h6 className={styles.smallTaskInfo__labelText}>{task.name}</h6>
+            <h6 className={styles.smallTaskInfo__labelText}>
+              Проверочная работа по теме "{originalTask.name}"
+            </h6>
           </Link>
         </div>
         <div className={styles.smallTaskInfo__headerContentContainer}>
@@ -70,9 +71,14 @@ function SmallTaskInfo({ className, task = {}, ...params }) {
           )}
         </div>
       </header>
+
       <main className={styles.smallTaskInfo__main}>
         <div className={styles.smallTaskInfo__infoContainer}>
-          <span className={'paragraph'}>{task.text}</span>
+          <span className={'paragraph'}>
+            {task.mark
+              ? `Проверочная работа выполнена на оценку ${task.mark}`
+              : `Вам выдано практическое задание на тему "${originalTask.name}". Выполните его как можно скорее! Для этого нажмите на кнопку "Перейти к выполнению" или ознакомьтесь с заданием, нажав кнопку "Подробнее".`}
+          </span>
           <TextFocus className={styles.smallTaskInfo__attemptsContainer}>
             <span className={'text-bold'}>Осталось попыток: </span>
             <span
