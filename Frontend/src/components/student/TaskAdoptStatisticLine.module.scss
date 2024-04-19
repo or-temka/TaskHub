@@ -1,0 +1,14 @@
+.taskAdoptStatisticLine {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  &__outOfValue {
+    color: var(--light-text-color);
+  }
+
+  &__adoptInfo {
+    color: var(--light-text-color);
+  }
+}
