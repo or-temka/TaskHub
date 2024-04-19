@@ -1,6 +1,35 @@
+import ContentContainer from '../../components/frames/ContentContainer'
+import ContentHeader from '../../components/frames/ContentHeader'
+import ContentHeaderLabel from '../../components/frames/ContentHeaderLabel'
+import TaskInfo from '../../components/student/TaskInfo'
+
+import { userTasks } from '../../data/userTasks'
+import { tasks } from '../../data/tasks'
+import { files } from '../../data/files'
+
+import styles from './Task.module.scss'
+
 function Task({ setPageName }) {
   setPageName('Задание')
-  return <div>Task</div>
+
+  const userTask = userTasks[0]
+  const taskInfo = tasks.find((task) => task.id === userTask.originalTaskId)
+  const taskFiles = files.filter((file) => taskInfo.filesId.includes(file.id))
+
+  return (
+    <div className={['wrapper', styles.task].join(' ')}>
+      <ContentHeader title="Задание"></ContentHeader>
+
+      <div>
+        <TaskInfo
+          task={userTask}
+          originalTask={taskInfo}
+          taskFiles={taskFiles}
+        />
+        <ContentHeaderLabel title="Статистика по заданию" />
+      </div>
+    </div>
+  )
 }
 
 export default Task
