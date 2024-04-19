@@ -3,7 +3,7 @@ import styles from './TextFocus.module.scss'
 function TextFocus({
   children,
   className,
-  backgroundColor = 'var(--background-focus-2-color)',
+  backgroundColor = 'var(--background-focus-color)',
   isThin,
 }) {
   return (
