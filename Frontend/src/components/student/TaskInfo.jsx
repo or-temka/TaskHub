@@ -81,9 +81,12 @@ function TaskInfo({ task, originalTask, taskFiles, className, ...params }) {
               <TextFocus className={styles.taskInfo__focusContainer}>
                 <span className={'text-bold'}>Осталось попыток: </span>
                 <span
-                  className={['text-bold', styles.taskInfo__attemptsCount].join(
-                    ' '
-                  )}
+                  className={[
+                    'text-bold',
+                    styles.taskInfo__attemptsCount,
+                    task.attemptsCount === 0 &&
+                      styles.taskInfo__attemptsCount_error,
+                  ].join(' ')}
                 >
                   {task.attemptsCount}
                 </span>
@@ -153,10 +156,29 @@ function TaskInfo({ task, originalTask, taskFiles, className, ...params }) {
           </TextFocus>
         </div>
         <div className={styles.taskInfo__buttons}>
-          <PrimaryButton
-            title="Перейти к выполнению"
-            className={styles.taskInfo__button}
-          />
+          {task.attemptsCount > 0 ? (
+            task.mark && (
+              <span className={styles.taskInfo__buttonsHelper}>
+                Решив задание ещё раз, вы не понижаете свой балл, но получаете
+                возможность его повысить
+              </span>
+            )
+          ) : (
+            <span className={styles.taskInfo__buttonsHelper}>
+              Если вас всё ещё не устраивает оценка - обратитесь к преподавателю
+            </span>
+          )}
+          {task.attemptsCount > 0 ? (
+            <PrimaryButton
+              isPassive={task.mark && true}
+              title={
+                task.mark ? 'Решить задание ещё раз' : 'Перейти к выполнению'
+              }
+              className={styles.taskInfo__button}
+            />
+          ) : (
+            <Button title="У вас закончились попытки" disabled />
+          )}
         </div>
       </main>
     </ContentContainer>

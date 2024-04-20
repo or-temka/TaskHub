@@ -98,6 +98,10 @@
 
   &__attemptsCount {
     color: var(--active-color);
+
+    &_error {
+      color: var(--error-color);
+    }
   }
 
   &__timeForExecute {
@@ -106,9 +110,14 @@
 
   &__buttons {
     display: flex;
-    gap: 10px;
+    gap: 20px;
     justify-content: flex-end;
+    align-items: center;
     flex-wrap: wrap;
+  }
+
+  &__buttonsHelper {
+    color: var(--light-text-color);
   }
 }
 
