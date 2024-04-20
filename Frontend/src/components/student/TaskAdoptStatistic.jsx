@@ -23,7 +23,7 @@ function TaskAdoptStatistic({
           value={taskAvarageMark}
           valueBackgroundColor={
             taskAvarageMark >= 4
-              ? 'var(--success-color)'
+              ? 'var(--success-light-color)'
               : taskAvarageMark >= 3
               ? 'var(--warning-color)'
               : 'var(--error-light-color)'
