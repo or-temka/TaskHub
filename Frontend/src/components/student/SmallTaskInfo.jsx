@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import ContentContainer from '../frames/ContentContainer'
 import ColorTextMsg from '../UI/Texts/ColorTextMsg'
 import Button from '../UI/Buttons/Button'
@@ -6,14 +7,13 @@ import TextFocus from '../UI/Texts/TextFocus'
 import { ReactComponent as TaskSVG } from '../../assets/svg/tasks.svg'
 
 import styles from './SmallTaskInfo.module.scss'
-import { Link } from 'react-router-dom'
 
-function SmallTaskInfo({ className, task = {}, ...params }) {
+function SmallTaskInfo({ className, task = {}, originalTask = {}, ...params }) {
   return (
     <ContentContainer
       {...params}
       headBorderColor={
-        task.mark ? 'var(--success-color)' : 'var(--warning-color)'
+        task.mark ? 'var(--success-light-color)' : 'var(--warning-light-color)'
       }
       className={[styles.smallTaskInfo, className].join(' ')}
     >
@@ -21,7 +21,9 @@ function SmallTaskInfo({ className, task = {}, ...params }) {
         <div className={styles.smallTaskInfo__labelContainer}>
           <TaskSVG />
           <Link to="task" className={styles.smallTaskInfo__labelLink}>
-            <h6 className={styles.smallTaskInfo__labelText}>{task.name}</h6>
+            <h6 className={styles.smallTaskInfo__labelText}>
+              Проверочная работа по теме "{originalTask.name}"
+            </h6>
           </Link>
         </div>
         <div className={styles.smallTaskInfo__headerContentContainer}>
@@ -69,9 +71,14 @@ function SmallTaskInfo({ className, task = {}, ...params }) {
           )}
         </div>
       </header>
+
       <main className={styles.smallTaskInfo__main}>
         <div className={styles.smallTaskInfo__infoContainer}>
-          <span className={'paragraph'}>{task.text}</span>
+          <span className={'paragraph'}>
+            {task.mark
+              ? `Проверочная работа выполнена на оценку ${task.mark}`
+              : `Вам выдано практическое задание на тему "${originalTask.name}". Выполните его как можно скорее! Для этого нажмите на кнопку "Перейти к выполнению" или ознакомьтесь с заданием, нажав кнопку "Подробнее".`}
+          </span>
           <TextFocus className={styles.smallTaskInfo__attemptsContainer}>
             <span className={'text-bold'}>Осталось попыток: </span>
             <span
@@ -85,11 +92,11 @@ function SmallTaskInfo({ className, task = {}, ...params }) {
           </TextFocus>
         </div>
         <div className={styles.smallTaskInfo__buttons}>
-          <Link
-            to="task"
-            className={styles.smallTaskInfo__moreButtonLink}
-          >
-            <Button title="Подробнее" className={styles.smallTaskInfo__button} />
+          <Link to="task" className={styles.smallTaskInfo__moreButtonLink}>
+            <Button
+              title="Подробнее"
+              className={styles.smallTaskInfo__button}
+            />
           </Link>
 
           {task.attemptsCount > 0 && (

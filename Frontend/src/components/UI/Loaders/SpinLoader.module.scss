@@ -1,0 +1,17 @@
+.spinLoader {
+  width: 30px;
+  height: 30px;
+  border: 5px solid var(--main-1-color);
+  border-top: 5px solid transparent;
+  border-radius: 50%;
+  animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

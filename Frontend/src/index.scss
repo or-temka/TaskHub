@@ -6,6 +6,10 @@
   color: var(--text-color);
 }
 
+.App {
+  height: 100vh;
+}
+
 body {
   background-color: var(--background-focus-color);
 }
@@ -14,6 +18,7 @@ body {
   margin: 0 auto;
   max-width: 1480px;
   padding: 0px 40px;
+  padding-bottom: 80px;
 }
 
 a {
@@ -90,5 +95,6 @@ h6,
 @media screen and (max-width: 576px) {
   .wrapper {
     padding: 0px 15px;
+    padding-bottom: 80px;
   }
 }

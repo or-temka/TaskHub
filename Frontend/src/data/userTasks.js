@@ -1,19 +1,23 @@
 export const userTasks = [
   {
     id: 1,
-    name: 'Проверочная работа по теме “Название темы”',
-    mark: 3,
+    originalTaskId: 1,
+    mark: 4,
+    notRoundMark: 3.6,
     newTask: false,
     dateCreate: '12 марта в 10:00',
     attemptsCount: 2,
-    text: 'Вам выдано практическое задание “название задания”. Срок выполнения до 10.04.2024 включительно.',
+    statistics: {
+      taskRuntime: 560,
+      avarageQuestionTime: 15,
+      trueAnswersCount: 4,
+    },
   },
   {
     id: 2,
-    name: 'Проверочная работа 2 по теме “Название темы”',
+    originalTaskId: 1,
     newTask: true,
     dateCreate: '10 марта в 10:55',
     attemptsCount: 3,
-    text: 'Вам выдано практическое задание “название задания”. Срок выполнения до 11.04.2024 включительно.',
   },
 ]
