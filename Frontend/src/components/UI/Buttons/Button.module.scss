@@ -13,4 +13,11 @@
   &:hover {
     background-color: var(--background-focus-color);
   }
+
+  &_disabled {
+    cursor: initial;
+    &:hover {
+      background-color: initial;
+    }
+  }
 }
