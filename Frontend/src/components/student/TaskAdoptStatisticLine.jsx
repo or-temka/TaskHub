@@ -1,4 +1,5 @@
 import TextFocus from '../UI/Texts/TextFocus'
+import { ReactComponent as ToArrowSVG } from '../../assets/svg/to-arrow.svg'
 
 import styles from './TaskAdoptStatisticLine.module.scss'
 
@@ -8,7 +9,9 @@ function TaskAdoptStatisticLine({
   outOfValue = '',
   adoptInfo = '',
   textAfterValue = '',
+  valueChangeTo = '',
   valueBackgroundColor = 'var(--background-focus-2-color)',
+  valueChangeToBackgroundColor = 'var(--background-focus-2-color)',
   className,
   ...params
 }) {
@@ -31,6 +34,24 @@ function TaskAdoptStatisticLine({
           </span>
         )}
       </TextFocus>
+      {valueChangeTo && (
+        <>
+          <ToArrowSVG />
+          <TextFocus
+            className={styles.taskAdoptStatisticLine__value}
+            backgroundColor={valueChangeToBackgroundColor}
+          >
+            {valueChangeTo}
+            {outOfValue && (
+              <span className={styles.taskAdoptStatisticLine__outOfValue}>
+                {' '}
+                / {outOfValue}
+              </span>
+            )}
+          </TextFocus>
+        </>
+      )}
+
       {textAfterValue && <span className={'text'}>{textAfterValue}</span>}
 
       {adoptInfo && (
