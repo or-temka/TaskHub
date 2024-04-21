@@ -10,7 +10,14 @@ import styles from './TaskInfo.module.scss'
 import File from '../UI/Files/File'
 import getTimeExecuteInfo from '../../utils/getTimeExecuteInfo'
 
-function TaskInfo({ task, originalTask, taskFiles, className, ...params }) {
+function TaskInfo({
+  task,
+  originalTask,
+  taskFiles,
+  onStartTaskHandler = () => {},
+  className,
+  ...params
+}) {
   return (
     <ContentContainer
       {...params}
@@ -174,6 +181,7 @@ function TaskInfo({ task, originalTask, taskFiles, className, ...params }) {
               title={
                 task.mark ? 'Решить задание ещё раз' : 'Перейти к выполнению'
               }
+              onClick={onStartTaskHandler}
               className={styles.taskInfo__button}
             />
           ) : (

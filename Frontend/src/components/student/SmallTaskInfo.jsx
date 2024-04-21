@@ -8,7 +8,13 @@ import { ReactComponent as TaskSVG } from '../../assets/svg/tasks.svg'
 
 import styles from './SmallTaskInfo.module.scss'
 
-function SmallTaskInfo({ className, task = {}, originalTask = {}, ...params }) {
+function SmallTaskInfo({
+  className,
+  onStartTaskHandler = () => {},
+  task = {},
+  originalTask = {},
+  ...params
+}) {
   return (
     <ContentContainer
       {...params}
@@ -20,7 +26,10 @@ function SmallTaskInfo({ className, task = {}, originalTask = {}, ...params }) {
       <header className={styles.smallTaskInfo__header}>
         <div className={styles.smallTaskInfo__labelContainer}>
           <TaskSVG />
-          <Link to="task" className={styles.smallTaskInfo__labelLink}>
+          <Link
+            to={'task/' + task.id.toString()}
+            className={styles.smallTaskInfo__labelLink}
+          >
             <h6 className={styles.smallTaskInfo__labelText}>
               Проверочная работа по теме "{originalTask.name}"
             </h6>
@@ -92,7 +101,10 @@ function SmallTaskInfo({ className, task = {}, originalTask = {}, ...params }) {
           </TextFocus>
         </div>
         <div className={styles.smallTaskInfo__buttons}>
-          <Link to="task" className={styles.smallTaskInfo__moreButtonLink}>
+          <Link
+            to={'task/' + task.id.toString()}
+            className={styles.smallTaskInfo__moreButtonLink}
+          >
             <Button
               title="Подробнее"
               className={styles.smallTaskInfo__button}
@@ -103,6 +115,7 @@ function SmallTaskInfo({ className, task = {}, originalTask = {}, ...params }) {
             <PrimaryButton
               title="Перейти к выполнению"
               className={styles.smallTaskInfo__button}
+              onClick={onStartTaskHandler}
             />
           )}
         </div>
