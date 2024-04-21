@@ -1,5 +1,9 @@
+import { useEffect } from 'react'
+
 function TaskPerform({ setPageName }) {
-  setPageName('Выполнение задания')
+  useEffect(() => {
+    setPageName('Выполнение задания')
+  }, [])
 
   return <div>TaskPerform</div>
 }
