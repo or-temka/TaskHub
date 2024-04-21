@@ -4,6 +4,7 @@ import PopUpContainer from './wrappers/PopUpContainer'
 function PopUp({
   children,
   headerText = '',
+  onClickBack = () => {},
   className,
   headerClassName,
   headerTextClassName,
@@ -11,7 +12,11 @@ function PopUp({
   ...params
 }) {
   return (
-    <PopUpContainer {...params} className={[styles.popUp, className].join(' ')}>
+    <PopUpContainer
+      {...params}
+      className={[styles.popUp, className].join(' ')}
+      onClickBack={onClickBack}
+    >
       {headerText && (
         <>
           <header

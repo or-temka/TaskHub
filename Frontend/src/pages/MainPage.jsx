@@ -1,9 +1,12 @@
+import { useEffect } from 'react'
 import SpinLoader from '../components/UI/Loaders/SpinLoader'
 
 import styles from './MainPage.module.scss'
 
 function MainPage({ setPageName }) {
-  setPageName('')
+  useEffect(() => {
+    setPageName('')
+  }, [])
 
   return (
     <div className={styles.mainPage}>

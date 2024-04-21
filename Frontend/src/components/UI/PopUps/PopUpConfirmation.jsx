@@ -12,6 +12,7 @@ function PopUpConfirmation({
   confirmBtnText = 'Подтвердить',
   cancelBtnText = 'Отмена',
   onConfirm = () => {},
+  onClickBack = () => {},
   onCancel,
   className,
   labelClassName,
@@ -38,6 +39,7 @@ function PopUpConfirmation({
       contentClassName={[styles.popUpConfirmation, contentClassName].join(' ')}
       headerText={headerLabelText}
       onCancel={onCancel}
+      onClickBack={onClickBack}
     >
       <div className={styles.popUpConfirmation__contentContainer}>
         <div className={styles.popUpConfirmation__textContent}>
@@ -57,12 +59,12 @@ function PopUpConfirmation({
         <div className={styles.popUpConfirmation__buttons}>
           <PrimaryButton
             title={confirmBtnText}
-            buttonClassName={confirmButtonClassName}
+            className={confirmButtonClassName}
             onClick={onConfirm}
           />
           <Button
             title={cancelBtnText}
-            buttonClassName={cancelButtonClassName}
+            className={cancelButtonClassName}
             onClick={onCancel}
           />
         </div>
