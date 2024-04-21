@@ -41,11 +41,11 @@ function App() {
           <Route path="student" element={<StudentLayout pageName={pageName} />}>
             <Route index element={<Tasks setPageName={setPageName} />}></Route>
             <Route
-              path="task"
+              path="task/:taskId"
               element={<Task setPageName={setPageName} />}
             ></Route>
             <Route
-              path="taskPerform"
+              path="taskPerform/:taskId"
               element={<TaskPerform setPageName={setPageName} />}
             ></Route>
           </Route>
