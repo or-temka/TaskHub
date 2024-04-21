@@ -1,7 +1,9 @@
-import styles from './Header.module.scss'
+import { Link, useLocation } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
 
 import users from '../../data/users'
-import { Link, useLocation } from 'react-router-dom'
+
+import styles from './Header.module.scss'
 
 function Header({
   pageName = '',
@@ -28,7 +30,10 @@ function Header({
       </div>
       <div className={styles.header__menu}>
         <div className={styles.header__menuButtons}>
-          {menuButtons && menuButtons.map((button) => button)}
+          {menuButtons &&
+            menuButtons.map((button) => {
+              return <div key={uuidv4()}>{button}</div>
+            })}
         </div>
         {profileId && (
           <div className={styles.header__profile}>
