@@ -1,5 +1,7 @@
 function Groups({ setPageName }) {
-  setPageName('Группы')
+  useEffect(() => {
+    setPageName('Группы')
+  }, [])
 
   return <div>Groups</div>
 }

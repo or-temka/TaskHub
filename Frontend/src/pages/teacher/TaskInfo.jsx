@@ -1,5 +1,7 @@
 function TaskInfo({ setPageName }) {
-  setPageName('Задание')
+  useEffect(() => {
+    setPageName('Задание')
+  }, [])
 
   return <div>TaskInfo</div>
 }
