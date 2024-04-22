@@ -1,0 +1,92 @@
+.userProfile {
+  width: 100%;
+  max-width: 1077px;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__mainInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  &__photoContainer {
+  }
+
+  &__photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 30px;
+    object-fit: cover;
+  }
+
+  &__name {
+  }
+
+  &__textInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__infoLine {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  &__infoTitle {
+    color: var(--light-text-color);
+  }
+
+  &__infoValue {
+  }
+
+  &__actions {
+  }
+
+  &__statistics {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .userProfile {
+    &__mainInfo {
+      flex-direction: column;
+    }
+
+    &__photo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .userProfile {
+    &__content {
+      padding: 0;
+    }
+
+    &__info {
+      flex-direction: column;
+    }
+  }
+}

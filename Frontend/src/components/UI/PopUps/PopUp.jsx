@@ -5,6 +5,7 @@ function PopUp({
   children,
   headerText = '',
   onClickBack = () => {},
+  onCancel = () => {},
   className,
   headerClassName,
   headerTextClassName,
@@ -16,6 +17,7 @@ function PopUp({
       {...params}
       className={[styles.popUp, className].join(' ')}
       onClickBack={onClickBack}
+      onCancel={onCancel}
     >
       {headerText && (
         <>

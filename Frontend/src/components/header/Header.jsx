@@ -1,16 +1,14 @@
 import { Link, useLocation } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
-import users from '../../data/users'
-
 import styles from './Header.module.scss'
 
 function Header({
   pageName = '',
-  profileId, // <Number>
   menuButtons, // <Array of <>>
+  onClickProfileButton = () => {},
+  user,
 }) {
-  const user = users.find((user) => user.id === profileId)
   const nowPageLocation = useLocation().pathname
 
   return (
@@ -35,8 +33,11 @@ function Header({
               return <div key={uuidv4()}>{button}</div>
             })}
         </div>
-        {profileId && (
-          <div className={styles.header__profile}>
+        {user && (
+          <div
+            className={styles.header__profile}
+            onClick={onClickProfileButton}
+          >
             <img
               src={require('../../assets/images/noProfilePhoto.jpg')}
               alt={user.name}
