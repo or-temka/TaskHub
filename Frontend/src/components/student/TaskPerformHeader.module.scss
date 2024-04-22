@@ -1,0 +1,36 @@
+.taskPerformHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__info {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  &__infoField {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    flex-wrap: wrap;
+    padding: 10px 25px;
+  }
+
+  &__infoLabel {
+    color: var(--light-text-color);
+  }
+
+  &__attemptCount {
+    color: var(--link-blue-color);
+    &_error {
+      color: var(--error-color);
+    }
+  }
+
+  &__warningMsg {
+    padding: 10px 25px;
+    color: var(--on-warning-text-color);
+  }
+}
