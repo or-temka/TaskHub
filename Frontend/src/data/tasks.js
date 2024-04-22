@@ -57,6 +57,18 @@ export const tasks = [
     practiceQuestions: [
       {
         id: 1,
+        text: 'Какой-то классный текст для такой классной задачки',
+        answers: [123, 124, 125],
+        imagesSrc: ['zadasha.jpg'],
+        unit: 'Кг.',
+        beforeAnswerText: 'Вес равен',
+      },
+      {
+        id: 2,
+        text: 'Уже вторая задача с более интересным текстом',
+        answersSrc: [33, 44, 55],
+        images: [],
+        unit: 'н.',
       },
     ],
     statistic: {

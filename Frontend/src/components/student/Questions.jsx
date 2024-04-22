@@ -18,11 +18,10 @@ function Questions({ questions, className, ...params }) {
   }
 
   return (
-    <div className={[styles.questions, className].join(' ')}>
+    <div {...params} className={[styles.questions, className].join(' ')}>
       {questions.map((question) => (
         <ContentContainer
           key={question.id}
-          {...params}
           className={styles.questions__container}
         >
           <span className="text">{question.questionText}</span>
