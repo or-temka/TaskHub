@@ -1,4 +1,4 @@
-import buttonStyle from './Button.module.css'
+import buttonStyle from './Button.module.scss'
 
 import styles from './DangerButtonWithIcon.module.scss'
 
