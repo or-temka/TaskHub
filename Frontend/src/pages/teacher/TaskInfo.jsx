@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 function TaskInfo({ setPageName }) {
   useEffect(() => {
     setPageName('Задание')

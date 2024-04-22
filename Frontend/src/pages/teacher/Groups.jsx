@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 function Groups({ setPageName }) {
   useEffect(() => {
     setPageName('Группы')

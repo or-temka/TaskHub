@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import ContentHeader from '../components/frames/ContentHeader'
 import ContentContainer from '../components/frames/ContentContainer'

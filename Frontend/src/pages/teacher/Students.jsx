@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 function Students({ setPageName }) {
   useEffect(() => {
     setPageName('Студенты')
