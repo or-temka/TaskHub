@@ -1,0 +1,52 @@
+@import '../../mixins.scss';
+
+.practiceQuestions {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__taskHint {
+    @include text;
+    color: var(--light-text-color);
+  }
+
+  &__taskText {
+    @include text;
+  }
+
+  &__image {
+  }
+
+  &__answer {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    row-gap: 5px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &__answerBeforeText {
+    @include text;
+  }
+
+  &__answerInput {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  &__answerUnit {
+    @include text;
+  }
+
+  &__answerHint {
+    @include text;
+    color: var(--light-text-color);
+  }
+}
