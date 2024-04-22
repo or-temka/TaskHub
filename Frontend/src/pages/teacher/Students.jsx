@@ -1,5 +1,9 @@
+import { useEffect } from 'react'
+
 function Students({ setPageName }) {
-  setPageName('Студенты')
+  useEffect(() => {
+    setPageName('Студенты')
+  }, [])
 
   return <div>Students</div>
 }

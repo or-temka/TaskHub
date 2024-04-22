@@ -1,0 +1,39 @@
+.tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  &__task {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__labelContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+    & svg {
+      min-width: 18px;
+    }
+  }
+
+  &__labelLink {
+  }
+
+  &__label {
+    &:hover {
+      color: var(--active-color);
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    height: 40px;
+  }
+}

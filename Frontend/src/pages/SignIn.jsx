@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import ContentHeader from '../components/frames/ContentHeader'
 import ContentContainer from '../components/frames/ContentContainer'
@@ -10,7 +10,9 @@ import styles from './SignIn.module.scss'
 const PAGE_NAME = 'Вход в аккаунт'
 
 function SignIn({ setPageName }) {
-  setPageName(PAGE_NAME)
+  useEffect(() => {
+    setPageName(PAGE_NAME)
+  }, [])
 
   const [loginInputVal, setLoginInputVal] = useState('')
   const [passwordInputVal, setPasswordInputVal] = useState('')

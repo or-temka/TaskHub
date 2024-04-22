@@ -1,14 +1,14 @@
-import { Link } from 'react-router-dom'
 import ContentContainer from '../frames/ContentContainer'
 import ColorTextMsg from '../UI/Texts/ColorTextMsg'
 import Button from '../UI/Buttons/Button'
 import PrimaryButton from '../UI/Buttons/PrimaryButton'
 import TextFocus from '../UI/Texts/TextFocus'
 import { ReactComponent as TaskSVG } from '../../assets/svg/tasks.svg'
+import File from '../UI/Files/File'
+
+import getTimeExecuteInfo from '../../utils/getTimeExecuteInfo'
 
 import styles from './TaskInfo.module.scss'
-import File from '../UI/Files/File'
-import getTimeExecuteInfo from '../../utils/getTimeExecuteInfo'
 
 function TaskInfo({
   task,
