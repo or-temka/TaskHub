@@ -25,3 +25,16 @@
     right: -30px;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .popUpSkeleton {
+    &__content {
+      padding: 20px;
+    }
+
+    &__closeButton {
+      top: 0px;
+      right: 0px;
+    }
+  }
+}
