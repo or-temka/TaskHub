@@ -11,6 +11,7 @@
     padding: 4px 8px;
     background-color: var(--main-2-color);
     color: var(--on-color-text-color);
+    transition: 0.2s background-color;
 
     &_notActive {
       background-color: var(--border-color);

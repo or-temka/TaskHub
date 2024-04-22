@@ -2,7 +2,7 @@ export const tasks = [
   {
     id: 1,
     name: 'Поиск интегралов',
-    timeForExecute: '650',
+    timeForExecute: '350',
     instruction:
       'Пойти налево, а затем пойти направо, но уже намного быстрее, чем до этого',
     filesId: [1],
