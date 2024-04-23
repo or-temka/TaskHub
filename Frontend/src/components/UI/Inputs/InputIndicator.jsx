@@ -36,7 +36,9 @@ function InputIndicator({
   }, [nowIndicatorNum])
 
   const changeIndicatorHandler = () => {
-    onClickIndicator()
+    onClickIndicator(
+      indicators[nowIndicatorNum === lastIndicatorNum ? 0 : nowIndicatorNum + 1]
+    )
     if (nowIndicatorNum === lastIndicatorNum) {
       return setNowIndicatorNum(0)
     }
