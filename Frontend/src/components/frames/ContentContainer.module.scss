@@ -2,11 +2,17 @@
   border: 1px solid var(--border-color);
   border-radius: 5px;
   background-color: var(--background-color);
+  overflow: hidden;
 
   &__content {
     padding: 15px 20px;
     display: flex;
     flex-direction: column;
+  }
+
+  &__header {
+    background-color: var(--background-focus-2-color);
+    padding: 15px 20px;
   }
 
   &__headBorder {

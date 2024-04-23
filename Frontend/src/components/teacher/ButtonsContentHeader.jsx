@@ -4,7 +4,7 @@ import styles from './ButtonsContentHeader.module.scss'
 
 function ButtonsContentHeader({
   children,
-  onClickAddViaFile = () => {},
+  onClickAddViaStrings = () => {},
   onClickAddGroup = () => {},
   onClickAddStudent = () => {},
   className,
@@ -18,8 +18,8 @@ function ButtonsContentHeader({
       <div className={styles.buttonsContentHeader__content}>{children}</div>
       <div className={styles.buttonsContentHeader__buttons}>
         <Button
-          title="+ Добавить группу студентов из файла"
-          onClick={onClickAddViaFile}
+          title="+ Добавить группу студентов"
+          onClick={onClickAddViaStrings}
         />
         <Button title="+ Добавить группу" onClick={onClickAddGroup} />
         <Button title="+ Добавить студента" onClick={onClickAddStudent} />
