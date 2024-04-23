@@ -13,6 +13,7 @@
     width: 100%;
     height: 100%;
     background-color: var(--transparent-background-color);
+    animation: appearence 0.2s;
   }
 
   &__content {
@@ -23,6 +24,15 @@
     position: absolute;
     top: -30px;
     right: -30px;
+  }
+}
+
+@keyframes appearence {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 
