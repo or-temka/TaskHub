@@ -1,0 +1,49 @@
+@import '../../../mixins.scss';
+
+.addStudents {
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__inputLine {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  &__inputLabel {
+    margin-left: 10px;
+    color: var(--light-text-color);
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+}
+
+.confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__text {
+    @include text;
+    margin-left: 10px;
+  }
+
+  &__frame {
+    min-width: 500px;
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+}
