@@ -12,6 +12,7 @@ function FilterSkeleton({
     <ContentContainer
       {...params}
       className={[styles.filterSkeleton, className].join(' ')}
+      wrapperClassName={styles.filterSkeleton__wrapper}
     >
       <span className="text-bold">Фильтры</span>
       <span
