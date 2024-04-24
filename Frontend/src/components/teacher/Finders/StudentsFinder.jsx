@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react'
-
 import FinderSkeleton from './FinderSkeleton'
 import TextButtonSorter from '../../UI/Buttons/TextButtonSorter'
 import StudentsTable from '../Tables/StudentsTable'
@@ -14,7 +12,6 @@ function StudentsFinder({
   setSorter = () => {},
   setSearchInput = () => {},
 }) {
-
   const textButtonsSorters = [
     <TextButtonSorter
       text="Алфавиту"

@@ -15,7 +15,7 @@ const groups = [
     id: 3,
     name: 'ЭИС-14',
     cource: 1,
-    studentsId: [],
+    studentsId: [2, 3, 4, 5, 6],
   },
   {
     id: 4,

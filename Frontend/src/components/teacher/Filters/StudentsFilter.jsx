@@ -65,6 +65,7 @@ function StudentsFilter({
           />
         ))}
       </FrameContentWithLabel>
+      <span className={styles.filter__label}>Средний балл:</span>
       <InputIndicator
         placeholder="Балл"
         value={score.value}
