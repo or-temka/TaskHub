@@ -16,6 +16,10 @@
   &__tbody {
     display: block;
     width: 100%;
+
+    & tr {
+      cursor: pointer;
+    }
   }
 
   //tr
@@ -23,6 +27,12 @@
     display: flex;
     width: 100%;
     border-bottom: 1px solid var(--border-color);
+
+    &:hover {
+      & td {
+        background-color: var(--background-focus-2-color);
+      }
+    }
   }
   tbody tr:last-child {
     border-bottom: none;
@@ -43,6 +53,7 @@
   }
   &__td {
     background-color: var(--background-focus-color);
+    overflow-x: auto;
   }
   th:last-child,
   td:last-child {
