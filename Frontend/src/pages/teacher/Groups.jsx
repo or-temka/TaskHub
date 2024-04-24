@@ -7,11 +7,19 @@ import Button from '../../components/UI/Buttons/Button'
 import AddStudent from '../../components/teacher/PopUps/AddStudent'
 import AddGroup from '../../components/teacher/PopUps/AddGroup'
 import AddStudentsViaStrings from '../../components/teacher/PopUps/AddStudentsViaStrings'
+import GroupsContent from '../../components/teacher/GroupsContent'
+import Group from '../../components/teacher/PopUps/Group'
+
+import groups from '../../data/groups'
+import users from '../../data/users'
 
 import styles from './Groups.module.scss'
 
 function Groups({ setPageName }) {
   const navigate = useNavigate()
+
+  const [showGroupPopUp, setShowGroupPopUp] = useState(false)
+  const [enteredGroupIdForPopUp, setEnteredGroupIdForPopUp] = useState()
 
   const [showAddStudent, setShowAddStudent] = useState(false)
   const [showAddGroup, setShowAddGroup] = useState(false)
@@ -21,6 +29,11 @@ function Groups({ setPageName }) {
   useEffect(() => {
     setPageName('Группы')
   }, [])
+
+  // Выбранная группа по нажатию в таблицу
+  const enteredGroup = groups.find(
+    (group) => group.id === enteredGroupIdForPopUp
+  )
 
   return (
     <>
@@ -44,10 +57,28 @@ function Groups({ setPageName }) {
         </ContentHeader>
 
         {/* CONTENT */}
-        <main className={styles.groups__main}></main>
+        <main className={styles.groups__main}>
+          <GroupsContent
+            groups={groups}
+            users={users}
+            onClickTr={(id) => {
+              setEnteredGroupIdForPopUp(id)
+              setShowGroupPopUp(true)
+            }}
+          />
+        </main>
       </div>
 
-      {/* PopUp`s */}
+      {/* PopUp`s for this page */}
+      {showGroupPopUp && (
+        <Group
+          onCancel={() => setShowGroupPopUp(false)}
+          group={enteredGroup}
+          users={users}
+        />
+      )}
+
+      {/* PopUp`s for header*/}
       {showAddStudent && (
         <AddStudent
           onAddStudent={() => setShowAddStudent(false)}
