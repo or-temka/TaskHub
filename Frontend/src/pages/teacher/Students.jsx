@@ -13,6 +13,7 @@ import groups from '../../data/groups'
 import users from '../../data/users'
 
 import styles from './Students.module.scss'
+import Student from '../../components/teacher/PopUps/Student'
 
 function Students({ setPageName }) {
   const navigate = useNavigate()
@@ -21,6 +22,29 @@ function Students({ setPageName }) {
   const [showAddGroup, setShowAddGroup] = useState(false)
   const [showAddStudentsViaStrings, setShowAddStudentsViaStrings] =
     useState(false)
+  const [showStudentPopUp, setShowStudentPopUp] = useState(false)
+
+  // Группы и функции для их установки
+  const [user, setUser] = useState({})
+  const [group, setGroup] = useState({})
+
+  const setUserHandler = (userId) => {
+    const user = users.find((user) => user.id === userId)
+    setUser(user)
+  }
+  const setGroupHandler = (groupId) => {
+    const group = groups.find((group) => group.id === groupId)
+    setGroup(group)
+  }
+
+  const openUserPopUpHandler = (userId) => {
+    const user = users.find((user) => user.id === userId)
+    const group = groups.find((group) => group.id === user.groupId)
+
+    setUser(user)
+    setGroup(group)
+    setShowStudentPopUp(true)
+  }
 
   useEffect(() => {
     setPageName('Студенты')
@@ -49,9 +73,23 @@ function Students({ setPageName }) {
 
         {/* CONTENT */}
         <main className={styles.students__main}>
-          <StudentsContent groups={groups} users={users} />
+          <StudentsContent
+            groups={groups}
+            users={users}
+            onClickTr={(userId) => openUserPopUpHandler(userId)}
+          />
         </main>
       </div>
+
+      {/* PopUp`s for this page */}
+      {showStudentPopUp && (
+        <Student
+          user={user}
+          group={group}
+          groups={groups}
+          onCancel={() => setShowStudentPopUp(false)}
+        />
+      )}
 
       {/* PopUp`s */}
       {showAddStudent && (
