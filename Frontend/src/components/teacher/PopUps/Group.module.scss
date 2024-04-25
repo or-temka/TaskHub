@@ -1,0 +1,138 @@
+@import '../../../mixins.scss';
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__wrapper {
+    min-width: 900px;
+  }
+
+  //main
+  &__main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__name {
+  }
+
+  &__ads {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+  }
+
+  &__infoLine {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+  }
+
+  &__infoLabel {
+    @include text;
+    color: var(--light-text-color);
+  }
+
+  &__infoValue {
+    @include text;
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  //studentsContainer
+  &__studentsContainer {
+  }
+
+  &__studentsWrapper {
+    min-width: none;
+    max-width: none;
+    border: none;
+    background-color: transparent;
+    height: 250px;
+  }
+
+  &__students {
+    gap: 10px;
+    margin: 0;
+    height: 100%;
+  }
+
+  &__student {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border: 1px solid var(--border-color);
+    margin-right: 10px;
+    border-radius: 3px;
+    background-color: var(--background-focus-color);
+  }
+
+  &__studentName {
+    @include text;
+  }
+
+  &__delStudentButton {
+    @include text;
+    color: var(--light-text-color);
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.editGroup {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+  width: 500px;
+
+  &__popUp {
+    background-color: var(--background-color)
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: space-between;
+  }
+
+  &__inputLine {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  &__inputLabel {
+    @include text;
+    color: var(--light-text-color);
+    margin-left: 10px;
+  }
+
+  &__input {
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+}

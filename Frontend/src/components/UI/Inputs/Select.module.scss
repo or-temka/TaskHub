@@ -1,0 +1,23 @@
+.select {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  &__select {
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    padding: 5px 10px;
+
+    &_error {
+      border: 1px solid var(--error-color);
+    }
+  }
+
+  &__option {
+  }
+
+  &__errorText {
+    margin-left: 10px;
+    color: var(--error-color);
+  }
+}

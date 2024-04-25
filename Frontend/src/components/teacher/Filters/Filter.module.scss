@@ -1,0 +1,17 @@
+.filter {
+  &__frameContent {
+    max-width: none;
+  }
+
+  &__frameContentContent {
+    gap: 5px;
+  }
+
+  &__inputIndicator {
+    width: 100%;
+  }
+
+  &__label {
+    color: var(--light-text-color);
+  }
+}

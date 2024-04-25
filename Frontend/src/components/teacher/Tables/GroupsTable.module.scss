@@ -1,0 +1,21 @@
+.groupsTable {
+  &__tableTr {
+    & th,
+    td {
+      flex: 3;
+    }
+
+    & th:nth-child(1),
+    td:nth-child(1) {
+      flex: 6;
+    }
+    & th:nth-child(3),
+    td:nth-child(3) {
+      flex: 1;
+    }
+    & th:nth-child(4),
+    td:nth-child(4) {
+      flex: 1;
+    }
+  }
+}

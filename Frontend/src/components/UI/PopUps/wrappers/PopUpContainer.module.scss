@@ -4,4 +4,14 @@
   max-width: 540px;
   border: 1px solid var(--border-color);
   background-color: var(--background-focus-color);
+  animation: appearance 0.1s ease-out;
+}
+
+@keyframes appearance {
+  0% {
+    transform: scale(0.5);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

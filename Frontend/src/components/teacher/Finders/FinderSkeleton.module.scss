@@ -1,0 +1,48 @@
+@import '../../../mixins.scss';
+
+.finderSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__wrapper {
+    width: 100%;
+  }
+
+  &__search {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 5px;
+  }
+
+  &__searchLabel {
+    @include text;
+    color: var(--light-text-color);
+  }
+
+  &__searchInput {
+  }
+
+  &__sort {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 15px;
+    row-gap: 5px;
+  }
+
+  &__sortLabel {
+    @include paragraphUnderline;
+    color: var(--light-text-color);
+  }
+
+  &__sortButtonContainer {
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+  }
+}

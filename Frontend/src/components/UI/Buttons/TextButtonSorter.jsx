@@ -21,8 +21,10 @@ function TextButtonSorter({
   }, [status])
 
   const changeSortValueHandler = () => {
-    onClick()
-    setStatus(status === 'passive' ? 'up' : status === 'up' ? 'down' : 'up')
+    const newStatus =
+      status === 'passive' ? 'up' : status === 'up' ? 'down' : 'up'
+    setStatus(newStatus)
+    onClick(newStatus)
   }
 
   return (

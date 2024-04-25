@@ -3,12 +3,16 @@ import styles from './ContentContainer.module.scss'
 function ContentContainer({
   children,
   headBorderColor,
+  headerText,
   className,
   wrapperClassName,
 }) {
   if (!headBorderColor) {
     return (
       <div className={[styles.contentContainer, wrapperClassName].join(' ')}>
+        {headerText && (
+          <div className={styles.contentContainer__header}>{headerText}</div>
+        )}
         <div
           className={[styles.contentContainer__content, className].join(' ')}
         >

@@ -1,0 +1,25 @@
+.filterSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 300px;
+
+  &__wrapper {
+    height: fit-content;
+  }
+
+  &__clearFiltersButton {
+    color: var(--link-blue-color);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

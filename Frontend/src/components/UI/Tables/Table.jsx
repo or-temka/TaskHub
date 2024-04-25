@@ -9,6 +9,7 @@ function Table({
   trClassName,
   thClassName,
   tdClassName,
+  onClickTr = () => {},
   ...params
 }) {
   return (
@@ -30,8 +31,9 @@ function Table({
           <tr
             className={[styles.table__tr, trClassName].join(' ')}
             key={uuidv4()}
+            onClick={() => onClickTr(tr.value)}
           >
-            {tr.map((td) => (
+            {tr.tds.map((td) => (
               <td
                 className={[styles.table__td, tdClassName].join(' ')}
                 key={uuidv4()}

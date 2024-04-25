@@ -1,0 +1,16 @@
+.students {
+  &__contentHeader {
+    gap: 20px;
+  }
+
+  &__contentHeaderContent {
+    width: 100%;
+  }
+
+  // main
+  &__main {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+}

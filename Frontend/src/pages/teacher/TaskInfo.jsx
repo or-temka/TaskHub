@@ -23,7 +23,7 @@ function TaskInfo({ setPageName }) {
 
   return (
     <div className={['wrapper', styles.taskInfo].join(' ')}>
-      <ContentHeader title={`Задание "${task.name}"`}></ContentHeader>
+      <ContentHeader title={`Задание "${task.name}"`} />
 
       <TaskInfoComponent task={task} taskFiles={taskFiles} />
 

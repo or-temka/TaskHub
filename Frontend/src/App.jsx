@@ -63,7 +63,7 @@ function App() {
               element={<TeacherTasks setPageName={setPageName} />}
             ></Route>
             <Route
-              path="task"
+              path="task/:taskId"
               element={<TaskInfo setPageName={setPageName} />}
             ></Route>
           </Route>

@@ -1,0 +1,38 @@
+@import '../../../mixins.scss';
+
+.addGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 450px;
+  background-color: var(--background-color);
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  &__inputLine {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  &__inputLabel {
+    @include text;
+    color: var(--light-text-color);
+    margin-left: 10px;
+  }
+
+  &__input {
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+  }
+}
