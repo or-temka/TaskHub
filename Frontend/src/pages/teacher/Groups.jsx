@@ -10,7 +10,7 @@ import AddStudentsViaStrings from '../../components/teacher/PopUps/AddStudentsVi
 import GroupsContent from '../../components/teacher/GroupsContent'
 import Group from '../../components/teacher/PopUps/Group'
 
-import groups from '../../data/groups'
+import groupsData from '../../data/groups'
 import users from '../../data/users'
 
 import styles from './Groups.module.scss'
@@ -18,22 +18,43 @@ import styles from './Groups.module.scss'
 function Groups({ setPageName }) {
   const navigate = useNavigate()
 
-  const [showGroupPopUp, setShowGroupPopUp] = useState(false)
-  const [enteredGroupIdForPopUp, setEnteredGroupIdForPopUp] = useState()
+  const [groups, setGroups] = useState(groupsData)
 
+  const [showGroupPopUp, setShowGroupPopUp] = useState(false)
   const [showAddStudent, setShowAddStudent] = useState(false)
   const [showAddGroup, setShowAddGroup] = useState(false)
   const [showAddStudentsViaStrings, setShowAddStudentsViaStrings] =
     useState(false)
 
+  // Выбранная группа в PopUp просмотре группы
+  const [enteredGroup, setEnteredGroup] = useState()
+  const setEnteredGroupHandler = (id) => {
+    const enteredG = groups.find((group) => group.id === id)
+    setEnteredGroup(enteredG)
+  }
+
+  // Удаление пользователя из группы на клиенте
+  const delUserFromGroup = (groupId, userId) => {
+    const newGroup = groups.find((group) => group.id === groupId)
+    const userInGroup = newGroup.studentsId.find(
+      (studentId) => studentId === userId
+    )
+    if (!userInGroup) return
+    const userIndexInGroup = newGroup.studentsId.indexOf(userInGroup)
+
+    newGroup.studentsId.splice(userIndexInGroup, 1)
+    const newGroups = [...groups]
+    newGroups.forEach((group) => {
+      if (group.id === groupId) {
+        group = newGroup
+      }
+    })
+    setGroups(newGroups)
+  }
+
   useEffect(() => {
     setPageName('Группы')
   }, [])
-
-  // Выбранная группа по нажатию в таблицу
-  const enteredGroup = groups.find(
-    (group) => group.id === enteredGroupIdForPopUp
-  )
 
   return (
     <>
@@ -62,7 +83,7 @@ function Groups({ setPageName }) {
             groups={groups}
             users={users}
             onClickTr={(id) => {
-              setEnteredGroupIdForPopUp(id)
+              setEnteredGroupHandler(id)
               setShowGroupPopUp(true)
             }}
           />
@@ -75,6 +96,7 @@ function Groups({ setPageName }) {
           onCancel={() => setShowGroupPopUp(false)}
           group={enteredGroup}
           users={users}
+          delUserHandler={delUserFromGroup}
         />
       )}
 
