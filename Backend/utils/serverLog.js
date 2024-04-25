@@ -7,3 +7,7 @@ export const serverLog = (text) => {
 export const serverError = (text) => {
   console.log(chalk.red('[server error]') + ' ' + text)
 }
+
+export const serverMsg = (text) => {
+  console.log(chalk.grey('[server msg] ' + text))
+}

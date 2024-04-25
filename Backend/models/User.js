@@ -6,6 +6,11 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      required: true,
+      default: 'student',
+    },
     login: {
       type: String,
       required: true,
@@ -24,8 +29,13 @@ const UserSchema = new mongoose.Schema(
       default: [],
     },
     statistics: {
-      type: Array,
-      default: [],
+      type: Object,
+      default: {
+        complitedTasks: 0,
+        avarageMark: 0,
+        avarageTaskTime: 0,
+        avarageQuestionTime: 0,
+      },
     },
   },
   {
