@@ -3,7 +3,13 @@ import StudentsFilter from './Filters/StudentsFilter'
 import StudentsFinder from './Finders/StudentsFinder'
 import styles from './StudentsContent.module.scss'
 
-function StudentsContent({ users, groups, className, ...params }) {
+function StudentsContent({
+  users,
+  groups,
+  className,
+  onClickTr = () => {},
+  ...params
+}) {
   const [checkedGroups, setCheckedGroups] = useState(new Set())
   const [score, setScore] = useState({ indicator: 'up', value: '' })
   const [sorter, setSorter] = useState({})
@@ -44,6 +50,7 @@ function StudentsContent({ users, groups, className, ...params }) {
           searchInput={searchInput}
           setSorter={setSorter}
           setSearchInput={setSearchInput}
+          onClickTr={onClickTr}
         />
       </div>
     </>

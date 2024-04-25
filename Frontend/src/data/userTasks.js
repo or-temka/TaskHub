@@ -12,10 +12,12 @@ export const userTasks = [
       avarageQuestionTime: 15,
       trueAnswersCount: 4,
     },
+    questions: [{ qustionId: 1, answerId: 2 }],
+    practiceQuestions: [{ qustionId: 1, answer: 'Привет' }],
   },
   {
     id: 2,
-    originalTaskId: 1,
+    originalTaskId: 2,
     newTask: true,
     dateCreate: '10 марта в 10:55',
     attemptsCount: 3,

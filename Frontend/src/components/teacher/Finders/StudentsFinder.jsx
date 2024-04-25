@@ -11,6 +11,7 @@ function StudentsFinder({
   searchInput,
   setSorter = () => {},
   setSearchInput = () => {},
+  onClickTr = () => {},
 }) {
   const textButtonsSorters = [
     <TextButtonSorter
@@ -53,6 +54,7 @@ function StudentsFinder({
         sorter={sorter}
         checkedGroups={checkedGroups}
         score={score}
+        onClickTr={onClickTr}
       />
     </FinderSkeleton>
   )
