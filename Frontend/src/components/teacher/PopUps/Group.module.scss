@@ -95,3 +95,44 @@
     }
   }
 }
+
+.editGroup {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+  width: 500px;
+
+  &__popUp {
+    background-color: var(--background-color)
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: space-between;
+  }
+
+  &__inputLine {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  &__inputLabel {
+    @include text;
+    color: var(--light-text-color);
+    margin-left: 10px;
+  }
+
+  &__input {
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+}

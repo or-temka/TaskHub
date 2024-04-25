@@ -9,17 +9,35 @@ import { ReactComponent as BinSVG } from '../../../assets/svg/bin.svg'
 import PopUpConfirmation from '../../UI/PopUps/PopUpConfirmation'
 
 import styles from './Group.module.scss'
+import PrimaryButton from '../../UI/Buttons/PrimaryButton'
+import Input from '../../UI/Inputs/Input'
 
-function Group({ group, users, onCancel = () => {}, className, ...params }) {
+function Group({
+  group,
+  users,
+  delUserHandler = () => {},
+  onCancel = () => {},
+  className,
+  ...params
+}) {
   const [showDelUserPopUpConfirm, setShowDelUserPopUpConfirm] = useState(false)
   const [showDelGroupPopUpConfirm, setShowDelGroupPopUpConfirm] =
     useState(false)
+  const [showEditGroupPopUp, setShowEditGroupPopUp] = useState(false)
+
+  const [editGroupValues, setEditGroupValues] = useState({
+    name: '',
+    cource: '',
+  })
 
   const usersGroup = users.filter((user) => group.studentsId.includes(user.id))
 
   const delUserFromGroupHandler = () => {
     const userId = showDelUserPopUpConfirm
     // TODO удаление пользователя из группы
+
+    // Удаление на клиенте
+    delUserHandler(group.id, userId)
     setShowDelUserPopUpConfirm(false)
   }
 
@@ -27,6 +45,16 @@ function Group({ group, users, onCancel = () => {}, className, ...params }) {
     const groupId = group.id
     // TODO удаление группы
     onCancel()
+  }
+
+  const openEditGroupHandler = () => {
+    setEditGroupValues({ name: group.name, cource: group.cource })
+    setShowEditGroupPopUp(true)
+  }
+
+  const editedGroupHandler = () => {
+    //TODO отправка новых данных об изменение на сервер
+    setShowEditGroupPopUp(false)
   }
 
   return (
@@ -60,7 +88,7 @@ function Group({ group, users, onCancel = () => {}, className, ...params }) {
               svgElem={<BinSVG />}
               onClick={() => setShowDelGroupPopUpConfirm(true)}
             />
-            <Button title="Редактировать" onClick={() => {}} />
+            <Button title="Редактировать" onClick={openEditGroupHandler} />
           </div>
         </ContentContainer>
         <ContentContainer
@@ -72,7 +100,7 @@ function Group({ group, users, onCancel = () => {}, className, ...params }) {
             contentClassName={styles.group__students}
           >
             {usersGroup.map((user) => (
-              <div className={styles.group__student}>
+              <div key={user.id} className={styles.group__student}>
                 <span className={styles.group__studentName}>{user.name}</span>
                 <span
                   className={styles.group__delStudentButton}
@@ -108,6 +136,58 @@ function Group({ group, users, onCancel = () => {}, className, ...params }) {
           text="Восстановить её не получится."
           onConfirm={delGroupHandler}
         />
+      )}
+      {showEditGroupPopUp && (
+        <PopUp
+          headerText="Редактирование группы"
+          className={styles.editGroup__popUp}
+          contentClassName={styles.editGroup}
+          onCancel={() => setShowEditGroupPopUp(false)}
+          onClickBack={() => setShowEditGroupPopUp(false)}
+        >
+          <div className={styles.editGroup__content}>
+            <div className={styles.editGroup__inputLine}>
+              <span className={styles.editGroup__inputLabel}>
+                Название группы:
+              </span>
+              <Input
+                className={styles.editGroup__input}
+                placeholder="Введите название группы"
+                value={editGroupValues.name}
+                onChange={(e) =>
+                  setEditGroupValues({
+                    ...editGroupValues,
+                    name: e.target.value,
+                  })
+                }
+              />
+            </div>
+            <div className={styles.editGroup__inputLine}>
+              <span className={styles.editGroup__inputLabel}>Курс:</span>
+              <Input
+                className={styles.editGroup__input}
+                placeholder="Введите курс"
+                value={editGroupValues.cource}
+                onChange={(e) =>
+                  setEditGroupValues({
+                    ...editGroupValues,
+                    cource: e.target.value,
+                  })
+                }
+              />
+            </div>
+          </div>
+          <div className={styles.editGroup__buttons}>
+            <PrimaryButton
+              title="Сохранить изменения"
+              onClick={editedGroupHandler}
+            />
+            <Button
+              title="Отмена"
+              onClick={() => setShowEditGroupPopUp(false)}
+            />
+          </div>
+        </PopUp>
       )}
     </>
   )
