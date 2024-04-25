@@ -52,3 +52,48 @@ export const reg = async (req, res) => {
       .json({ errorMsg: 'Произошла ошибка регистрации пользователя' })
   }
 }
+
+export const login = async (req, res) => {
+  try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors.array())
+    }
+
+    const user = await UserModel.findOne({ login: req.body.login })
+
+    if (!user) {
+      serverMsg(`Попытка входа: введен несуществующий логин ${req.body.login}`)
+      return res.status(404).json({
+        errorMsg: 'Неверный логин или пароль',
+      })
+    }
+
+    const isValidPass = await bcrypt.compare(
+      req.body.password,
+      user._doc.password
+    )
+
+    if (!isValidPass) {
+      serverMsg(
+        `Попытка входа: введен неверный пароль ${req.body.password} для аккаунта ${req.body.login}`
+      )
+      return res.status(404).json({
+        errorMsg: 'Неверный логин или пароль',
+      })
+    }
+
+    const token = jwt.sign(
+      {
+        _id: user._id,
+      },
+      TOKEN_KEY
+    )
+
+    serverLog(`Выполнен вход: ${req.body.login} вошел в аккаунт`)
+    res.json({ token: token })
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({ errorMsg: 'Произошла ошибка входа в аккаунт' })
+  }
+}
