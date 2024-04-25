@@ -9,9 +9,10 @@ function Select({
   onClick = () => {},
   onChange = () => {},
   containerClassName,
+  defaultValue = 'default',
   ...params
 }) {
-  const [selectedValue, setSelectedValue] = useState('default')
+  const [selectedValue, setSelectedValue] = useState(defaultValue)
 
   const onChangeHandler = (e) => {
     const value = e.target.value

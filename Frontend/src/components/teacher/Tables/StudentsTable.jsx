@@ -12,6 +12,7 @@ function StudentsTable({
   className,
   checkedGroups,
   score,
+  onClickTr = () => {},
   ...params
 }) {
   const tableThs = [
@@ -77,7 +78,7 @@ function StudentsTable({
 
   // Обработка нажатия на Tr с данными
   const onClickTrHandler = (value) => {
-    console.log(value)
+    onClickTr(value)
   }
 
   return (
