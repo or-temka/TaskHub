@@ -141,3 +141,33 @@ export const update = async (req, res) => {
     })
   }
 }
+
+export const deleteGroup = async (req, res) => {
+  try {
+    const groupId = req.params.id
+
+    GroupModel.findOneAndDelete({ _id: groupId })
+      .then((doc) => {
+        if (!doc) {
+          serverMsg(`Попытка удалить несуществующую группу с id ${groupId}`)
+          return res.status(404).json({
+            errorMsg: 'Группа не найдена',
+          })
+        }
+
+        serverLog(`Удалена группа: ${doc.name}`)
+        res.json({ deleted: true })
+      })
+      .catch((error) => {
+        serverError(error)
+        res.status(500).json({
+          errorMsg: 'Не удалось удалить группу',
+        })
+      })
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({
+      errorMsg: 'Ошибка удаления группы',
+    })
+  }
+}

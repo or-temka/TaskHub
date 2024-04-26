@@ -86,6 +86,7 @@ app.patch(
   GroupController.update
 )
 // Удаление группы
+app.delete('/group/:id', checkAuth, checkIsTeacher, GroupController.deleteGroup)
 //#endregion
 
 //#region Task
