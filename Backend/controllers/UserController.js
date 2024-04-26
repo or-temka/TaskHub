@@ -1,7 +1,6 @@
 import { TOKEN_KEY } from '../PASSWORDS.js'
 
 import { validationResult } from 'express-validator'
-import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 import { serverError, serverLog, serverMsg } from '../utils/serverLog.js'
@@ -14,16 +13,11 @@ export const reg = async (req, res) => {
       return res.status(400).json(errors.array())
     }
 
-    // hashing password
-    const password = req.body.password
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(password, salt)
-
     const doc = new UserModel({
       name: req.body.name,
       role: req.body.role,
       login: req.body.login,
-      password: hashedPassword,
+      password: req.body.password,
     })
 
     let user
@@ -70,12 +64,7 @@ export const login = async (req, res) => {
       })
     }
 
-    const isValidPass = await bcrypt.compare(
-      req.body.password,
-      user._doc.password
-    )
-
-    if (!isValidPass) {
+    if (req.body.password !== user._doc.password) {
       serverMsg(
         `Попытка входа: введен неверный пароль ${req.body.password} для аккаунта ${req.body.login}`
       )
@@ -127,7 +116,7 @@ export const getUserInfoMe = async (req, res) => {
 
 export const getUserInfo = async (req, res) => {
   try {
-    const user = await UserModel.findById(req.body.userId)
+    const user = await UserModel.findById(req.params.id)
 
     if (!user) {
       serverMsg(
