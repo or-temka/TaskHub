@@ -11,6 +11,7 @@ import checkAuth from './utils/checkAuth.js'
 import checkIsTeacher from './utils/checkIsTeacher.js'
 import * as UserController from './controllers/UserController.js'
 import * as GroupController from './controllers/GroupController.js'
+import * as TaskController from './controllers/TaskController.js'
 
 mongoose
   .connect(
@@ -90,7 +91,8 @@ app.delete('/group/:id', checkAuth, checkIsTeacher, GroupController.deleteGroup)
 //#endregion
 
 //#region Task
-// Получение данных о задание
+// Получение данных о задании
+app.get('/task/:id', checkAuth, checkIsTeacher, TaskController.getTask)
 // Получение данных о заданиях
 //#endregion
 
