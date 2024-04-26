@@ -50,6 +50,8 @@ app.patch(
   validation.updateUserValidation,
   UserController.updateUserInfo
 )
+// Удаление пользователя (себя)
+app.delete('/user', checkAuth, UserController.deleteMyUser)
 // Удаление пользователя
 //#endregion
 

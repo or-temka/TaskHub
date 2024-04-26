@@ -219,3 +219,33 @@ export const updateUserInfo = async (req, res) => {
       .json({ errorMsg: 'Произошла ошибка изменения данных пользователя' })
   }
 }
+
+export const deleteMyUser = async (req, res) => {
+  try {
+    const userId = req.userId
+
+    UserModel.findOneAndDelete({ _id: userId })
+      .then((doc) => {
+        if (!doc) {
+          serverMsg(
+            `Попытка удалить несуществующий профиль (себя) с id ${userId}`
+          )
+          return res.status(404).json({
+            errorMsg: 'Профиль не найден',
+          })
+        }
+
+        serverLog(`Удален пользователь (себя): ${doc.name}`)
+        res.json({ deleted: true })
+      })
+      .catch((error) => {
+        serverError(error)
+        res.status(500).json({
+          errorMsg: 'Не удалось удалить пользователя',
+        })
+      })
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({ errorMsg: 'Произошла ошибка удаления пользователя' })
+  }
+}
