@@ -39,6 +39,7 @@ export const reg = async (req, res) => {
     const token = jwt.sign(
       {
         _id: user._id,
+        role: user.role,
       },
       TOKEN_KEY
     )
@@ -86,6 +87,7 @@ export const login = async (req, res) => {
     const token = jwt.sign(
       {
         _id: user._id,
+        role: user.role,
       },
       TOKEN_KEY
     )
@@ -114,6 +116,31 @@ export const getUserInfoMe = async (req, res) => {
     const { password, ...userData } = user._doc
 
     serverMsg(`Получены данные о пользователе (о себе): ${userData.name}`)
+    res.json(userData)
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({
+      errorMsg: 'Ошибка получения данных о пользователе',
+    })
+  }
+}
+
+export const getUserInfo = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.body.userId)
+
+    if (!user) {
+      serverMsg(
+        `Попытка получения данных о пользователе: не найден пользователь с id ${req.body.userId}`
+      )
+      return res.status(404).json({
+        errorMsg: 'Пользователь не найден',
+      })
+    }
+
+    const { ...userData } = user._doc
+
+    serverMsg(`Получены данные о пользователе: ${userData.name}`)
     res.json(userData)
   } catch (error) {
     serverError(error)
