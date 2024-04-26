@@ -10,6 +10,7 @@ import * as validation from './validations.js'
 import checkAuth from './utils/checkAuth.js'
 import checkIsTeacher from './utils/checkIsTeacher.js'
 import * as UserController from './controllers/UserController.js'
+import * as GroupController from './controllers/GroupController.js'
 
 mongoose
   .connect(
@@ -58,6 +59,13 @@ app.delete('/user/:id', checkAuth, checkIsTeacher, UserController.deleteUser)
 
 //#region Group
 // Создание группы
+app.post(
+  '/group',
+  checkAuth,
+  checkIsTeacher,
+  validation.createGroupValidation,
+  GroupController.create
+)
 // Получение данных о группе
 // Получение данных о группах
 // Редактирование группы
