@@ -106,3 +106,11 @@ export const updateGroupValidation = [
     .withMessage('Курс должен быть длиной от 1 до 2 символов'),
 ]
 //#endregion
+
+//#region UserTask validations
+export const addUserTaskValidation = [
+  body('originalTaskId')
+    .isMongoId()
+    .withMessage('Указан не id оригинального задания'),
+]
+//#endregion
