@@ -37,7 +37,7 @@ app.get('/user/all', checkAuth, checkIsTeacher, UserController.getAllUsersInfo)
 app.get('/user/:id', checkAuth, checkIsTeacher, UserController.getUserInfo)
 // Изменение данных о пользователе (о себе)
 app.patch(
-  '/user/me',
+  '/user',
   checkAuth,
   validation.updateUserValidation,
   UserController.updateMyUserInfo
