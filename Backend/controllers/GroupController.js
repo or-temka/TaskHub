@@ -70,3 +70,43 @@ export const getMyGroupInfo = async (req, res) => {
     })
   }
 }
+
+export const getGroupInfo = async (req, res) => {
+  try {
+    const groupId = req.params.id
+
+    const group = await GroupModel.findById(groupId)
+    if (!group) {
+      serverMsg(
+        `Попытка получения данных о группе: не найдена группа с id ${groupId}`
+      )
+      return res.status(404).json({
+        errorMsg: 'Не определена группа',
+      })
+    }
+
+    const { ...groupData } = group._doc
+
+    serverMsg(`Получены данные о группе: ${groupData.name}`)
+    res.json(groupData)
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({
+      errorMsg: 'Ошибка получения данных о группе',
+    })
+  }
+}
+
+export const getAllGroupsInfo = async (req, res) => {
+  try {
+    const groups = await GroupModel.find()
+
+    serverMsg(`Получены данные о всех группах`)
+    res.json(groups)
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({
+      errorMsg: 'Ошибка получения данных о группах',
+    })
+  }
+}

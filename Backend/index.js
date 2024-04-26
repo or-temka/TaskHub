@@ -68,8 +68,15 @@ app.post(
 )
 // Получение данных о группе (о своей)
 app.get('/group', checkAuth, GroupController.getMyGroupInfo)
+// Получение данных о всех группах
+app.get(
+  '/group/all',
+  checkAuth,
+  checkIsTeacher,
+  GroupController.getAllGroupsInfo
+)
 // Получение данных о группе
-// Получение данных о группах
+app.get('/group/:id', checkAuth, checkIsTeacher, GroupController.getGroupInfo)
 // Редактирование группы
 // Удаление группы
 //#endregion
