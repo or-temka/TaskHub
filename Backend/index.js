@@ -6,7 +6,7 @@ import cors from 'cors'
 
 import { serverError, serverLog } from './utils/serverLog.js'
 
-import { regUserValidation } from './validations.js'
+import * as validation from './validations.js'
 import checkAuth from './utils/checkAuth.js'
 import checkIsTeacher from './utils/checkIsTeacher.js'
 import * as UserController from './controllers/UserController.js'
@@ -26,7 +26,7 @@ app.use(cors())
 
 //#region User
 // Регистрация пользователя
-app.post('/user', regUserValidation, UserController.reg)
+app.post('/user', validation.regUserValidation, UserController.reg)
 // Получение токена пользователя - вход в аккаунт
 app.get('/user', UserController.login)
 // Получение данных о пользователе (о себе)
@@ -35,8 +35,14 @@ app.get('/user/me', checkAuth, UserController.getUserInfoMe)
 app.get('/user/all', checkAuth, checkIsTeacher, UserController.getAllUsersInfo)
 // Получение данных о пользователе
 app.get('/user/:id', checkAuth, checkIsTeacher, UserController.getUserInfo)
-
 // Изменение данных о пользователе
+app.patch(
+  '/user/:id',
+  checkAuth,
+  checkIsTeacher,
+  validation.updateUserValidation,
+  UserController.updateUserInfo
+)
 // Удаление пользователя
 //#endregion
 
