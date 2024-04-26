@@ -138,3 +138,17 @@ export const getUserInfo = async (req, res) => {
     })
   }
 }
+
+export const getAllUsersInfo = async (req, res) => {
+  try {
+    const users = await UserModel.find()
+
+    serverMsg(`Получены данные о всех пользователях`)
+    res.json(users)
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({
+      errorMsg: 'Ошибка получения данных о пользователях',
+    })
+  }
+}

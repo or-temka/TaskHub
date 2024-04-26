@@ -31,9 +31,11 @@ app.post('/user', regUserValidation, UserController.reg)
 app.get('/user', UserController.login)
 // Получение данных о пользователе (о себе)
 app.get('/user/me', checkAuth, UserController.getUserInfoMe)
+// Получение данных о пользователях
+app.get('/user/all', checkAuth, checkIsTeacher, UserController.getAllUsersInfo)
 // Получение данных о пользователе
 app.get('/user/:id', checkAuth, checkIsTeacher, UserController.getUserInfo)
-// Получение данных о пользователях
+
 // Изменение данных о пользователе
 // Удаление пользователя
 //#endregion
