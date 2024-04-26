@@ -66,6 +66,8 @@ app.post(
   validation.createGroupValidation,
   GroupController.create
 )
+// Получение данных о группе (о своей)
+app.get('/group', checkAuth, GroupController.getMyGroupInfo)
 // Получение данных о группе
 // Получение данных о группах
 // Редактирование группы
