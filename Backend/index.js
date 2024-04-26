@@ -78,6 +78,13 @@ app.get(
 // Получение данных о группе
 app.get('/group/:id', checkAuth, checkIsTeacher, GroupController.getGroupInfo)
 // Редактирование группы
+app.patch(
+  '/group/:id',
+  checkAuth,
+  checkIsTeacher,
+  validation.updateGroupValidation,
+  GroupController.update
+)
 // Удаление группы
 //#endregion
 

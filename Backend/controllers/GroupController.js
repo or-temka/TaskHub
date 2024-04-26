@@ -110,3 +110,34 @@ export const getAllGroupsInfo = async (req, res) => {
     })
   }
 }
+
+export const update = async (req, res) => {
+  try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors.array())
+    }
+
+    const groupId = req.params.id
+
+    const existingGroup = await GroupModel.findById(groupId)
+    const updatedGroup = await GroupModel.findOneAndUpdate(
+      { _id: groupId },
+      {
+        $set: {
+          name: req.body.name || existingGroup.name,
+          cource: req.body.cource || existingGroup.cource,
+        },
+      },
+      { new: true }
+    )
+
+    serverLog(`Была обновлена группа ${existingGroup.name}`)
+    res.json(updatedGroup)
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({
+      errorMsg: 'Ошибка редактирования группы',
+    })
+  }
+}

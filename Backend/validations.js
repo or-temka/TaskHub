@@ -83,4 +83,26 @@ export const createGroupValidation = [
     })
     .withMessage('Курс должен быть длиной от 1 до 2 символов'),
 ]
+
+export const updateGroupValidation = [
+  body('name')
+    .optional()
+    .isString()
+    .withMessage('Название группы должно быть строкой')
+    .isLength({
+      min: 1,
+      max: 100,
+    })
+    .withMessage('Название группы должно быть в длину от 1 до 100 символов'),
+
+  body('cource')
+    .optional()
+    .isNumeric()
+    .withMessage('Курс должен быть числом')
+    .isLength({
+      min: 1,
+      max: 2,
+    })
+    .withMessage('Курс должен быть длиной от 1 до 2 символов'),
+]
 //#endregion
