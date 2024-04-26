@@ -53,6 +53,7 @@ app.patch(
 // Удаление пользователя (себя)
 app.delete('/user', checkAuth, UserController.deleteMyUser)
 // Удаление пользователя
+app.delete('/user/:id', checkAuth, checkIsTeacher, UserController.deleteUser)
 //#endregion
 
 //#region Group
