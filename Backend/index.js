@@ -91,9 +91,10 @@ app.delete('/group/:id', checkAuth, checkIsTeacher, GroupController.deleteGroup)
 //#endregion
 
 //#region Task
+// Получение данных о заданиях
+app.get('/task/all', checkAuth, checkIsTeacher, TaskController.getAllTasks)
 // Получение данных о задании
 app.get('/task/:id', checkAuth, checkIsTeacher, TaskController.getTask)
-// Получение данных о заданиях
 //#endregion
 
 app.listen(PORT, (err) => {

@@ -28,3 +28,17 @@ export const getTask = async (req, res) => {
     })
   }
 }
+
+export const getAllTasks = async (req, res) => {
+  try {
+    const tasks = await TaskModel.find()
+
+    serverMsg(`Получены данные о всех заданиях`)
+    res.json(tasks)
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({
+      errorMsg: 'Ошибка получения данных о заданиях',
+    })
+  }
+}
