@@ -152,6 +152,40 @@ export const getAllUsersInfo = async (req, res) => {
   }
 }
 
+export const updateMyUserInfo = async (req, res) => {
+  try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors.array())
+    }
+
+    const userId = req.userId
+
+    const existingUser = await UserModel.findById(userId)
+
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { _id: userId },
+      {
+        $set: {
+          name: req.body.name || existingUser.name,
+          login: req.body.login || existingUser.login,
+          password: req.body.password || existingUser.password,
+          groupId: req.body.groupId || existingUser.groupId,
+        },
+      },
+      { new: true }
+    )
+
+    serverLog(`Был обновлен пользователь ${existingUser.name}`)
+    res.json(updatedUser)
+  } catch (error) {
+    serverError(error)
+    res
+      .status(500)
+      .json({ errorMsg: 'Произошла ошибка изменения данных пользователя' })
+  }
+}
+
 export const updateUserInfo = async (req, res) => {
   try {
     const errors = validationResult(req)
