@@ -8,6 +8,7 @@ import { serverError, serverLog } from './utils/serverLog.js'
 
 import { regUserValidation } from './validations.js'
 import checkAuth from './utils/checkAuth.js'
+import checkIsTeacher from './utils/checkIsTeacher.js'
 import * as UserController from './controllers/UserController.js'
 
 mongoose

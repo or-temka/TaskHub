@@ -16,6 +16,7 @@ export default (req, res, next) => {
   try {
     const decodedToken = jwt.verify(token, TOKEN_KEY)
     req.userId = decodedToken._id
+    req.userRole = decodedToken.role
     next()
   } catch (err) {
     serverError(err)
