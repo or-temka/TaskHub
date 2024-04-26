@@ -28,6 +28,8 @@ app.use(cors())
 app.post('/user', regUserValidation, UserController.reg)
 // Получение токена пользователя - вход в аккаунт
 app.get('/user', UserController.login)
+// Получение данных о пользователе (о себе)
+app.get('/user/me', checkAuth, UserController.getUserInfoMe)
 // Получение данных о пользователе
 // Получение данных о пользователях
 // Изменение данных о пользователе
