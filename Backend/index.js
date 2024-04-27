@@ -117,6 +117,12 @@ app.get(
 )
 // Получение заданиий пользователя (о себе)
 // Получение заданиий пользователя
+app.get(
+  '/userTask/all/:userId',
+  checkAuth,
+  checkIsTeacher,
+  UserTaskController.getAllUserTasks
+)
 // Изменение задания пользователя (о себе)
 // Изменение задания пользователя
 //#endregion

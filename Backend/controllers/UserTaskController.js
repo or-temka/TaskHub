@@ -90,6 +90,24 @@ export const getUserTask = async (req, res) => {
     res.status(500).json({ errorMsg: 'Произошла ошибка создания группы' })
   }
 }
+
+export const getAllUserTasks = async (req, res) => {
+  try {
+    const userId = req.params.userId
+    const user = await UserModel.findById(userId)
+    if (!user) {
+      serverMsg(
+        `Попытка получения данных о задании пользователя: не найден пользователь с id ${userId}`
+      )
+      return res.status(404).json({
+        errorMsg: 'Пользователь не найден',
+      })
+    }
+
+    const { tasks } = user._doc
+
+    serverMsg(`Получены данные о заданиях пользователя "${user.name}"`)
+    res.json(tasks)
   } catch (error) {
     serverError(error)
     res.status(500).json({ errorMsg: 'Произошла ошибка создания группы' })
