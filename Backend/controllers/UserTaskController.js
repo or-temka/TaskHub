@@ -1,4 +1,5 @@
 import { validationResult } from 'express-validator'
+import { v4 as uuidv4 } from 'uuid'
 
 import { serverError, serverLog, serverMsg } from '../utils/serverLog.js'
 import UserModel from '../models/User.js'
@@ -11,7 +12,7 @@ export const add = async (req, res) => {
       return res.status(400).json(errors.array())
     }
 
-    const userId = req.params.id
+    const userId = req.params.userId
     const taskId = req.body.originalTaskId
 
     const existingUser = await UserModel.findById(userId)
@@ -29,6 +30,7 @@ export const add = async (req, res) => {
     }
 
     const userTask = {
+      id: uuidv4(),
       originalTaskId: taskId,
       newTask: true,
       attemptsCount: task.attempts,
@@ -45,6 +47,49 @@ export const add = async (req, res) => {
       `Пользователю ${existingUser.name} было добавлено задание с id ${taskId}`
     )
     res.json({ added: true })
+  } catch (error) {
+    serverError(error)
+    res
+      .status(500)
+      .json({ errorMsg: 'Произошла ошибка добавления задания пользователю' })
+  }
+}
+
+export const getUserTask = async (req, res) => {
+  try {
+    const userId = req.params.userId
+    const taskId = req.body.taskId
+
+    const user = await UserModel.findById(userId)
+
+    if (!user) {
+      serverMsg(
+        `Попытка получения данных о задании пользователя: не найден пользователь с id ${userId}`
+      )
+      return res.status(404).json({
+        errorMsg: 'Пользователь не найден',
+      })
+    }
+
+    const { tasks } = user._doc
+    const task = tasks.find((task) => task.id === taskId)
+
+    if (!task) {
+      serverMsg(
+        `Попытка получения данных о задании пользователя: указан неверный id задания ${taskId}`
+      )
+      return res.status(404).json({
+        errorMsg: 'Задание не найдено',
+      })
+    }
+
+    serverMsg(`Получены данные о задании пользователя "${user.name}"`)
+    res.json(task)
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({ errorMsg: 'Произошла ошибка создания группы' })
+  }
+}
   } catch (error) {
     serverError(error)
     res.status(500).json({ errorMsg: 'Произошла ошибка создания группы' })

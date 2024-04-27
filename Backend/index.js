@@ -101,7 +101,7 @@ app.get('/task/:id', checkAuth, checkIsTeacher, TaskController.getTask)
 //#region UserTask ------------------------------------------------------------
 // Добавление задания пользователя
 app.post(
-  '/userTask/:id',
+  '/userTask/:userId',
   checkAuth,
   checkIsTeacher,
   validation.addUserTaskValidation,
@@ -109,6 +109,12 @@ app.post(
 )
 // Получение задания пользователя (о себе)
 // Получение задания пользователя
+app.get(
+  '/userTask/:userId',
+  checkAuth,
+  checkIsTeacher,
+  UserTaskController.getUserTask
+)
 // Получение заданиий пользователя (о себе)
 // Получение заданиий пользователя
 // Изменение задания пользователя (о себе)
