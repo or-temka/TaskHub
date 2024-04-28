@@ -113,4 +113,25 @@ export const addUserTaskValidation = [
     .isMongoId()
     .withMessage('Указан не id оригинального задания'),
 ]
+
+export const updateUserTaskValidation = [
+  body('mark')
+    .optional()
+    .isFloat({ min: 0, max: 5 })
+    .withMessage('Оценка должна быть числом от 0 до 5'),
+  body('notRoundMark')
+    .optional()
+    .isFloat({ min: 0, max: 5 })
+    .withMessage('Не округленная оценка должна быть числом от 0 до 5'),
+  body('newTask')
+    .optional()
+    .isBoolean()
+    .withMessage(
+      'Новое задание или нет должно быть булевым значением (true/false)'
+    ),
+  body('attemptsCount')
+    .optional()
+    .isNumeric()
+    .withMessage('Количество попыток должно быть числом'),
+]
 //#endregion

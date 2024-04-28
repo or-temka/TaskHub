@@ -113,3 +113,58 @@ export const getAllUserTasks = async (req, res) => {
     res.status(500).json({ errorMsg: 'Произошла ошибка создания группы' })
   }
 }
+
+export const updateUserTask = async (req, res) => {
+  try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors.array())
+    }
+
+    const userId = req.params.userId
+    const taskId = req.body.taskId
+
+    const existingUser = await UserModel.findById(userId)
+    let userTaskIndex
+    const existingUserTask = existingUser.tasks.find((task, index) => {
+      if (task.id === taskId) {
+        userTaskIndex = index
+        return true
+      }
+    })
+
+    if (!existingUserTask) {
+      serverMsg(
+        `Попытка изменения задания пользователя: указано несуществующее задание с id ${taskId}`
+      )
+      return res.status(404).json({
+        errorMsg: 'Задание пользователя не найдено',
+      })
+    }
+
+    await UserModel.findOneAndUpdate(
+      { _id: userId, 'tasks.id': taskId },
+      {
+        $set: {
+          'tasks.$.mark': req.body.mark || existingUserTask.mark,
+          'tasks.$.notRoundMark':
+            req.body.notRoundMark || existingUserTask.notRoundMark,
+          'tasks.$.newTask':
+            req.body.newTask === true || req.body.newTask === false
+              ? req.body.newTask
+              : existingUserTask.newTask, // Чтобы записать булевое значение
+          'tasks.$.attemptsCount':
+            req.body.attemptsCount || existingUserTask.attemptsCount,
+        },
+      }
+    )
+
+    serverMsg(`Было обновлено задание пользователя ${existingUser.name}`)
+    res.json({ updated: true })
+  } catch (error) {
+    serverError(error)
+    res
+      .status(500)
+      .json({ errorMsg: 'Произошла ошибка обновления задания пользователя' })
+  }
+}

@@ -125,6 +125,13 @@ app.get(
 )
 // Изменение задания пользователя (о себе)
 // Изменение задания пользователя
+app.patch(
+  '/userTask/:userId',
+  checkAuth,
+  checkIsTeacher,
+  validation.updateUserTaskValidation,
+  UserTaskController.updateUserTask
+)
 //#endregion
 
 app.listen(PORT, (err) => {
