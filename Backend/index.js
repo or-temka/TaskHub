@@ -12,6 +12,7 @@ import checkIsTeacher from './utils/checkIsTeacher.js'
 import * as UserController from './controllers/UserController.js'
 import * as GroupController from './controllers/GroupController.js'
 import * as TaskController from './controllers/TaskController.js'
+import * as UserTaskController from './controllers/UserTaskController.js'
 
 mongoose
   .connect(
@@ -26,7 +27,7 @@ const PORT = 4000
 app.use(express.json())
 app.use(cors())
 
-//#region User
+//#region User ---------------------------------------------------------------
 // Регистрация пользователя
 app.post('/user', validation.regUserValidation, UserController.reg)
 // Получение токена пользователя - вход в аккаунт
@@ -58,7 +59,7 @@ app.delete('/user', checkAuth, UserController.deleteMyUser)
 app.delete('/user/:id', checkAuth, checkIsTeacher, UserController.deleteUser)
 //#endregion
 
-//#region Group
+//#region Group --------------------------------------------------------------
 // Создание группы
 app.post(
   '/group',
@@ -90,11 +91,47 @@ app.patch(
 app.delete('/group/:id', checkAuth, checkIsTeacher, GroupController.deleteGroup)
 //#endregion
 
-//#region Task
+//#region Task ---------------------------------------------------------------
 // Получение данных о заданиях
 app.get('/task/all', checkAuth, checkIsTeacher, TaskController.getAllTasks)
 // Получение данных о задании
 app.get('/task/:id', checkAuth, checkIsTeacher, TaskController.getTask)
+//#endregion
+
+//#region UserTask ------------------------------------------------------------
+// Добавление задания пользователя
+app.post(
+  '/userTask/:userId',
+  checkAuth,
+  checkIsTeacher,
+  validation.addUserTaskValidation,
+  UserTaskController.add
+)
+// Получение задания пользователя (о себе)
+// Получение задания пользователя
+app.get(
+  '/userTask/:userId',
+  checkAuth,
+  checkIsTeacher,
+  UserTaskController.getUserTask
+)
+// Получение заданиий пользователя (о себе)
+// Получение заданиий пользователя
+app.get(
+  '/userTask/all/:userId',
+  checkAuth,
+  checkIsTeacher,
+  UserTaskController.getAllUserTasks
+)
+// Изменение задания пользователя (о себе)
+// Изменение задания пользователя
+app.patch(
+  '/userTask/:userId',
+  checkAuth,
+  checkIsTeacher,
+  validation.updateUserTaskValidation,
+  UserTaskController.updateUserTask
+)
 //#endregion
 
 app.listen(PORT, (err) => {

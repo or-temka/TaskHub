@@ -227,9 +227,7 @@ export const deleteMyUser = async (req, res) => {
     UserModel.findOneAndDelete({ _id: userId })
       .then((doc) => {
         if (!doc) {
-          serverMsg(
-            `Попытка удалить несуществующий профиль (себя) с id ${userId}`
-          )
+          serverMsg(`Попытка удалить несуществующий профиль (себя) с id ${userId}`)
           return res.status(404).json({
             errorMsg: 'Профиль не найден',
           })
