@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  
 
   &__container {
     display: flex;
@@ -11,10 +10,27 @@
     margin-bottom: 10px;
   }
 
-  &__questions {
+  &__answers {
     display: flex;
     flex-direction: column;
     gap: 13px;
-    
+  }
+
+  &__questionHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    column-gap: 20px;
+    row-gap: 5px;
+    align-items: center;
+  }
+
+  &__openAnswersTableBtn {
+    color: var(--link-blue-color);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
