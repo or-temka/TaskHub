@@ -13,7 +13,14 @@ export const userTasks = [
       trueAnswersCount: 4,
     },
     questions: [{ qustionId: 1, answerId: 2 }],
-    practiceQuestions: [{ qustionId: 1, answer: 'Привет' }],
+    forPracticeData: [1, 3, 6, 7, 2],
+    practiceQuestions: [
+      {
+        qustionId: 1,
+        answer: 'Привет',
+        trueAnswer: 3,
+      },
+    ],
   },
   {
     id: 2,

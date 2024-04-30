@@ -1,0 +1,14 @@
+.infoForPracticeQuestions {
+  &__container {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    row-gap: 5px;
+  }
+
+  &__label {
+  }
+
+  &__textContent {
+  }
+}

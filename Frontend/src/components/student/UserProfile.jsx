@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import PopUp from '../UI/PopUps/PopUp'
 import ContentContainer from '../frames/ContentContainer'
 import DangerButtonWithIcon from '../UI/Buttons/DangerButtonWithIcon'
@@ -5,17 +8,19 @@ import PopUpConfirmation from '../UI/PopUps/PopUpConfirmation'
 import { ReactComponent as ExitSVG } from '../../assets/svg/exit.svg'
 
 import getTimeExecuteInfo from '../../utils/getTimeExecuteInfo'
+import { removeUserToken } from '../../utils/userTokenManager'
 
 import styles from './UserProfile.module.scss'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+
+
 
 function UserProfile({ user, userGroupName, onCancel = () => {} }) {
   const navigate = useNavigate()
   const [showExitPopUp, setShowExitPopUp] = useState(false)
 
   const onExitAccoutHandler = () => {
-    //TODO Выход из сесси аккаунта
+    removeUserToken()
+    localStorage.removeItem('userRole')
     setShowExitPopUp(false)
     navigate('/signIn', { relative: 'route' })
   }

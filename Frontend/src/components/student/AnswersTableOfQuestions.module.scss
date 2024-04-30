@@ -1,0 +1,67 @@
+.answersTableOfQuestions {
+  padding: 0;
+
+  &__frame {
+    min-width: 100%;
+    min-height: 400px;
+    border: 0;
+  }
+
+  &__frameContent {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+    height: 400px - 20px;
+  }
+
+  &__answer {
+    display: flex;
+    flex-direction: row;
+    height: 150px;
+    width: 200px;
+    background-color: var(--background-color);
+    border-radius: 5px;
+    overflow: hidden;
+    border: 2px solid var(--main-2-color);
+  }
+
+  &__answerNum {
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: var(--main-2-color);
+  }
+
+  &__answerNumText {
+    color: var(--on-color-text-color);
+  }
+
+  &__answerContent {
+    display: flex;
+    width: auto;
+  }
+
+  &__img {
+    width: 100%;
+    object-fit: contain;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .answersTableOfQuestions {
+    &__answer {
+      flex-basis: 45%;
+      flex-direction: column;
+    }
+
+    &__answerNum {
+      height: fit-content;
+      padding: 5px 10px;
+    }
+
+    &__img {
+      height: 100px;
+    }
+  }
+}

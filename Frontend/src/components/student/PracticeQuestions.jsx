@@ -29,7 +29,7 @@ function PracticeQuestions({ questions, className, ...params }) {
           className={styles.practiceQuestions__content}
         >
           <span className={styles.practiceQuestions__taskHint}>
-            Решите задание и дайте запишите правильный ответ в поле для ввода.
+            Решите задание и запишите правильный ответ в поле для ввода.
           </span>
           <span className={styles.practiceQuestions__taskText}>
             {question.text}
@@ -52,14 +52,16 @@ function PracticeQuestions({ questions, className, ...params }) {
               value={enteredAnswers[question.id]}
             />
             {question.unit && (
-              <span className={styles.practiceQuestions__answerUnit}>
-                {question.unit}
-              </span>
+              <>
+                {' '}
+                <span className={styles.practiceQuestions__answerUnit}>
+                  {question.unit}
+                </span>
+                <span className={styles.practiceQuestions__answerHint}>
+                  (в ответе не указывается единица измерения)
+                </span>
+              </>
             )}
-
-            <span className={styles.practiceQuestions__answerHint}>
-              (в ответе не указывается единица измерения)
-            </span>
           </div>
         </ContentContainer>
       ))}

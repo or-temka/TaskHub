@@ -44,6 +44,12 @@
   &__sendBtn {
     padding: 8px 40px;
   }
+
+  &__wrongPassLabel {
+    color: var(--error-text-color);
+    height: 20px;
+    margin-left: 10px;
+  }
 }
 
 @media screen and (max-width: 768px) {

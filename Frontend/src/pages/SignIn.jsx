@@ -1,21 +1,43 @@
 import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+
+import axios from '../axios'
 
 import ContentHeader from '../components/frames/ContentHeader'
 import ContentContainer from '../components/frames/ContentContainer'
 import PrimaryButton from '../components/UI/Buttons/PrimaryButton'
 import Input from '../components/UI/Inputs/Input'
 
+import { setUserToken } from '../utils/userTokenManager'
+
 import styles from './SignIn.module.scss'
 
 const PAGE_NAME = 'Вход в аккаунт'
 
 function SignIn({ setPageName }) {
+  const navigate = useNavigate()
+
   useEffect(() => {
     setPageName(PAGE_NAME)
   }, [])
 
   const [loginInputVal, setLoginInputVal] = useState('')
   const [passwordInputVal, setPasswordInputVal] = useState('')
+  const [isWrongPass, setIsWrongPass] = useState(false)
+
+  const loginHandler = async () => {
+    try {
+      const { data } = await axios.post('/user/login', {
+        login: loginInputVal,
+        password: passwordInputVal,
+      })
+      setUserToken()
+      localStorage.setItem('userRole', data.role)
+      navigate('/', { relative: 'route' })
+    } catch (error) {
+      setIsWrongPass(error.response.data.errorMsg)
+    }
+  }
 
   return (
     <div className={['wrapper', styles.signIn].join(' ')}>
@@ -42,10 +64,13 @@ function SignIn({ setPageName }) {
               />
             </div>
           </div>
+          <span className={styles.signIn__wrongPassLabel}>
+            {isWrongPass ? 'Неверный логин или пароль' : ''}
+          </span>
           <div className={styles.signIn__sendBtnContainer}>
             <PrimaryButton
               title="Войти"
-              onClick={() => {}}
+              onClick={loginHandler}
               className={styles.signIn__sendBtn}
             />
           </div>
