@@ -14,6 +14,7 @@ import { userTasks } from '../../data/userTasks'
 import { tasks } from '../../data/tasks'
 
 import styles from './TaskPerform.module.scss'
+import InfoForPracticeQuestions from '../../components/student/InfoForPracticeQuestions'
 
 function TaskPerform({ setPageName }) {
   const [showAnswerTablePopUp, setShowAnswerTablePopUp] = useState(false)
@@ -43,6 +44,15 @@ function TaskPerform({ setPageName }) {
 
   // TODO обработка завершения задания автоматически по окончанию времени
 
+  // Определение типа условия практических заданий и установка условия всех заданий
+  let infoForPracticeLabel
+  let infoForPracticeText
+  if (originalTask.forPracticeData.type === 'randomNums') {
+    infoForPracticeLabel = 'Выборка:'
+    const numbers = eval(originalTask.forPracticeData.formule)()
+    infoForPracticeText = numbers.join(', ')
+  }
+
   return (
     <>
       <div className={'wrapper'}>
@@ -71,6 +81,15 @@ function TaskPerform({ setPageName }) {
         <Questions
           questions={originalTask.questions}
           onClickOpenAnswersTable={() => setShowAnswerTablePopUp(true)}
+        />
+
+        <ContentHeaderLabel
+          title="Для выполнения практических заданий"
+          className={styles.taskPerform__titleHeader}
+        />
+        <InfoForPracticeQuestions
+          labelText={infoForPracticeLabel}
+          text={infoForPracticeText}
         />
 
         <ContentHeaderLabel
