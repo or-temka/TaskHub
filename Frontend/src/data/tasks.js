@@ -7,9 +7,36 @@ export const tasks = [
     instruction:
       'Пойти налево, а затем пойти направо, но уже намного быстрее, чем до этого',
     filesId: [1],
+    answersTable: [
+      { id: 1, imgSrc: '1.png' },
+      { id: 2, imgSrc: '2.png' },
+      { id: 3, imgSrc: '3.png' },
+      { id: 4, imgSrc: '4.png' },
+      { id: 5, imgSrc: '5.png' },
+      { id: 6, imgSrc: '6.png' },
+      { id: 7, imgSrc: '7.png' },
+      { id: 8, imgSrc: '8.png' },
+      { id: 9, imgSrc: '9.png' },
+      { id: 10, imgSrc: '10.png' },
+      { id: 11, imgSrc: '11.png' },
+      { id: 12, imgSrc: '12.png' },
+      { id: 13, imgSrc: '13.png' },
+      { id: 14, imgSrc: '14.png' },
+      { id: 15, imgSrc: '15.png' },
+      { id: 16, imgSrc: '16.png' },
+      { id: 17, imgSrc: '17.png' },
+      { id: 18, imgSrc: '18.png' },
+      { id: 19, imgSrc: '19.png' },
+      { id: 20, imgSrc: '20.png' },
+      { id: 21, imgSrc: '21.png' },
+      { id: 22, imgSrc: '22.png' },
+      { id: 23, imgSrc: '23.png' },
+      { id: 24, imgSrc: '24.png' },
+    ],
     questions: [
       {
         id: 1,
+        type: 'choice',
         questionText: 'В каком году родился Пётр 1?',
         answers: [
           {
@@ -33,6 +60,7 @@ export const tasks = [
       },
       {
         id: 2,
+        type: 'choice',
         questionText: 'Как посадить дерево?',
         answers: [
           {
@@ -54,14 +82,24 @@ export const tasks = [
         ],
         trueAnswerId: 4,
       },
+      {
+        id: 3,
+        type: 'enterFormuleNum',
+        questionText: 'По какой формуле вычисляется выборочное среднее?',
+        trueAnswer: 3,
+      },
+      {
+        id: 4,
+        type: 'enterFormuleNum',
+        questionText: 'По какой формуле вычисляется выборочное среднее?',
+        trueAnswer: 2,
+      },
     ],
     practiceQuestions: [
       {
         id: 1,
         text: 'Какой-то классный текст для такой классной задачки',
         answers: [123, 124, 125],
-        imagesSrc: ['zadasha.jpg'],
-        unit: 'Кг.',
         beforeAnswerText: 'Вес равен',
       },
       {
