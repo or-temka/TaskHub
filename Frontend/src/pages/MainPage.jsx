@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import SpinLoader from '../components/UI/Loaders/SpinLoader'
 
 import styles from './MainPage.module.scss'
-import { useNavigate } from 'react-router-dom'
 
 function MainPage({ setPageName }) {
   const navigate = useNavigate()

@@ -140,7 +140,7 @@ export const getUserInfo = async (req, res) => {
 
 export const getAllUsersInfo = async (req, res) => {
   try {
-    const users = await UserModel.find()
+    const users = await UserModel.find({ role: 'student' })
 
     serverMsg(`Получены данные о всех пользователях`)
     res.json(users)
