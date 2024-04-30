@@ -10,4 +10,25 @@
   &__endButton {
     width: 100%;
   }
+
+  &__answersTablePopUp {
+    width: 1000px;
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .taskPerform {
+    &__answersTablePopUp {
+      width: 520px;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .taskPerform {
+    &__answersTablePopUp {
+      width: 100%;
+    }
+  }
 }

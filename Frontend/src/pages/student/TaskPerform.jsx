@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import TaskPerformHeader from '../../components/student/TaskPerformHeader'
@@ -7,6 +7,8 @@ import ContentHeaderLabel from '../../components/frames/ContentHeaderLabel'
 import Questions from '../../components/student/Questions'
 import PracticeQuestions from '../../components/student/PracticeQuestions'
 import PrimaryButton from '../../components/UI/Buttons/PrimaryButton'
+import AnswersTableOfQuestions from '../../components/student/AnswersTableOfQuestions'
+import PopUp from '../../components/UI/PopUps/PopUp'
 
 import { userTasks } from '../../data/userTasks'
 import { tasks } from '../../data/tasks'
@@ -14,6 +16,8 @@ import { tasks } from '../../data/tasks'
 import styles from './TaskPerform.module.scss'
 
 function TaskPerform({ setPageName }) {
+  const [showAnswerTablePopUp, setShowAnswerTablePopUp] = useState(false)
+
   const navigate = useNavigate()
 
   const taskId = +useParams().taskId
@@ -47,11 +51,27 @@ function TaskPerform({ setPageName }) {
         ></ContentHeader>
         <TaskPerformHeader task={task} originalTask={originalTask} />
 
+        {originalTask.answersTable && (
+          <>
+            <ContentHeaderLabel
+              title="Варианты ответов на теоретические вопросы"
+              className={styles.taskPerform__titleHeader}
+            />
+            <AnswersTableOfQuestions
+              answersTable={originalTask.answersTable}
+              taskId={originalTask.id}
+            />
+          </>
+        )}
+
         <ContentHeaderLabel
-          title="Вопросы"
+          title="Теоретические вопросы"
           className={styles.taskPerform__titleHeader}
         />
-        <Questions questions={originalTask.questions} />
+        <Questions
+          questions={originalTask.questions}
+          onClickOpenAnswersTable={() => setShowAnswerTablePopUp(true)}
+        />
 
         <ContentHeaderLabel
           title="Практические задания"
@@ -67,6 +87,20 @@ function TaskPerform({ setPageName }) {
           />
         </div>
       </div>
+
+      {showAnswerTablePopUp && (
+        <PopUp
+          className={styles.taskPerform__answersTablePopUp}
+          headerText="Варианты ответов на теоритические вопросы"
+          onCancel={() => setShowAnswerTablePopUp(false)}
+          onClickBack={() => setShowAnswerTablePopUp(false)}
+        >
+          <AnswersTableOfQuestions
+            answersTable={originalTask.answersTable}
+            taskId={originalTask.id}
+          />
+        </PopUp>
+      )}
     </>
   )
 }
