@@ -95,20 +95,25 @@ export const tasks = [
         trueAnswer: 2,
       },
     ],
+    forPracticeData: {
+      type: 'randomNums',
+      formule:
+        '(n = 30, s = 0, f = 100) => { const randomNumbers = []; for (let i = 0; i < n; i++) { const randomNumber = (Math.random() * (f - s) + s).toFixed(2); randomNumbers.push(parseFloat(randomNumber)); } return randomNumbers; }',
+    },
     practiceQuestions: [
       {
         id: 1,
-        text: 'Какой-то классный текст для такой классной задачки',
-        answers: [123, 124, 125],
-        beforeAnswerText: 'Вес равен',
+        text: 'Для данной выборки вычислить выборочное среднее.',
+        answerFormule: 'function ...',
       },
-      {
-        id: 2,
-        text: 'Уже вторая задача с более интересным текстом',
-        answersSrc: [33, 44, 55],
-        images: [],
-        unit: 'н.',
-      },
+      // {
+      //   id: 2,
+      //   text: 'Уже вторая задача с более интересным текстом',
+      //   answersSrc: [33, 44, 55],
+      //   images: [],
+      //   unit: 'н.',
+      //   beforeAnswerText: 'Вес равен',
+      // },
     ],
     statistic: {
       usersExecuted: 2,
