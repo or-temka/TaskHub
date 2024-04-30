@@ -29,9 +29,9 @@ app.use(cors())
 
 //#region User ---------------------------------------------------------------
 // Регистрация пользователя
-app.post('/user', validation.regUserValidation, UserController.reg)
+app.post('/user/reg', validation.regUserValidation, UserController.reg)
 // Получение токена пользователя - вход в аккаунт
-app.get('/user', UserController.login)
+app.post('/user/login', UserController.login)
 // Получение данных о пользователе (о себе)
 app.get('/user/me', checkAuth, UserController.getUserInfoMe)
 // Получение данных о пользователях
