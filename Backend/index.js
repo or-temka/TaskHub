@@ -37,6 +37,13 @@ app.patch(
   checkIsTeacher,
   GroupServices.addStudentInGroup
 )
+
+app.patch(
+  '/group/del_user_from_group/:groupId',
+  checkAuth,
+  checkIsTeacher,
+  GroupServices.delStudentFromGroup
+)
 //#endregion
 //#endregion
 
