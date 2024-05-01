@@ -27,6 +27,20 @@ export const fetchUsers = async () => {
     console.log(error)
   }
 }
+
+export const fetchGroup = async (groupId) => {
+  try {
+    const { data } = await axios.get(`/group/${groupId}`, {
+      headers: {
+        Authorization: await getUserToken(),
+      },
+    })
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const fetchAddGroup = async (name, cource) => {
   try {
     return await axios.post(
