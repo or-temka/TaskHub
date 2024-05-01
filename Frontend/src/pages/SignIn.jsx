@@ -31,7 +31,7 @@ function SignIn({ setPageName }) {
         login: loginInputVal,
         password: passwordInputVal,
       })
-      setUserToken()
+      setUserToken(data.token)
       localStorage.setItem('userRole', data.role)
       navigate('/', { relative: 'route' })
     } catch (error) {

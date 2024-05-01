@@ -28,7 +28,7 @@ export const create = async (req, res) => {
     }
 
     serverLog(`Новая группа: ${group.name}`)
-    res.json({ added: true })
+    res.json(group)
   } catch (error) {
     serverError(error)
     res.status(500).json({ errorMsg: 'Произошла ошибка создания группы' })

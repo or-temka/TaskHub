@@ -13,6 +13,7 @@ import * as UserController from './controllers/UserController.js'
 import * as GroupController from './controllers/GroupController.js'
 import * as TaskController from './controllers/TaskController.js'
 import * as UserTaskController from './controllers/UserTaskController.js'
+import * as GroupServices from './services/GroupServices.js'
 
 mongoose
   .connect(
@@ -26,6 +27,25 @@ const PORT = 4000
 
 app.use(express.json())
 app.use(cors())
+
+//#region services
+//#region group
+// Добавление пользователя в группу
+app.patch(
+  '/group/add_user_in_group/:groupId',
+  checkAuth,
+  checkIsTeacher,
+  GroupServices.addStudentInGroup
+)
+
+app.patch(
+  '/group/del_user_from_group/:groupId',
+  checkAuth,
+  checkIsTeacher,
+  GroupServices.delStudentFromGroup
+)
+//#endregion
+//#endregion
 
 //#region User ---------------------------------------------------------------
 // Регистрация пользователя

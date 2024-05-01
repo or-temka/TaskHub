@@ -11,15 +11,23 @@ import PopUpConfirmation from '../../UI/PopUps/PopUpConfirmation'
 import styles from './Group.module.scss'
 import PrimaryButton from '../../UI/Buttons/PrimaryButton'
 import Input from '../../UI/Inputs/Input'
+import {
+  RemoveUserFromGroup,
+  fetchEditGroup,
+  fetchRemoveGroup,
+} from '../../../utils/fetchData/teacher/group'
 
 function Group({
-  group,
+  groupData,
   users,
+  setNewGroups = () => {},
   delUserHandler = () => {},
   onCancel = () => {},
   className,
   ...params
 }) {
+  const [group, setGroup] = useState(groupData)
+
   const [showDelUserPopUpConfirm, setShowDelUserPopUpConfirm] = useState(false)
   const [showDelGroupPopUpConfirm, setShowDelGroupPopUpConfirm] =
     useState(false)
@@ -30,21 +38,36 @@ function Group({
     cource: '',
   })
 
-  const usersGroup = users.filter((user) => group.studentsId.includes(user.id))
+  const [disabledEditButton, setDisabledEditButton] = useState(false)
+  const [showWrongText, setShowWrongText] = useState(false)
+
+  const usersGroup = users.filter((user) => group.studentsId.includes(user._id))
 
   const delUserFromGroupHandler = () => {
     const userId = showDelUserPopUpConfirm
-    // TODO удаление пользователя из группы
-
-    // Удаление на клиенте
-    delUserHandler(group.id, userId)
-    setShowDelUserPopUpConfirm(false)
+    // удаление пользователя из группы
+    RemoveUserFromGroup(group._id, userId)
+      .then((res) => {
+        // Удаление на клиенте
+        delUserHandler(group._id, userId)
+        setShowDelUserPopUpConfirm(false)
+      })
+      .catch((error) => console.log(error))
   }
 
   const delGroupHandler = () => {
-    const groupId = group.id
-    // TODO удаление группы
-    onCancel()
+    const groupId = group._id
+    // удаление группы
+    fetchRemoveGroup(groupId)
+      .then((res) => {
+        setNewGroups((prevValue) =>
+          [...prevValue].filter((tempGroup) => tempGroup._id !== group._id)
+        )
+        onCancel()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   const openEditGroupHandler = () => {
@@ -53,8 +76,29 @@ function Group({
   }
 
   const editedGroupHandler = () => {
-    //TODO отправка новых данных об изменение на сервер
-    setShowEditGroupPopUp(false)
+    setDisabledEditButton(true)
+    const groupId = group._id
+    // отправка новых данных об изменение на сервер
+    const newData = {
+      name: editGroupValues.name,
+      cource: editGroupValues.cource,
+    }
+    fetchEditGroup(groupId, newData)
+      .then((res) => {
+        setNewGroups((prevValue) =>
+          [...prevValue].map((tempGroup) =>
+            tempGroup._id === groupId ? res : tempGroup
+          )
+        )
+        setGroup(res)
+        setDisabledEditButton(false)
+        setShowWrongText(false)
+        setShowEditGroupPopUp(false)
+      })
+      .catch((error) => {
+        setShowWrongText(error.message)
+        setDisabledEditButton(false)
+      })
   }
 
   return (
@@ -100,11 +144,11 @@ function Group({
             contentClassName={styles.group__students}
           >
             {usersGroup.map((user) => (
-              <div key={user.id} className={styles.group__student}>
+              <div key={user._id} className={styles.group__student}>
                 <span className={styles.group__studentName}>{user.name}</span>
                 <span
                   className={styles.group__delStudentButton}
-                  onClick={() => setShowDelUserPopUpConfirm(user.id)}
+                  onClick={() => setShowDelUserPopUpConfirm(user._id)}
                 >
                   Удалить из группы
                 </span>
@@ -121,7 +165,7 @@ function Group({
           onClickBack={() => setShowDelUserPopUpConfirm(false)}
           labelText="Вы действительно хотите удалить данного пользователя из группы?"
           text={`Студент "${
-            users.find((user) => user.id === showDelUserPopUpConfirm).name
+            users.find((user) => user._id === showDelUserPopUpConfirm).name
           }" будет удален из группы "${
             group.name
           }". Вы в любой момент можете добавить его обратно в группу.`}
@@ -176,11 +220,17 @@ function Group({
                 }
               />
             </div>
+            {showWrongText && (
+              <span className={styles.editGroup__wrongText}>
+                {showWrongText}
+              </span>
+            )}
           </div>
           <div className={styles.editGroup__buttons}>
             <PrimaryButton
               title="Сохранить изменения"
               onClick={editedGroupHandler}
+              loading={disabledEditButton}
             />
             <Button
               title="Отмена"

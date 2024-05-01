@@ -35,7 +35,7 @@ function GroupsTable({
 
     const groupForTable = {
       tds: [group.name, group.studentsId.length, group.cource],
-      value: group.id,
+      value: group._id,
     }
     tableTrsOfTds.push(groupForTable)
   })
@@ -67,7 +67,9 @@ function GroupsTable({
       trsOfTds={tableTrsOfTds}
       className={[styles.groupsTable, className].join(' ')}
       trClassName={styles.groupsTable__tableTr}
-      onClickTr={(value) => onClickTrHandler(value)}
+      onClickTr={(value) => {
+        onClickTrHandler(value)
+      }}
     />
   )
 }

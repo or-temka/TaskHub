@@ -9,16 +9,18 @@ import AddGroup from '../../components/teacher/PopUps/AddGroup'
 import AddStudentsViaStrings from '../../components/teacher/PopUps/AddStudentsViaStrings'
 import GroupsContent from '../../components/teacher/GroupsContent'
 import Group from '../../components/teacher/PopUps/Group'
+import SpinLoader from '../../components/UI/Loaders/SpinLoader'
 
-import groupsData from '../../data/groups'
-import users from '../../data/users'
+import { fetchGroups } from '../../utils/fetchData/teacher/group'
+import { fetchUsers } from '../../utils/fetchData/teacher/user'
 
 import styles from './Groups.module.scss'
 
 function Groups({ setPageName }) {
   const navigate = useNavigate()
 
-  const [groups, setGroups] = useState(groupsData)
+  const [groups, setGroups] = useState()
+  const [users, setUsers] = useState()
 
   const [showGroupPopUp, setShowGroupPopUp] = useState(false)
   const [showAddStudent, setShowAddStudent] = useState(false)
@@ -26,16 +28,37 @@ function Groups({ setPageName }) {
   const [showAddStudentsViaStrings, setShowAddStudentsViaStrings] =
     useState(false)
 
-  // Выбранная группа в PopUp просмотре группы
   const [enteredGroup, setEnteredGroup] = useState()
+
+  useEffect(() => {
+    setPageName('Группы')
+  }, [])
+  // Получение данных о пользователях
+  useEffect(() => {
+    fetchUsers().then((users) => setUsers(users))
+  }, [])
+  // Получение данных о группах
+  useEffect(() => {
+    fetchGroups().then((groups) => setGroups(groups))
+  }, [])
+
+  if (!groups || !users) {
+    return (
+      <div className="wrapper spinLoaderWrapper">
+        <SpinLoader />
+      </div>
+    )
+  }
+
+  // Выбранная группа в PopUp просмотре группы
   const setEnteredGroupHandler = (id) => {
-    const enteredG = groups.find((group) => group.id === id)
+    const enteredG = groups.find((group) => group._id === id)
     setEnteredGroup(enteredG)
   }
 
   // Удаление пользователя из группы на клиенте
   const delUserFromGroup = (groupId, userId) => {
-    const newGroup = groups.find((group) => group.id === groupId)
+    const newGroup = groups.find((group) => group._id === groupId)
     const userInGroup = newGroup.studentsId.find(
       (studentId) => studentId === userId
     )
@@ -45,16 +68,12 @@ function Groups({ setPageName }) {
     newGroup.studentsId.splice(userIndexInGroup, 1)
     const newGroups = [...groups]
     newGroups.forEach((group) => {
-      if (group.id === groupId) {
+      if (group._id === groupId) {
         group = newGroup
       }
     })
     setGroups(newGroups)
   }
-
-  useEffect(() => {
-    setPageName('Группы')
-  }, [])
 
   return (
     <>
@@ -93,8 +112,9 @@ function Groups({ setPageName }) {
       {/* PopUp`s for this page */}
       {showGroupPopUp && (
         <Group
+          setNewGroups={setGroups}
           onCancel={() => setShowGroupPopUp(false)}
-          group={enteredGroup}
+          groupData={enteredGroup}
           users={users}
           delUserHandler={delUserFromGroup}
         />
@@ -109,6 +129,7 @@ function Groups({ setPageName }) {
       )}
       {showAddGroup && (
         <AddGroup
+          setNewGroups={setGroups}
           onAddGroup={() => setShowAddGroup(false)}
           onCancel={() => setShowAddGroup(false)}
         />
