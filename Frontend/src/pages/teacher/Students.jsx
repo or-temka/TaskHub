@@ -9,11 +9,11 @@ import AddGroup from '../../components/teacher/PopUps/AddGroup'
 import AddStudentsViaStrings from '../../components/teacher/PopUps/AddStudentsViaStrings'
 import StudentsContent from '../../components/teacher/StudentsContent'
 
-import groups from '../../data/groups'
-import users from '../../data/users'
-
 import styles from './Students.module.scss'
 import Student from '../../components/teacher/PopUps/Student'
+import SpinLoader from '../../components/UI/Loaders/SpinLoader'
+import { fetchGroups } from '../../utils/fetchData/teacher/group'
+import { fetchUsers } from '../../utils/fetchData/teacher/user'
 
 function Students({ setPageName }) {
   const navigate = useNavigate()
@@ -24,31 +24,49 @@ function Students({ setPageName }) {
     useState(false)
   const [showStudentPopUp, setShowStudentPopUp] = useState(false)
 
-  // Группы и функции для их установки
+  const [users, setUsers] = useState()
+  const [groups, setGroups] = useState()
   const [user, setUser] = useState({})
   const [group, setGroup] = useState({})
 
+  useEffect(() => {
+    setPageName('Студенты')
+  }, [])
+
+  // Получение данных о пользователях
+  useEffect(() => {
+    fetchUsers().then((users) => setUsers(users))
+  }, [])
+  // Получение данных о группах
+  useEffect(() => {
+    fetchGroups().then((groups) => setGroups(groups))
+  }, [])
+
+  if (!groups || !users) {
+    return (
+      <div className="wrapper spinLoaderWrapper">
+        <SpinLoader />
+      </div>
+    )
+  }
+
   const setUserHandler = (userId) => {
-    const user = users.find((user) => user.id === userId)
+    const user = users.find((user) => user._id === userId)
     setUser(user)
   }
   const setGroupHandler = (groupId) => {
-    const group = groups.find((group) => group.id === groupId)
+    const group = groups.find((group) => group._id === groupId)
     setGroup(group)
   }
 
   const openUserPopUpHandler = (userId) => {
-    const user = users.find((user) => user.id === userId)
-    const group = groups.find((group) => group.id === user.groupId)
+    const user = users.find((user) => user._id === userId)
+    const group = groups.find((group) => group._id === user.groupId)
 
     setUser(user)
     setGroup(group)
     setShowStudentPopUp(true)
   }
-
-  useEffect(() => {
-    setPageName('Студенты')
-  }, [])
 
   return (
     <>

@@ -54,13 +54,13 @@ function StudentsFilter({
       >
         {groups.map((group) => (
           <Checkbox
-            key={group.id}
+            key={group._id}
             label={group.name}
-            checked={checkedGroups.has(group.id)}
+            checked={checkedGroups.has(group._id)}
             onChange={(f) => {
               f.target.checked
-                ? addToCheckedGroups(group.id)
-                : removeFromCheckedGroups(group.id)
+                ? addToCheckedGroups(group._id)
+                : removeFromCheckedGroups(group._id)
             }}
           />
         ))}

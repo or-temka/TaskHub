@@ -2,20 +2,64 @@
   &__tableTr {
     & th,
     td {
-      flex: 3;
+      flex: 10;
     }
 
     & th:nth-child(1),
     td:nth-child(1) {
-      flex: 6;
+      flex: 5;
+    }
+    & th:nth-child(2),
+    td:nth-child(2) {
+      flex: 3;
     }
     & th:nth-child(3),
     td:nth-child(3) {
-      flex: 1;
+      flex: 2;
     }
     & th:nth-child(4),
     td:nth-child(4) {
       flex: 1;
+    }
+    & th:nth-child(5),
+    td:nth-child(5) {
+      flex: 2;
+    }
+    & th:nth-child(6),
+    td:nth-child(6) {
+      flex: 2;
+    }
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  .studentsTable {
+    &__tableTr {
+
+      & th:nth-child(1),
+      td:nth-child(1) {
+        flex: 2;
+      }
+      & th:nth-child(2),
+      td:nth-child(2) {
+        flex: 2;
+      }
+      & th:nth-child(3),
+      td:nth-child(3) {
+        flex: 2;
+      }
+      & th:nth-child(4),
+      td:nth-child(4) {
+        flex: 1;
+      }
+      & th:nth-child(5),
+      td:nth-child(5) {
+        flex: 1;
+      }
+      & th:nth-child(6),
+      td:nth-child(6) {
+        flex: 2;
+      }
     }
   }
 }

@@ -17,6 +17,7 @@ function StudentsTable({
 }) {
   const tableThs = [
     'ФИО',
+    'Логин',
     'Пароль',
     'Группа',
     'Средний балл',
@@ -39,9 +40,14 @@ function StudentsTable({
         if (userMark > score.value) return
       }
     }
-    const userGroup = groups.find((group) => group.id === user.groupId)
-    const userGroupName = userGroup.name
-    const userGroupId = userGroup.id
+    let userGroup
+    let userGroupName
+    let userGroupId
+    if (user.groupId) {
+      userGroup = groups.find((group) => group._id === user.groupId)
+      userGroupName = userGroup.name
+      userGroupId = userGroup._id
+    }
 
     // Фильтр по группе
     if (checkedGroups.size !== 0 && !checkedGroups.has(userGroupId)) {
@@ -50,12 +56,13 @@ function StudentsTable({
     const userForTable = {
       tds: [
         user.name,
+        user.login,
         user.password,
-        userGroupName,
+        userGroupName || '',
         user.statistics.avarageMark,
         user.statistics.complitedTasks,
       ],
-      value: user.id,
+      value: user._id,
     }
     tableTrsOfTds.push(userForTable)
   })
@@ -65,9 +72,9 @@ function StudentsTable({
     const sorterName = Object.keys(sorter)[0]
     let sortField
     if (sorterName === 'alphabet') sortField = 0
-    else if (sorterName === 'groupNum') sortField = 2
-    else if (sorterName === 'avarageMark') sortField = 3
-    else if (sorterName === 'doneTaskCount') sortField = 4
+    else if (sorterName === 'groupNum') sortField = 3
+    else if (sorterName === 'avarageMark') sortField = 4
+    else if (sorterName === 'doneTaskCount') sortField = 5
 
     tableTrsOfTds = sortBy(
       tableTrsOfTds,
