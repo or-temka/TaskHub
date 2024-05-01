@@ -11,10 +11,10 @@ import PopUpConfirmation from '../../UI/PopUps/PopUpConfirmation'
 import styles from './Group.module.scss'
 import PrimaryButton from '../../UI/Buttons/PrimaryButton'
 import Input from '../../UI/Inputs/Input'
-import { fetchRemoveGroup } from '../../../utils/fetchData'
+import { fetchEditGroup, fetchRemoveGroup } from '../../../utils/fetchData'
 
 function Group({
-  group,
+  groupData,
   users,
   setNewGroups = () => {},
   delUserHandler = () => {},
@@ -22,6 +22,8 @@ function Group({
   className,
   ...params
 }) {
+  const [group, setGroup] = useState(groupData)
+
   const [showDelUserPopUpConfirm, setShowDelUserPopUpConfirm] = useState(false)
   const [showDelGroupPopUpConfirm, setShowDelGroupPopUpConfirm] =
     useState(false)
@@ -31,6 +33,9 @@ function Group({
     name: '',
     cource: '',
   })
+
+  const [disabledEditButton, setDisabledEditButton] = useState(false)
+  const [showWrongText, setShowWrongText] = useState(false)
 
   const usersGroup = users.filter((user) => group.studentsId.includes(user.id))
 
@@ -64,8 +69,29 @@ function Group({
   }
 
   const editedGroupHandler = () => {
+    setDisabledEditButton(true)
+    const groupId = group._id
     // отправка новых данных об изменение на сервер
-    setShowEditGroupPopUp(false)
+    const newData = {
+      name: editGroupValues.name,
+      cource: editGroupValues.cource,
+    }
+    fetchEditGroup(groupId, newData)
+      .then((res) => {
+        setNewGroups((prevValue) =>
+          [...prevValue].map((tempGroup) =>
+            tempGroup._id === groupId ? res : tempGroup
+          )
+        )
+        setGroup(res)
+        setDisabledEditButton(false)
+        setShowWrongText(false)
+        setShowEditGroupPopUp(false)
+      })
+      .catch((error) => {
+        setShowWrongText(error.message)
+        setDisabledEditButton(false)
+      })
   }
 
   return (
@@ -187,11 +213,17 @@ function Group({
                 }
               />
             </div>
+            {showWrongText && (
+              <span className={styles.editGroup__wrongText}>
+                {showWrongText}
+              </span>
+            )}
           </div>
           <div className={styles.editGroup__buttons}>
             <PrimaryButton
               title="Сохранить изменения"
               onClick={editedGroupHandler}
+              loading={disabledEditButton}
             />
             <Button
               title="Отмена"

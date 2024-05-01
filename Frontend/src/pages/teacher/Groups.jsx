@@ -113,7 +113,7 @@ function Groups({ setPageName }) {
         <Group
           setNewGroups={setGroups}
           onCancel={() => setShowGroupPopUp(false)}
-          group={enteredGroup}
+          groupData={enteredGroup}
           users={users}
           delUserHandler={delUserFromGroup}
         />

@@ -104,7 +104,7 @@
   width: 500px;
 
   &__popUp {
-    background-color: var(--background-color)
+    background-color: var(--background-color);
   }
 
   &__content {
@@ -134,5 +134,10 @@
     flex-direction: row;
     justify-content: flex-end;
     gap: 10px;
+  }
+
+  &__wrongText {
+    color: var(--error-text-color);
+    margin-left: 10px;
   }
 }

@@ -66,6 +66,32 @@ export const fetchRemoveGroup = async (groupId) => {
     throw new Error(error.response.data.errorMsg)
   }
 }
+
+export const fetchEditGroup = async (groupId, newData) => {
+  try {
+    const { data } = await axios.patch(
+      `/group/${groupId}`,
+      {
+        name: newData.name,
+        cource: newData.cource,
+      },
+      {
+        headers: {
+          Authorization: await getUserToken(),
+        },
+      }
+    )
+    return data
+  } catch (error) {
+    const response = error.response
+    if (response.status === 400) {
+      if (Array.isArray(response.data)) {
+        throw new Error(response.data[0].msg)
+      }
+    }
+    throw new Error(response.data.errorMsg)
+  }
+}
 //#endregion
 
 //#region User
