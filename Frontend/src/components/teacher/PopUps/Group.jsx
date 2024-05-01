@@ -12,6 +12,7 @@ import styles from './Group.module.scss'
 import PrimaryButton from '../../UI/Buttons/PrimaryButton'
 import Input from '../../UI/Inputs/Input'
 import {
+  RemoveUserFromGroup,
   fetchEditGroup,
   fetchRemoveGroup,
 } from '../../../utils/fetchData/teacher/group'
@@ -40,15 +41,18 @@ function Group({
   const [disabledEditButton, setDisabledEditButton] = useState(false)
   const [showWrongText, setShowWrongText] = useState(false)
 
-  const usersGroup = users.filter((user) => group.studentsId.includes(user.id))
+  const usersGroup = users.filter((user) => group.studentsId.includes(user._id))
 
   const delUserFromGroupHandler = () => {
     const userId = showDelUserPopUpConfirm
-    // TODO удаление пользователя из группы
-
-    // Удаление на клиенте
-    delUserHandler(group._id, userId)
-    setShowDelUserPopUpConfirm(false)
+    // удаление пользователя из группы
+    RemoveUserFromGroup(group._id, userId)
+      .then((res) => {
+        // Удаление на клиенте
+        delUserHandler(group._id, userId)
+        setShowDelUserPopUpConfirm(false)
+      })
+      .catch((error) => console.log(error))
   }
 
   const delGroupHandler = () => {
@@ -140,11 +144,11 @@ function Group({
             contentClassName={styles.group__students}
           >
             {usersGroup.map((user) => (
-              <div key={user.id} className={styles.group__student}>
+              <div key={user._id} className={styles.group__student}>
                 <span className={styles.group__studentName}>{user.name}</span>
                 <span
                   className={styles.group__delStudentButton}
-                  onClick={() => setShowDelUserPopUpConfirm(user.id)}
+                  onClick={() => setShowDelUserPopUpConfirm(user._id)}
                 >
                   Удалить из группы
                 </span>
@@ -161,7 +165,7 @@ function Group({
           onClickBack={() => setShowDelUserPopUpConfirm(false)}
           labelText="Вы действительно хотите удалить данного пользователя из группы?"
           text={`Студент "${
-            users.find((user) => user.id === showDelUserPopUpConfirm).name
+            users.find((user) => user._id === showDelUserPopUpConfirm).name
           }" будет удален из группы "${
             group.name
           }". Вы в любой момент можете добавить его обратно в группу.`}

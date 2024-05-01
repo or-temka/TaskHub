@@ -58,7 +58,7 @@ function Groups({ setPageName }) {
 
   // Удаление пользователя из группы на клиенте
   const delUserFromGroup = (groupId, userId) => {
-    const newGroup = groups.find((group) => group.id === groupId)
+    const newGroup = groups.find((group) => group._id === groupId)
     const userInGroup = newGroup.studentsId.find(
       (studentId) => studentId === userId
     )
@@ -68,7 +68,7 @@ function Groups({ setPageName }) {
     newGroup.studentsId.splice(userIndexInGroup, 1)
     const newGroups = [...groups]
     newGroups.forEach((group) => {
-      if (group.id === groupId) {
+      if (group._id === groupId) {
         group = newGroup
       }
     })

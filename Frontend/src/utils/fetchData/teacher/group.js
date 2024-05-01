@@ -91,3 +91,22 @@ export const fetchEditGroup = async (groupId, newData) => {
     throw new Error(response.data.errorMsg)
   }
 }
+
+export const RemoveUserFromGroup = async (groupId, userId) => {
+  try {
+    const { data } = await axios.patch(
+      `/group/del_user_from_group/${groupId}`,
+      {
+        userId,
+      },
+      {
+        headers: {
+          Authorization: await getUserToken(),
+        },
+      }
+    )
+    return data
+  } catch (error) {
+    throw new Error(error.response.data.errorMsg)
+  }
+}
