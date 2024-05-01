@@ -51,7 +51,7 @@ function Groups({ setPageName }) {
 
   // Выбранная группа в PopUp просмотре группы
   const setEnteredGroupHandler = (id) => {
-    const enteredG = groups.find((group) => group.id === id)
+    const enteredG = groups.find((group) => group._id === id)
     setEnteredGroup(enteredG)
   }
 
@@ -111,6 +111,7 @@ function Groups({ setPageName }) {
       {/* PopUp`s for this page */}
       {showGroupPopUp && (
         <Group
+          setNewGroups={setGroups}
           onCancel={() => setShowGroupPopUp(false)}
           group={enteredGroup}
           users={users}

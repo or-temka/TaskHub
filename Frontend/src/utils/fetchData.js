@@ -2,22 +2,10 @@ import axios from '../axios'
 
 import { getUserToken } from './userTokenManager'
 
+//#region Group
 export const fetchGroups = async () => {
   try {
     const { data } = await axios.get('/group/all', {
-      headers: {
-        Authorization: await getUserToken(),
-      },
-    })
-    return data
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-export const fetchUsers = async () => {
-  try {
-    const { data } = await axios.get('/user/all', {
       headers: {
         Authorization: await getUserToken(),
       },
@@ -65,3 +53,32 @@ export const fetchAddGroup = async (name, cource) => {
     throw new Error(response.data.errorMsg)
   }
 }
+
+export const fetchRemoveGroup = async (groupId) => {
+  try {
+    const { data } = await axios.delete(`/group/${groupId}`, {
+      headers: {
+        Authorization: await getUserToken(),
+      },
+    })
+    return data
+  } catch (error) {
+    throw new Error(error.response.data.errorMsg)
+  }
+}
+//#endregion
+
+//#region User
+export const fetchUsers = async () => {
+  try {
+    const { data } = await axios.get('/user/all', {
+      headers: {
+        Authorization: await getUserToken(),
+      },
+    })
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+//#endregion

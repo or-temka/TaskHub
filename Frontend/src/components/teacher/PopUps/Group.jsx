@@ -11,10 +11,12 @@ import PopUpConfirmation from '../../UI/PopUps/PopUpConfirmation'
 import styles from './Group.module.scss'
 import PrimaryButton from '../../UI/Buttons/PrimaryButton'
 import Input from '../../UI/Inputs/Input'
+import { fetchRemoveGroup } from '../../../utils/fetchData'
 
 function Group({
   group,
   users,
+  setNewGroups = () => {},
   delUserHandler = () => {},
   onCancel = () => {},
   className,
@@ -37,14 +39,23 @@ function Group({
     // TODO удаление пользователя из группы
 
     // Удаление на клиенте
-    delUserHandler(group.id, userId)
+    delUserHandler(group._id, userId)
     setShowDelUserPopUpConfirm(false)
   }
 
   const delGroupHandler = () => {
-    const groupId = group.id
-    // TODO удаление группы
-    onCancel()
+    const groupId = group._id
+    // удаление группы
+    fetchRemoveGroup(groupId)
+      .then((res) => {
+        setNewGroups((prevValue) =>
+          [...prevValue].filter((tempGroup) => tempGroup._id !== group._id)
+        )
+        onCancel()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   const openEditGroupHandler = () => {
@@ -53,7 +64,7 @@ function Group({
   }
 
   const editedGroupHandler = () => {
-    //TODO отправка новых данных об изменение на сервер
+    // отправка новых данных об изменение на сервер
     setShowEditGroupPopUp(false)
   }
 
