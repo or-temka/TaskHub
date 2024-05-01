@@ -34,11 +34,11 @@ function Groups({ setPageName }) {
   }, [])
   // Получение данных о пользователях
   useEffect(() => {
-    setUsers(fetchUsers())
+    fetchUsers().then((users) => setUsers(users))
   }, [])
   // Получение данных о группах
   useEffect(() => {
-    setGroups(fetchGroups())
+    fetchGroups().then((groups) => setGroups(groups))
   }, [])
 
   if (!groups || !users) {
@@ -127,6 +127,7 @@ function Groups({ setPageName }) {
       )}
       {showAddGroup && (
         <AddGroup
+          setNewGroups={setGroups}
           onAddGroup={() => setShowAddGroup(false)}
           onCancel={() => setShowAddGroup(false)}
         />
