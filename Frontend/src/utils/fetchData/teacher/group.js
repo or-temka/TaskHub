@@ -1,8 +1,7 @@
-import axios from '../axios'
+import axios from '../../../axios'
 
-import { getUserToken } from './userTokenManager'
+import { getUserToken } from '../../userTokenManager'
 
-//#region Group
 export const fetchGroups = async () => {
   try {
     const { data } = await axios.get('/group/all', {
@@ -92,19 +91,3 @@ export const fetchEditGroup = async (groupId, newData) => {
     throw new Error(response.data.errorMsg)
   }
 }
-//#endregion
-
-//#region User
-export const fetchUsers = async () => {
-  try {
-    const { data } = await axios.get('/user/all', {
-      headers: {
-        Authorization: await getUserToken(),
-      },
-    })
-    return data
-  } catch (error) {
-    console.log(error)
-  }
-}
-//#endregion

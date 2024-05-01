@@ -5,7 +5,7 @@ import Input from '../../UI/Inputs/Input'
 import PrimaryButton from '../../UI/Buttons/PrimaryButton'
 import Button from '../../UI/Buttons/Button'
 
-import { fetchAddGroup, fetchGroup } from '../../../utils/fetchData'
+import { fetchAddGroup } from '../../../utils/fetchData/teacher/group'
 
 import styles from './AddGroup.module.scss'
 

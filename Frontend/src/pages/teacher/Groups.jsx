@@ -11,7 +11,8 @@ import GroupsContent from '../../components/teacher/GroupsContent'
 import Group from '../../components/teacher/PopUps/Group'
 import SpinLoader from '../../components/UI/Loaders/SpinLoader'
 
-import { fetchUsers, fetchGroups } from '../../utils/fetchData'
+import { fetchGroups } from '../../utils/fetchData/teacher/group'
+import { fetchUsers } from '../../utils/fetchData/teacher/user'
 
 import styles from './Groups.module.scss'
 

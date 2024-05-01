@@ -11,7 +11,10 @@ import PopUpConfirmation from '../../UI/PopUps/PopUpConfirmation'
 import styles from './Group.module.scss'
 import PrimaryButton from '../../UI/Buttons/PrimaryButton'
 import Input from '../../UI/Inputs/Input'
-import { fetchEditGroup, fetchRemoveGroup } from '../../../utils/fetchData'
+import {
+  fetchEditGroup,
+  fetchRemoveGroup,
+} from '../../../utils/fetchData/teacher/group'
 
 function Group({
   groupData,
