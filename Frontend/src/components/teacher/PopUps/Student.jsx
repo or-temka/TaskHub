@@ -14,7 +14,10 @@ import Select from '../../UI/Inputs/Select'
 
 import getTimeExecuteInfo from '../../../utils/getTimeExecuteInfo'
 
-import { fetchUserTasks } from '../../../utils/fetchData/teacher/userTask'
+import {
+  fetchUpdateUserTask,
+  fetchUserTasks,
+} from '../../../utils/fetchData/teacher/userTask'
 import { fetchTasks } from '../../../utils/fetchData/teacher/task'
 
 import styles from './Student.module.scss'
@@ -41,9 +44,13 @@ function Student({
   const [showEditDoneNotification, setShowEditDoneNotification] =
     useState(false)
   const [showTaskResultPopUp, setShowTaskResultPopUp] = useState(false)
+  const [showAddTaskAttemptConfirm, setShowAddTaskAttemptConfirm] =
+    useState(false)
 
   const [disabledEditButton, setDisabledEditButton] = useState(false)
   const [disabledDelButton, setDisabledDelButton] = useState(false)
+  const [disabledAddAttemptButton, setDisabledAddAttemptButton] =
+    useState(false)
 
   const [userFio, setUserFio] = useState(user.name)
   const [userLogin, setUserLogin] = useState(user.login)
@@ -73,7 +80,6 @@ function Student({
     selectGroups.push(groupObj)
   })
 
-  // Выборка задач пользователя
   // получение задач пользвователя
   useEffect(() => {
     fetchUserTasks(user._id)
@@ -156,7 +162,26 @@ function Student({
       })
       .catch((error) => console.log(error))
       .finally(() => setDisabledEditButton(false))
-    // Изменение данных на клиенте
+  }
+
+  // Обработка добавления попытки к заданию пользователя
+  const addAttemptHandler = (userTaskId) => {
+    setDisabledAddAttemptButton(true)
+    const userTask = userTasks.find((tempTask) => tempTask.id === userTaskId)
+    const oldAttemptsTaskCount = userTask.attemptsCount
+
+    fetchUpdateUserTask(user._id, userTaskId, {
+      attemptsCount: oldAttemptsTaskCount + 1,
+    })
+      .then(() => fetchUserTasks(user._id))
+      .then((res) => {
+        setUserTasks(res)
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        setDisabledAddAttemptButton(false)
+        setShowAddTaskAttemptConfirm(false)
+      })
   }
 
   return (
@@ -251,7 +276,10 @@ function Student({
                           onClick={() => setShowTaskResultPopUp(task.id)}
                         />
                       )}
-                      <Button title="+ Выдать ещё попытку" onClick={() => {}} />
+                      <Button
+                        title="+ Выдать ещё попытку"
+                        onClick={() => setShowAddTaskAttemptConfirm(task.id)}
+                      />
                     </div>
                   </div>
                 )
@@ -392,6 +420,17 @@ function Student({
         >
           <span>Пользователь успешно отредактирован!</span>
         </PopUp>
+      )}
+
+      {showAddTaskAttemptConfirm && (
+        <PopUpConfirmation
+          labelText="Вы действительно хотите добавить попытку к заданию пользователя?"
+          text="Убавить попытку можно будет только при поддержки системного администратора"
+          onClickBack={() => setShowAddTaskAttemptConfirm(false)}
+          onCancel={() => setShowAddTaskAttemptConfirm(false)}
+          onConfirm={() => addAttemptHandler(showAddTaskAttemptConfirm)}
+          loadingConfirm={disabledAddAttemptButton}
+        />
       )}
 
       {showTaskResultPopUp &&
