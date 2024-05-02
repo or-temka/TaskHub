@@ -10,6 +10,8 @@ function Select({
   onChange = () => {},
   containerClassName,
   defaultValue = 'default',
+  disabledNotEntered = false,
+  notEnteredColor = 'var(--text-color)',
   ...params
 }) {
   const [selectedValue, setSelectedValue] = useState(defaultValue)
@@ -33,7 +35,12 @@ function Select({
         ].join(' ')}
         value={selectedValue}
       >
-        <option value="default" className={styles.select__option} disabled>
+        <option
+          value="default"
+          className={styles.select__option}
+          disable={disabledNotEntered.toString()}
+          style={{ color: notEnteredColor }}
+        >
           {placeholder}
         </option>
         {options.map((option) => (
