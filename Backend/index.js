@@ -14,6 +14,7 @@ import * as GroupController from './controllers/GroupController.js'
 import * as TaskController from './controllers/TaskController.js'
 import * as UserTaskController from './controllers/UserTaskController.js'
 import * as GroupServices from './services/GroupServices.js'
+import * as UserServices from './services/UserServices.js'
 
 mongoose
   .connect(
@@ -30,19 +31,28 @@ app.use(cors())
 
 //#region services
 //#region group
-// Добавление пользователя в группу
+// Добавление пользователя в группу (также удаление из прошлой группы, если она была)
 app.patch(
   '/group/add_user_in_group/:groupId',
   checkAuth,
   checkIsTeacher,
   GroupServices.addStudentInGroup
 )
-
+// Удаление пользователя из группы (также удаляется данная группа у пользователя)
 app.patch(
   '/group/del_user_from_group/:groupId',
   checkAuth,
   checkIsTeacher,
   GroupServices.delStudentFromGroup
+)
+//#endregion
+//#region user
+// Удаление пользователя из группы только по id пользователя
+app.patch(
+  '/user/del_group_from_user/:userId',
+  checkAuth,
+  checkIsTeacher,
+  UserServices.delGroupFromStudent
 )
 //#endregion
 //#endregion
