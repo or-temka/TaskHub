@@ -50,15 +50,6 @@ function Students({ setPageName }) {
     )
   }
 
-  const setUserHandler = (userId) => {
-    const user = users.find((user) => user._id === userId)
-    setUser(user)
-  }
-  const setGroupHandler = (groupId) => {
-    const group = groups.find((group) => group._id === groupId)
-    setGroup(group)
-  }
-
   const openUserPopUpHandler = (userId) => {
     const user = users.find((user) => user._id === userId)
     const group = groups.find((group) => group._id === user.groupId)
@@ -105,6 +96,8 @@ function Students({ setPageName }) {
           user={user}
           group={group}
           groups={groups}
+          setNewUsers={setUsers}
+          setNewGroups={setGroups}
           onCancel={() => setShowStudentPopUp(false)}
         />
       )}

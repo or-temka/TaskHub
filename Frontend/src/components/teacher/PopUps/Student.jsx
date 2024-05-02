@@ -18,11 +18,19 @@ import { fetchUserTasks } from '../../../utils/fetchData/teacher/userTask'
 import { fetchTasks } from '../../../utils/fetchData/teacher/task'
 
 import styles from './Student.module.scss'
+import {
+  fetchAddStudentInGroup,
+  fetchEditUser,
+  fetchRemoveStudentFromGroup,
+} from '../../../utils/fetchData/teacher/user'
+import { fetchGroups } from '../../../utils/fetchData/teacher/group'
 
 function Student({
   user,
   group,
   groups,
+  setNewUsers = () => {},
+  setNewGroups = () => {},
   onCancel = () => {},
   className,
   ...params
@@ -33,13 +41,16 @@ function Student({
     useState(false)
   const [showTaskResultPopUp, setShowTaskResultPopUp] = useState(false)
 
+  const [disabledEditButton, setDisabledEditButton] = useState(false)
+
   const [userFio, setUserFio] = useState(user.name)
+  const [userLogin, setUserLogin] = useState(user.login)
   const [userPassword, setUserPassword] = useState(user.password)
 
   const [userTasks, setUserTasks] = useState([])
   const [originalTasks, setOriginalTasks] = useState([])
 
-  const [selectedGroup, setSelectedGroup] = useState()
+  const [selectedGroup, setSelectedGroup] = useState(user.groupId || 'default')
 
   // //Для формы редактирования
   const openEditUserPopUp = () => {
@@ -84,8 +95,46 @@ function Student({
 
   // Обработка изменения данных о пользователе
   const editUserHandler = () => {
-    // TODO изменение данных о пользователе на сервере
-    setShowEditDoneNotification(true)
+    setDisabledEditButton(true)
+    // изменение данных о пользователе на сервере
+    const newUserData = {
+      name: userFio,
+      login: userLogin,
+      password: userPassword,
+    }
+
+    // Изменение студента и его группы и самой группы
+    let newUser
+    fetchEditUser(user._id, newUserData)
+      .then((res) => {
+        newUser = res
+      })
+      .then(async () => {
+        if (selectedGroup === 'default') {
+          // Значит выбрали, что пользователь будет не в группе
+          if (newUser.groupId) {
+            await fetchRemoveStudentFromGroup(user._id)
+            delete newUser.groupId
+          }
+        } else {
+          await fetchAddStudentInGroup(user._id, selectedGroup)
+          newUser.groupId = selectedGroup
+        }
+
+        return await fetchGroups()
+      })
+      .then((resGroups) => {
+        setNewGroups(resGroups)
+        setNewUsers((prev) =>
+          [...prev].map((tempUser) =>
+            tempUser._id === user._id ? newUser : tempUser
+          )
+        )
+        setShowEditDoneNotification(true)
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setDisabledEditButton(false))
+    // Изменение данных на клиенте
   }
 
   return (
@@ -270,9 +319,15 @@ function Student({
               />
             </div>
             <div className={styles.editStudent__inputLine}>
-              <span className={styles.editStudent__inputTitle}>
-                Пароль от аккаунта:
-              </span>
+              <span className={styles.editStudent__inputTitle}>Логин:</span>
+              <Input
+                placeholder="Введите логин от аккаунта"
+                value={userLogin}
+                onChange={(e) => setUserLogin(e.target.value)}
+              />
+            </div>
+            <div className={styles.editStudent__inputLine}>
+              <span className={styles.editStudent__inputTitle}>Пароль:</span>
               <Input
                 placeholder="Введите пароль от аккаунта"
                 value={userPassword}
@@ -284,10 +339,11 @@ function Student({
                 Выберите группу:
               </span>
               <Select
-                placeholder="Выберите группу"
+                placeholder="Нет группы"
                 options={selectGroups}
                 onChange={(value) => setSelectedGroup(value)}
                 defaultValue={user.groupId}
+                notEnteredColor="red"
               />
             </div>
           </div>
@@ -295,6 +351,7 @@ function Student({
             <PrimaryButton
               title="Сохранить изменения"
               onClick={editUserHandler}
+              loading={disabledEditButton}
             />
             <Button
               title="Отмена"
