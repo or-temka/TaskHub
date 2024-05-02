@@ -71,3 +71,16 @@ export const fetchRemoveStudentFromGroup = async (userId) => {
     console.log(error)
   }
 }
+
+export const fetchDeleteUser = async (userId) => {
+  try {
+    const { data } = await axios.delete(`/user/${userId}`, {
+      headers: {
+        Authorization: await getUserToken(),
+      },
+    })
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}

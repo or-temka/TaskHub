@@ -20,6 +20,7 @@ import { fetchTasks } from '../../../utils/fetchData/teacher/task'
 import styles from './Student.module.scss'
 import {
   fetchAddStudentInGroup,
+  fetchDeleteUser,
   fetchEditUser,
   fetchRemoveStudentFromGroup,
 } from '../../../utils/fetchData/teacher/user'
@@ -42,6 +43,7 @@ function Student({
   const [showTaskResultPopUp, setShowTaskResultPopUp] = useState(false)
 
   const [disabledEditButton, setDisabledEditButton] = useState(false)
+  const [disabledDelButton, setDisabledDelButton] = useState(false)
 
   const [userFio, setUserFio] = useState(user.name)
   const [userLogin, setUserLogin] = useState(user.login)
@@ -89,8 +91,28 @@ function Student({
 
   // Обработка удаления пользователя
   const delUserHandler = () => {
-    // TODO удаление пользователя из бд
-    onCancel()
+    setDisabledDelButton(true)
+    fetchDeleteUser(user._id)
+      .then((res) => {
+        setNewUsers((prev) =>
+          [...prev].filter((tempUser) => tempUser._id !== user._id)
+        )
+        if (user.groupId) {
+          setNewGroups((prev) =>
+            [...prev].map((tempGroup) => {
+              if (tempGroup._id !== user.groupId) return tempGroup
+              tempGroup.studentsId = tempGroup.studentsId.filter(
+                (studentId) => studentId !== user._id
+              )
+              return tempGroup
+            })
+          )
+        }
+
+        onCancel()
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setDisabledDelButton(false))
   }
 
   // Обработка изменения данных о пользователе
@@ -299,6 +321,7 @@ function Student({
           onCancel={() => setShowDelUserPopUpConfirm(false)}
           onClickBack={() => setShowDelUserPopUpConfirm(false)}
           onConfirm={delUserHandler}
+          loadingConfirm={disabledDelButton}
         />
       )}
 
