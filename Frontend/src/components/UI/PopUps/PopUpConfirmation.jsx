@@ -11,6 +11,7 @@ function PopUpConfirmation({
   text = '',
   confirmBtnText = 'Подтвердить',
   cancelBtnText = 'Отмена',
+  loadingConfirm = false,
   onConfirm = () => {},
   onClickBack = () => {},
   onCancel,
@@ -61,6 +62,7 @@ function PopUpConfirmation({
             title={confirmBtnText}
             className={confirmButtonClassName}
             onClick={onConfirm}
+            loading={loadingConfirm}
           />
           <Button
             title={cancelBtnText}

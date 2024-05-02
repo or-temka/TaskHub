@@ -123,6 +123,9 @@ function Groups({ setPageName }) {
       {/* PopUp`s for header*/}
       {showAddStudent && (
         <AddStudent
+          groups={groups}
+          setNewUsers={setUsers}
+          setNewGroups={setGroups}
           onAddStudent={() => setShowAddStudent(false)}
           onCancel={() => setShowAddStudent(false)}
         />

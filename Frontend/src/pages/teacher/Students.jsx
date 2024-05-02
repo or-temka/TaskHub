@@ -8,12 +8,13 @@ import AddStudent from '../../components/teacher/PopUps/AddStudent'
 import AddGroup from '../../components/teacher/PopUps/AddGroup'
 import AddStudentsViaStrings from '../../components/teacher/PopUps/AddStudentsViaStrings'
 import StudentsContent from '../../components/teacher/StudentsContent'
+import Student from '../../components/teacher/PopUps/Student'
+import SpinLoader from '../../components/UI/Loaders/SpinLoader'
 
-import groups from '../../data/groups'
-import users from '../../data/users'
+import { fetchGroups } from '../../utils/fetchData/teacher/group'
+import { fetchUsers } from '../../utils/fetchData/teacher/user'
 
 import styles from './Students.module.scss'
-import Student from '../../components/teacher/PopUps/Student'
 
 function Students({ setPageName }) {
   const navigate = useNavigate()
@@ -24,31 +25,40 @@ function Students({ setPageName }) {
     useState(false)
   const [showStudentPopUp, setShowStudentPopUp] = useState(false)
 
-  // Группы и функции для их установки
+  const [users, setUsers] = useState()
+  const [groups, setGroups] = useState()
   const [user, setUser] = useState({})
   const [group, setGroup] = useState({})
-
-  const setUserHandler = (userId) => {
-    const user = users.find((user) => user.id === userId)
-    setUser(user)
-  }
-  const setGroupHandler = (groupId) => {
-    const group = groups.find((group) => group.id === groupId)
-    setGroup(group)
-  }
-
-  const openUserPopUpHandler = (userId) => {
-    const user = users.find((user) => user.id === userId)
-    const group = groups.find((group) => group.id === user.groupId)
-
-    setUser(user)
-    setGroup(group)
-    setShowStudentPopUp(true)
-  }
 
   useEffect(() => {
     setPageName('Студенты')
   }, [])
+
+  // Получение данных о пользователях
+  useEffect(() => {
+    fetchUsers().then((users) => setUsers(users))
+  }, [])
+  // Получение данных о группах
+  useEffect(() => {
+    fetchGroups().then((groups) => setGroups(groups))
+  }, [])
+
+  if (!groups || !users) {
+    return (
+      <div className="wrapper spinLoaderWrapper">
+        <SpinLoader />
+      </div>
+    )
+  }
+
+  const openUserPopUpHandler = (userId) => {
+    const user = users.find((user) => user._id === userId)
+    const group = groups.find((group) => group._id === user.groupId)
+
+    setUser(user)
+    setGroup(group ? group : null)
+    setShowStudentPopUp(true)
+  }
 
   return (
     <>
@@ -87,6 +97,8 @@ function Students({ setPageName }) {
           user={user}
           group={group}
           groups={groups}
+          setNewUsers={setUsers}
+          setNewGroups={setGroups}
           onCancel={() => setShowStudentPopUp(false)}
         />
       )}
@@ -94,12 +106,16 @@ function Students({ setPageName }) {
       {/* PopUp`s */}
       {showAddStudent && (
         <AddStudent
+          groups={groups}
+          setNewUsers={setUsers}
+          setNewGroups={setGroups}
           onAddStudent={() => setShowAddStudent(false)}
           onCancel={() => setShowAddStudent(false)}
         />
       )}
       {showAddGroup && (
         <AddGroup
+          setNewGroups={setGroups}
           onAddGroup={() => setShowAddGroup(false)}
           onCancel={() => setShowAddGroup(false)}
         />

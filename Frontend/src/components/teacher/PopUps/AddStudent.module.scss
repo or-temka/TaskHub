@@ -25,6 +25,11 @@
     margin-left: 10px;
   }
 
+  &__wrongText {
+    color: var(--error-text-color);
+    margin-left: 10px;
+  }
+
   &__input {
   }
 

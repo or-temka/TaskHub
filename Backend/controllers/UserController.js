@@ -4,7 +4,10 @@ import { validationResult } from 'express-validator'
 import jwt from 'jsonwebtoken'
 
 import { serverError, serverLog, serverMsg } from '../utils/serverLog.js'
+import generatePassword from '../utils/generatePassword.js'
+
 import UserModel from '../models/User.js'
+import GroupModel from '../models/Group.js'
 
 export const reg = async (req, res) => {
   try {
@@ -13,10 +16,13 @@ export const reg = async (req, res) => {
       return res.status(400).json(errors.array())
     }
 
+    const groupId = req.body.groupId
+
     const doc = new UserModel({
       name: req.body.name,
       login: req.body.login,
-      password: req.body.password,
+      password: req.body.password || generatePassword(12),
+      ...(groupId && { groupId }),
     })
 
     let user
@@ -29,16 +35,21 @@ export const reg = async (req, res) => {
       return
     }
 
-    const token = jwt.sign(
-      {
-        _id: user._id,
-        role: user.role,
-      },
-      TOKEN_KEY
-    )
+    // Добавление пользователя в группу, если они указана при создании
+    if (groupId) {
+      const existingGroup = await GroupModel.findById(groupId)
+      await GroupModel.findOneAndUpdate(
+        { _id: groupId },
+        {
+          $set: {
+            studentsId: [...existingGroup.studentsId, `${user._id}`],
+          },
+        }
+      )
+    }
 
     serverLog(`Новый пользователь: ${user.name}`)
-    res.json({ token: token })
+    res.json(user)
   } catch (error) {
     serverError(error)
     res
@@ -254,6 +265,31 @@ export const deleteUser = async (req, res) => {
   try {
     const userId = req.params.id
 
+    const user = await UserModel.findById(userId)
+    if (!user) {
+      serverMsg(`Попытка удалить несуществующий профиль с id ${userId}`)
+      return res.status(404).json({
+        errorMsg: 'Профиль не найден',
+      })
+    }
+
+    // Удаление пользователя из группы (если он в ней есть)
+    const userGroupId = user.groupId
+    if (userGroupId) {
+      const existingGroup = await GroupModel.findById(userGroupId)
+      await GroupModel.findOneAndUpdate(
+        { _id: userGroupId },
+        {
+          $set: {
+            studentsId: [...existingGroup.studentsId].filter(
+              (uId) => uId !== userId
+            ),
+          },
+        }
+      )
+    }
+
+    // Удаление самого пользователя
     UserModel.findOneAndDelete({ _id: userId })
       .then((doc) => {
         if (!doc) {
@@ -264,7 +300,7 @@ export const deleteUser = async (req, res) => {
         }
 
         serverLog(`Удален пользователь: ${doc.name}`)
-        res.json({ deleted: true })
+        res.json()
       })
       .catch((error) => {
         serverError(error)
