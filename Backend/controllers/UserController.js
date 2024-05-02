@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 
 import { serverError, serverLog, serverMsg } from '../utils/serverLog.js'
 import UserModel from '../models/User.js'
+import GroupModel from '../models/Group.js'
 
 export const reg = async (req, res) => {
   try {
@@ -254,6 +255,31 @@ export const deleteUser = async (req, res) => {
   try {
     const userId = req.params.id
 
+    const user = await UserModel.findById(userId)
+    if (!user) {
+      serverMsg(`Попытка удалить несуществующий профиль с id ${userId}`)
+      return res.status(404).json({
+        errorMsg: 'Профиль не найден',
+      })
+    }
+
+    // Удаление пользователя из группы (если он в ней есть)
+    const userGroupId = user.groupId
+    if (userGroupId) {
+      const existingGroup = await GroupModel.findById(userGroupId)
+      await GroupModel.findOneAndUpdate(
+        { _id: userGroupId },
+        {
+          $set: {
+            studentsId: [...existingGroup.studentsId].filter(
+              (uId) => uId !== userId
+            ),
+          },
+        }
+      )
+    }
+
+    // Удаление самого пользователя
     UserModel.findOneAndDelete({ _id: userId })
       .then((doc) => {
         if (!doc) {
@@ -264,7 +290,7 @@ export const deleteUser = async (req, res) => {
         }
 
         serverLog(`Удален пользователь: ${doc.name}`)
-        res.json({ deleted: true })
+        res.json()
       })
       .catch((error) => {
         serverError(error)
