@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 import PopUp from '../../UI/PopUps/PopUp'
 import ContentContainer from '../../frames/ContentContainer'
 import DangerButtonWithIcon from '../../UI/Buttons/DangerButtonWithIcon'
@@ -6,17 +8,16 @@ import ColorTextMsg from '../../UI/Texts/ColorTextMsg'
 import Button from '../../UI/Buttons/Button'
 import FrameContent from '../../frames/FrameContent'
 import PopUpConfirmation from '../../UI/PopUps/PopUpConfirmation'
-
-import { userTasks as userTasksData } from '../../../data/userTasks'
-import { tasks as tasksData } from '../../../data/tasks'
-
-import getTimeExecuteInfo from '../../../utils/getTimeExecuteInfo'
-
-import styles from './Student.module.scss'
-import { useEffect, useState } from 'react'
 import PrimaryButton from '../../UI/Buttons/PrimaryButton'
 import Input from '../../UI/Inputs/Input'
 import Select from '../../UI/Inputs/Select'
+
+import getTimeExecuteInfo from '../../../utils/getTimeExecuteInfo'
+
+import { fetchUserTasks } from '../../../utils/fetchData/teacher/userTask'
+import { fetchTasks } from '../../../utils/fetchData/teacher/task'
+
+import styles from './Student.module.scss'
 
 function Student({
   user,
@@ -35,6 +36,11 @@ function Student({
   const [userFio, setUserFio] = useState(user.name)
   const [userPassword, setUserPassword] = useState(user.password)
 
+  const [userTasks, setUserTasks] = useState([])
+  const [originalTasks, setOriginalTasks] = useState([])
+
+  const [selectedGroup, setSelectedGroup] = useState()
+
   // //Для формы редактирования
   const openEditUserPopUp = () => {
     setUserFio(user.name)
@@ -43,24 +49,32 @@ function Student({
   }
 
   // Для выбора группы при редактировании студента
-  const [selectedGroup, setSelectedGroup] = useState()
   const selectGroups = []
   groups.forEach((group) => {
     const studentsCount = group.studentsId.length
 
     const groupObj = {
-      value: group.id,
+      value: group._id,
       label: group.name + (studentsCount ? ` (${studentsCount})` : ''),
     }
     selectGroups.push(groupObj)
   })
 
   // Выборка задач пользователя
-  const userTasks = userTasksData.filter((task) =>
-    user.tasksId.includes(task.id)
-  )
+  // получение задач пользвователя
+  useEffect(() => {
+    fetchUserTasks(user._id)
+      .then((res) => {
+        setUserTasks(res)
+      })
+      .catch((error) => console.log(error))
 
-  const originalTasks = tasksData
+    fetchTasks()
+      .then((res) => {
+        setOriginalTasks(res)
+      })
+      .catch((error) => console.log(error))
+  }, [])
 
   // Обработка удаления пользователя
   const delUserHandler = () => {
@@ -95,12 +109,14 @@ function Student({
             <div className={styles.student__textInfo}>
               <h6 className={styles.student__studentName}>{user.name}</h6>
               <div className={styles.student__infoLine}>
-                <span className={styles.student__infoLabel}>
-                  Группа:{' '}
-                  <span className={styles.student__infoValue}>
-                    {group.name}
+                {group && (
+                  <span className={styles.student__infoLabel}>
+                    Группа:{' '}
+                    <span className={styles.student__infoValue}>
+                      {group.name}
+                    </span>
                   </span>
-                </span>
+                )}
               </div>
             </div>
           </div>
@@ -125,8 +141,9 @@ function Student({
             >
               {userTasks.map((task) => {
                 const originalTask = originalTasks.find(
-                  (originalTask) => originalTask.id === task.originalTaskId
+                  (originalTask) => originalTask._id === task.originalTaskId
                 )
+                if (!originalTask) return
                 return (
                   <div key={task.id} className={styles.task}>
                     <div className={styles.task__header}>
@@ -197,7 +214,9 @@ function Student({
                   <span className={styles.student__infoLabel}>
                     Среднее время выполнения задания:{' '}
                     <span className={styles.student__infoValue}>
-                      {getTimeExecuteInfo(user.statistics.avarageTaskTime)}
+                      {user.statistics.avarageTaskTime
+                        ? getTimeExecuteInfo(user.statistics.avarageTaskTime)
+                        : user.statistics.avarageTaskTime}
                     </span>
                   </span>
                 </div>
@@ -205,13 +224,19 @@ function Student({
                   <span className={styles.student__infoLabel}>
                     Среднее время ответа на один вопрос:{' '}
                     <span className={styles.student__infoValue}>
-                      {getTimeExecuteInfo(user.statistics.avarageQuestionTime)}
+                      {user.statistics.avarageQuestionTime
+                        ? getTimeExecuteInfo(
+                            user.statistics.avarageQuestionTime
+                          )
+                        : user.statistics.avarageQuestionTime}
                     </span>
                   </span>
                 </div>
               </>
             ) : (
-              ''
+              <span className={styles.student__infoLabel}>
+                Пользователь ещё не выполнил ни одного задания.
+              </span>
             )}
           </ContentContainer>
         </div>

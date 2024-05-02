@@ -64,7 +64,7 @@ function Students({ setPageName }) {
     const group = groups.find((group) => group._id === user.groupId)
 
     setUser(user)
-    setGroup(group)
+    setGroup(group ? group : null)
     setShowStudentPopUp(true)
   }
 
