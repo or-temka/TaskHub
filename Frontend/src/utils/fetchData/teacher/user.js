@@ -15,6 +15,24 @@ export const fetchUsers = async () => {
   }
 }
 
+export const fetchAddUser = async (newUserData) => {
+  try {
+    return await axios.post('/user/reg', newUserData, {
+      headers: {
+        Authorization: await getUserToken(),
+      },
+    })
+  } catch (error) {
+    const response = error.response
+    if (response.status === 400) {
+      if (Array.isArray(response.data)) {
+        throw new Error(response.data[0].msg)
+      }
+    }
+    throw new Error(response.data.errorMsg)
+  }
+}
+
 export const fetchEditUser = async (userId, userData) => {
   try {
     const { data } = await axios.patch(

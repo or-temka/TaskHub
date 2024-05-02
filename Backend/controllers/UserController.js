@@ -4,6 +4,8 @@ import { validationResult } from 'express-validator'
 import jwt from 'jsonwebtoken'
 
 import { serverError, serverLog, serverMsg } from '../utils/serverLog.js'
+import generatePassword from '../utils/generatePassword.js'
+
 import UserModel from '../models/User.js'
 import GroupModel from '../models/Group.js'
 
@@ -14,10 +16,13 @@ export const reg = async (req, res) => {
       return res.status(400).json(errors.array())
     }
 
+    const groupId = req.body.groupId
+
     const doc = new UserModel({
       name: req.body.name,
       login: req.body.login,
-      password: req.body.password,
+      password: req.body.password || generatePassword(12),
+      ...(groupId && { groupId }),
     })
 
     let user
@@ -30,16 +35,21 @@ export const reg = async (req, res) => {
       return
     }
 
-    const token = jwt.sign(
-      {
-        _id: user._id,
-        role: user.role,
-      },
-      TOKEN_KEY
-    )
+    // Добавление пользователя в группу, если они указана при создании
+    if (groupId) {
+      const existingGroup = await GroupModel.findById(groupId)
+      await GroupModel.findOneAndUpdate(
+        { _id: groupId },
+        {
+          $set: {
+            studentsId: [...existingGroup.studentsId, `${user._id}`],
+          },
+        }
+      )
+    }
 
     serverLog(`Новый пользователь: ${user.name}`)
-    res.json({ token: token })
+    res.json(user)
   } catch (error) {
     serverError(error)
     res

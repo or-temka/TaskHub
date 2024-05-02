@@ -21,6 +21,7 @@ export const regUserValidation = [
     .withMessage('Логин должен содержать от 1 до 30 символов'),
 
   body('password')
+    .optional()
     .isString()
     .withMessage('Пароль должен быть строкой')
     .isLength({

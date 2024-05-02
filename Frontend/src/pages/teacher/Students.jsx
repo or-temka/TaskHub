@@ -8,12 +8,13 @@ import AddStudent from '../../components/teacher/PopUps/AddStudent'
 import AddGroup from '../../components/teacher/PopUps/AddGroup'
 import AddStudentsViaStrings from '../../components/teacher/PopUps/AddStudentsViaStrings'
 import StudentsContent from '../../components/teacher/StudentsContent'
-
-import styles from './Students.module.scss'
 import Student from '../../components/teacher/PopUps/Student'
 import SpinLoader from '../../components/UI/Loaders/SpinLoader'
+
 import { fetchGroups } from '../../utils/fetchData/teacher/group'
 import { fetchUsers } from '../../utils/fetchData/teacher/user'
+
+import styles from './Students.module.scss'
 
 function Students({ setPageName }) {
   const navigate = useNavigate()
@@ -105,12 +106,16 @@ function Students({ setPageName }) {
       {/* PopUp`s */}
       {showAddStudent && (
         <AddStudent
+          groups={groups}
+          setNewUsers={setUsers}
+          setNewGroups={setGroups}
           onAddStudent={() => setShowAddStudent(false)}
           onCancel={() => setShowAddStudent(false)}
         />
       )}
       {showAddGroup && (
         <AddGroup
+          setNewGroups={setGroups}
           onAddGroup={() => setShowAddGroup(false)}
           onCancel={() => setShowAddGroup(false)}
         />
