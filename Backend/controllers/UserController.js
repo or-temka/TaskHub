@@ -74,7 +74,7 @@ export const regMany = async (req, res) => {
     // Создание группы, если указана
     let group
     // Создаем сессию, чтобы не создавать группу в случае неудачного создания пользователей
-    const sessionCreateGroup = await mongoose.startSession()
+    let sessionCreateGroup
     // Используем сессию, чтобы группа не создалась, если не создадутся пользователи
     if (groupCource && !groupName) {
       serverMsg(
@@ -92,6 +92,7 @@ export const regMany = async (req, res) => {
         })
       }
       //Само создание
+      sessionCreateGroup = await mongoose.startSession()
       sessionCreateGroup.startTransaction()
 
       const groupDoc = new GroupModel({
@@ -133,17 +134,21 @@ export const regMany = async (req, res) => {
         session: sessionCreateUsers,
       })
       // Если все прошло успешно, фиксируем транзакцию
-      await sessionCreateGroup.commitTransaction()
+      if (sessionCreateGroup) {
+        await sessionCreateGroup.commitTransaction()
+        sessionCreateGroup.endSession()
+      }
       await sessionCreateUsers.commitTransaction()
-      sessionCreateGroup.endSession()
       sessionCreateUsers.endSession()
     } catch (error) {
       // Если имя пользователя уже занято
       if (error.code === 11000) {
         // Если произошла ошибка, откатываем транзакцию и удаляем всех созданных пользователей
-        await sessionCreateGroup.abortTransaction()
+        if (sessionCreateGroup) {
+          await sessionCreateGroup.abortTransaction()
+          sessionCreateGroup.endSession()
+        }
         await sessionCreateUsers.abortTransaction()
-        sessionCreateGroup.endSession()
         sessionCreateUsers.endSession()
 
         // GroupModel.findOneAndDelete({ _id: `${groupId}` }).then((res) => {})
@@ -164,7 +169,7 @@ export const regMany = async (req, res) => {
 
     // Добавление пользователей в группу (если группа указана)
     if (groupId) {
-      const usersId = [...savedUsers].map((user) => user._id)
+      const usersId = [...savedUsers].map((user) => `${user._id}`)
       await GroupModel.findOneAndUpdate(
         { _id: groupId },
         {
@@ -176,7 +181,7 @@ export const regMany = async (req, res) => {
     }
 
     serverLog(`Успешно созданны пользователи: ${users}`)
-    res.json(savedUsers)
+    res.json({ newUsers: savedUsers, newGroup: group })
   } catch (error) {
     serverError(error)
     res.status(500).json({

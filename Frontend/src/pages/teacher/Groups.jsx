@@ -139,6 +139,8 @@ function Groups({ setPageName }) {
       )}
       {showAddStudentsViaStrings && (
         <AddStudentsViaStrings
+          setNewUsers={setUsers}
+          setNewGroups={setGroups}
           onCancel={() => setShowAddStudentsViaStrings(false)}
         />
       )}
