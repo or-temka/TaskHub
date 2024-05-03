@@ -1,25 +1,44 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import ContentHeader from '../../components/frames/ContentHeader'
 import TaskInfoComponent from '../../components/teacher/TaskInfo'
 import ContentHeaderLabel from '../../components/frames/ContentHeaderLabel'
 import TaskAdoptStatistic from '../../components/student/TaskAdoptStatistic'
+import SpinLoader from '../../components/UI/Loaders/SpinLoader'
 
-import { tasks } from '../../data/tasks'
 import { files } from '../../data/files'
+import { fetchTask } from '../../utils/fetchData/teacher/task'
 
 import styles from './TaskInfo.module.scss'
 
 function TaskInfo({ setPageName }) {
-  const taskId = +useParams().taskId
+  const taskId = useParams().taskId
 
-  const task = tasks.find((task) => task.id === taskId)
-  const taskFiles = files.filter((file) => task.filesId.includes(file.id))
+  const [task, setTask] = useState()
+  const [taskFiles, setTaskFiles] = useState()
 
+  const [taskLoading, setTaskLoading] = useState(true)
+
+  // Получение задания
   useEffect(() => {
-    setPageName(`Задание "${task.name}"`)
+    fetchTask(taskId)
+      .then((res) => {
+        setTaskFiles(files.filter((file) => res.filesId.includes(file.id)))
+        setTask(res)
+        setPageName(`Задание "${res.name}"`)
+        setTaskLoading(false)
+      })
+      .catch((err) => console.log(err))
   }, [])
+
+  if (taskLoading) {
+    return (
+      <div className="wrapper spinLoaderWrapper">
+        <SpinLoader />
+      </div>
+    )
+  }
 
   return (
     <div className={['wrapper', styles.taskInfo].join(' ')}>
@@ -32,7 +51,7 @@ function TaskInfo({ setPageName }) {
         className={styles.taskInfo__labelHeader}
       />
       <TaskAdoptStatistic
-        taskStatistic={task.statistic}
+        taskStatistic={task.statistic[0]}
         questionsCount={task.questions.length}
       />
     </div>

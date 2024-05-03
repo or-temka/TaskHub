@@ -12,10 +12,13 @@ function Tasks({ tasks, className, ...params }) {
   return (
     <div {...params} className={[styles.tasks, className].join(' ')}>
       {tasks.map((task) => (
-        <ContentContainer key={task.id} className={styles.tasks__task}>
+        <ContentContainer key={task._id} className={styles.tasks__task}>
           <div className={styles.tasks__labelContainer}>
             <TaskSVG />
-            <Link to={`../task/${task.id}`} className={styles.tasks__labelLink}>
+            <Link
+              to={`../task/${task._id}`}
+              className={styles.tasks__labelLink}
+            >
               <h6 className={styles.tasks__label}>
                 Проверочная работа по теме "{task.name}"
               </h6>
@@ -25,7 +28,7 @@ function Tasks({ tasks, className, ...params }) {
             <Button
               title="Подробнее"
               onClick={() =>
-                navigate(`../task/${task.id}`, { relative: 'route' })
+                navigate(`../task/${task._id}`, { relative: 'route' })
               }
             />
           </div>
