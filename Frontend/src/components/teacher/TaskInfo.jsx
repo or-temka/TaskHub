@@ -82,22 +82,24 @@ function TaskInfo({ task, taskFiles, className, ...params }) {
             <span className={'text-bold'}>Инструкции: </span>
             <span className={'paragraph'}>{task.instruction}</span>
           </TextFocus>
-          <TextFocus
-            className={[
-              styles.taskInfo__focusContainer,
-              styles.taskInfo__files,
-            ].join(' ')}
-          >
-            <span className={'text-bold'}>Справочный материал: </span>
-            {taskFiles.map((file) => (
-              <File
-                key={file.id}
-                extension={file.extension}
-                fileName={`${file.name}.${file.extension}`}
-                downloadLink={`/assets/files/${file.type}/${file.fileName}.${file.extension}`}
-              />
-            ))}
-          </TextFocus>
+          {taskFiles.length !== 0 && (
+            <TextFocus
+              className={[
+                styles.taskInfo__focusContainer,
+                styles.taskInfo__files,
+              ].join(' ')}
+            >
+              <span className={'text-bold'}>Справочный материал: </span>
+              {taskFiles.map((file) => (
+                <File
+                  key={file.id}
+                  extension={file.extension}
+                  fileName={`${file.name}.${file.extension}`}
+                  downloadLink={`/assets/files/${file.type}/${file.fileName}.${file.extension}`}
+                />
+              ))}
+            </TextFocus>
+          )}
         </div>
       </main>
     </ContentContainer>
