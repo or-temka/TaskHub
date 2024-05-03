@@ -146,6 +146,17 @@ export const deleteGroup = async (req, res) => {
   try {
     const groupId = req.params.id
 
+    // Удаление группы у пользователей, которые в ней состоят
+    const group = await GroupModel.findById(groupId)
+    const groupStudentsId = group.studentsId
+    groupStudentsId.forEach(async (studentId) => {
+      await UserModel.findOneAndUpdate(
+        { _id: studentId },
+        { $unset: { groupId: '' } }
+      )
+    })
+
+    // Удаление самой группы
     GroupModel.findOneAndDelete({ _id: groupId })
       .then((doc) => {
         if (!doc) {
