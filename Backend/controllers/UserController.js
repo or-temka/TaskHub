@@ -5,9 +5,11 @@ import jwt from 'jsonwebtoken'
 
 import { serverError, serverLog, serverMsg } from '../utils/serverLog.js'
 import generatePassword from '../utils/generatePassword.js'
+import transliterateFioToLogin from '../utils/transliterateFioToLogin.js'
 
 import UserModel from '../models/User.js'
 import GroupModel from '../models/Group.js'
+import mongoose from 'mongoose'
 
 export const reg = async (req, res) => {
   try {
@@ -55,6 +57,137 @@ export const reg = async (req, res) => {
     res
       .status(500)
       .json({ errorMsg: 'Произошла ошибка регистрации пользователя' })
+  }
+}
+
+export const regMany = async (req, res) => {
+  try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors.array())
+    }
+
+    const groupName = req.body.groupName
+    const groupCource = req.body.groupCource
+    const users = req.body.users
+
+    // Создание группы, если указана
+    let group
+    // Создаем сессию, чтобы не создавать группу в случае неудачного создания пользователей
+    let sessionCreateGroup
+    // Используем сессию, чтобы группа не создалась, если не создадутся пользователи
+    if (groupCource && !groupName) {
+      serverMsg(
+        `Попытка создания пользователей: не указана группа, но указан курс`
+      )
+      return res.status(409).json({
+        errorMsg: 'Если вы указываете курс - необходимо также указать группу',
+      })
+    }
+    if (groupName) {
+      if (!groupCource) {
+        serverMsg(`Попытка создания пользователей: не указан курс группы`)
+        return res.status(409).json({
+          errorMsg: 'Если вы указываете группу - необходимо также указать курс',
+        })
+      }
+      //Само создание
+      sessionCreateGroup = await mongoose.startSession()
+      sessionCreateGroup.startTransaction()
+
+      const groupDoc = new GroupModel({
+        name: groupName,
+        cource: groupCource,
+      })
+
+      try {
+        group = await groupDoc.save({
+          session: sessionCreateGroup,
+        })
+      } catch (error) {
+        await sessionCreateGroup.abortTransaction()
+        sessionCreateGroup.endSession()
+        serverMsg(`Попытка создать группу: название ${groupName} уже занято`)
+        res
+          .status(409)
+          .json({ errorMsg: 'Группа с таким названием уже существует' })
+        return
+      }
+    }
+    const groupId = group?._id
+
+    // Создание пользователей
+    const doneUsers = users.map((userName) => {
+      return new UserModel({
+        name: userName,
+        login: transliterateFioToLogin(userName),
+        password: generatePassword(12),
+        ...(groupId && { groupId }),
+      })
+    })
+
+    let savedUsers
+    const sessionCreateUsers = await mongoose.startSession()
+    sessionCreateUsers.startTransaction()
+    try {
+      savedUsers = await UserModel.insertMany(doneUsers, {
+        session: sessionCreateUsers,
+      })
+      // Если все прошло успешно, фиксируем транзакцию
+      if (sessionCreateGroup) {
+        await sessionCreateGroup.commitTransaction()
+        sessionCreateGroup.endSession()
+      }
+      await sessionCreateUsers.commitTransaction()
+      sessionCreateUsers.endSession()
+    } catch (error) {
+      // Если имя пользователя уже занято
+      if (error.code === 11000) {
+        // Если произошла ошибка, откатываем транзакцию и удаляем всех созданных пользователей
+        if (sessionCreateGroup) {
+          await sessionCreateGroup.abortTransaction()
+          sessionCreateGroup.endSession()
+        }
+        await sessionCreateUsers.abortTransaction()
+        sessionCreateUsers.endSession()
+
+        // GroupModel.findOneAndDelete({ _id: `${groupId}` }).then((res) => {})
+        const errorLogin = error.writeErrors[0].err.op.login
+        const errorUserName = error.writeErrors[0].err.op.name
+        serverMsg(
+          `Попытка создания пользователей: пользователь ${errorUserName} с логином ${errorLogin} уже существует`
+        )
+        return res.status(409).json({
+          errorMsg: `Пользователь ${errorUserName} с логином ${errorLogin} уже существует`,
+        })
+      }
+      serverError(error)
+      return res
+        .status(500)
+        .json({ errorMsg: 'Произошла ошибко во время создания пользователей' })
+    }
+
+    // Добавление пользователей в группу (если группа указана)
+    if (groupId) {
+      const usersId = [...savedUsers].map((user) => `${user._id}`)
+      await GroupModel.findOneAndUpdate(
+        { _id: groupId },
+        {
+          $set: {
+            studentsId: usersId,
+          },
+        }
+      )
+    }
+
+    serverLog(`Успешно созданны пользователи: ${users}`)
+    res.json({ newUsers: savedUsers, newGroup: group })
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({
+      errorMsg:
+        'Произошла ошибка регистрации пользователей или группы для пользователей',
+    })
   }
 }
 

@@ -31,6 +31,32 @@ export const regUserValidation = [
     .withMessage('Пароль должен содержать от 6 до 30 символов'),
 ]
 
+export const regManyUsersValidation = [
+  body('groupName')
+    .optional()
+    .isString()
+    .withMessage('Название группы должно быть строкой')
+    .isLength({
+      min: 1,
+      max: 100,
+    })
+    .withMessage('Название группы должно быть в длину от 1 до 100 символов'),
+
+  body('groupCource')
+    .optional()
+    .isNumeric()
+    .withMessage('Курс группы должен быть числом')
+    .isLength({
+      min: 1,
+      max: 2,
+    })
+    .withMessage('Курс должен быть длиной от 1 до 2 символов'),
+
+  body('users')
+    .isArray()
+    .withMessage('Users должно быть массивом новых пользователей'),
+]
+
 export const updateUserValidation = [
   body('name')
     .optional()

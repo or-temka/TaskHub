@@ -9,17 +9,18 @@ function TextArea({
   onChange = () => {},
   onClick = () => {},
   className,
+  wrapperClassName,
   ...params
 }) {
   return (
-    <div {...params} className={[styles.textArea, className].join(' ')}>
+    <div {...params} className={[styles.textArea, wrapperClassName].join(' ')}>
       <textarea
         cols={cols}
         rows={rows}
         value={value}
         onChange={onChange}
         onClick={onClick}
-        className={styles.textArea__input}
+        className={[styles.textArea__input, className].join(' ')}
       ></textarea>
       {errorText && (
         <span className={['small-text', styles.textArea__errorText].join(' ')}>

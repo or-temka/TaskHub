@@ -58,8 +58,22 @@ app.patch(
 //#endregion
 
 //#region User ---------------------------------------------------------------
-// Регистрация пользователя
-app.post('/user/reg', validation.regUserValidation, UserController.reg)
+// Регистрация пользователя (возможно, с группой) 
+app.post(
+  '/user/reg',
+  checkAuth,
+  checkIsTeacher,
+  validation.regUserValidation,
+  UserController.reg
+)
+// Регистрация сразу нескольких пользователей (возможно, с группой)
+app.post(
+  '/user/regMany',
+  checkAuth,
+  checkIsTeacher,
+  validation.regManyUsersValidation,
+  UserController.regMany
+)
 // Получение токена пользователя - вход в аккаунт
 app.post('/user/login', UserController.login)
 // Получение данных о пользователе (о себе)
