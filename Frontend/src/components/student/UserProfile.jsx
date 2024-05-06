@@ -12,8 +12,6 @@ import { removeUserToken } from '../../utils/userTokenManager'
 
 import styles from './UserProfile.module.scss'
 
-
-
 function UserProfile({ user, userGroupName, onCancel = () => {} }) {
   const navigate = useNavigate()
   const [showExitPopUp, setShowExitPopUp] = useState(false)

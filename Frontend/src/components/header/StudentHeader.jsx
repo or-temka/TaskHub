@@ -6,15 +6,10 @@ import Header from './Header'
 import { ReactComponent as TasksIcon } from '../../assets/svg/tasks.svg'
 import UserProfile from '../student/UserProfile'
 
-import users from '../../data/users'
-import groups from '../../data/groups'
-
-function StudentHeader({ pageName }) {
+function StudentHeader({ user, userGroup, pageName }) {
   const [showProfile, setShowProfile] = useState(false)
 
-  const profileId = 1
-  const user = users.find((user) => user.id === profileId)
-  const userGroupName = groups.find((group) => group.id === user.groupId).name
+  const userGroupName = userGroup.name
 
   const menuButtons = [
     <Link to="./">
