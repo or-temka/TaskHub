@@ -152,6 +152,8 @@ app.get('/task/:id', checkAuth, checkIsTeacher, TaskController.getTask)
 //#region UserTask ------------------------------------------------------------
 // Получение заданиий пользователя (о себе)
 app.get('/userTask/all', checkAuth, UserTaskController.getMyUserTasks)
+// Получение задания пользователя (о себе)
+app.get('/userTask/my/:taskId', checkAuth, UserTaskController.getMyUserTask)
 // Добавление задания пользователя
 app.post(
   '/userTask/:userId',
@@ -168,7 +170,6 @@ app.post(
   validation.addUserTaskValidation,
   UserTaskController.addForGroup
 )
-// Получение задания пользователя (о себе)
 // Получение задания пользователя
 app.get(
   '/userTask/:userId',

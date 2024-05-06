@@ -7,36 +7,49 @@ import TaskInfo from '../../components/student/TaskInfo'
 import TaskAdoptStatistic from '../../components/student/TaskAdoptStatistic'
 import MyTaskStatistics from '../../components/student/MyTaskStatistics'
 import StartExecuteTaskPopUpWarning from '../../components/student/StartExecuteTaskPopUpWarning'
+import SpinLoader from '../../components/UI/Loaders/SpinLoader'
 
-import { userTasks } from '../../data/userTasks'
-import { tasks } from '../../data/tasks'
 import { files } from '../../data/files'
+
+import { fetchMyUserTask } from '../../utils/fetchData/student/userTask'
 
 import styles from './Task.module.scss'
 
 function Task({ setPageName }) {
   const navigate = useNavigate()
-  const taskId = +useParams().taskId
-  const userTask = userTasks.find((task) => task.id === taskId)
+  const taskId = useParams().taskId
+
+  const [showPopUpStartTask, setShowPopUpStartTask] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  const [userTask, setUserTask] = useState()
 
   useEffect(() => {
     setPageName('Задание')
+
+    fetchMyUserTask(taskId)
+      .then((res) => {
+        setUserTask(res)
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.log(err)
+        navigate('../..', { relative: 'path' })
+      })
   }, [])
 
-  const [showPopUpStartTask, setShowPopUpStartTask] = useState(false)
-
-  // Перенаправление, если нет такого задания
-  useEffect(() => {
-    if (!userTask) {
-      navigate('../..', { relative: 'path' })
-    }
-  }, [userTask, navigate])
-  if (!userTask) {
-    return
+  if (loading) {
+    return (
+      <div className="wrapper spinLoaderWrapper">
+        <SpinLoader />
+      </div>
+    )
   }
 
-  const taskInfo = tasks.find((task) => task.id === userTask.originalTaskId)
-  const taskFiles = files.filter((file) => taskInfo.filesId.includes(file.id))
+  let taskFiles = []
+  if (userTask.filesId) {
+    taskFiles = files.filter((file) => userTask.filesId.includes(file.id))
+  }
 
   return (
     <>
@@ -45,7 +58,6 @@ function Task({ setPageName }) {
 
         <TaskInfo
           task={userTask}
-          originalTask={taskInfo}
           taskFiles={taskFiles}
           onStartTaskHandler={() => setShowPopUpStartTask(true)}
         />
@@ -58,7 +70,7 @@ function Task({ setPageName }) {
             />
             <MyTaskStatistics
               userTask={userTask}
-              questionsCount={taskInfo.questions.length}
+              questionsCount={userTask.questionsCount}
             />
           </>
         )}
@@ -68,8 +80,8 @@ function Task({ setPageName }) {
           className={styles.task__fieldHeader}
         />
         <TaskAdoptStatistic
-          taskStatistic={taskInfo.statistic}
-          questionsCount={taskInfo.questions.length}
+          taskStatistic={userTask.statistic[0]}
+          questionsCount={userTask.questionsCount}
         />
       </div>
       {showPopUpStartTask && (

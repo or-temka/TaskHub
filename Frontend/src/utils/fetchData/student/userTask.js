@@ -14,3 +14,16 @@ export const fetchMyUserTasks = async () => {
     throw new Error(error.response.data.errorMsg)
   }
 }
+
+export const fetchMyUserTask = async (userTaskId) => {
+  try {
+    const { data } = await axios.get(`/userTask/my/${userTaskId}`, {
+      headers: {
+        Authorization: await getUserToken(),
+      },
+    })
+    return data
+  } catch (error) {
+    throw new Error(error.response.data.errorMsg)
+  }
+}

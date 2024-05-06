@@ -54,7 +54,7 @@ function Tasks({
             {userTasks.map((task) => (
               <SmallTaskInfo
                 task={task}
-                key={task._id}
+                key={task.id}
                 onStartTaskHandler={() => {
                   setSelectedTaskId(task.id)
                   setShowPopUpStartTask(true)

@@ -17,6 +17,10 @@ const TaskSchema = new mongoose.Schema(
       default: 3,
     },
     instruction: String,
+    filesId: {
+      type: Array,
+      default: [],
+    },
     questions: {
       type: Array,
       default: [],
