@@ -158,6 +158,14 @@ app.post(
   validation.addUserTaskValidation,
   UserTaskController.add
 )
+// Добавление задания пользователям группы
+app.post(
+  '/userTask/group/:groupId',
+  checkAuth,
+  checkIsTeacher,
+  validation.addUserTaskValidation,
+  UserTaskController.addForGroup
+)
 // Получение задания пользователя (о себе)
 // Получение задания пользователя
 app.get(
