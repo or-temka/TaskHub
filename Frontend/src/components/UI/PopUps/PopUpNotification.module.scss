@@ -1,0 +1,26 @@
+@import '../../../mixins.scss';
+
+.popUpNotification {
+  min-width: 400px;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  &__text {
+    @include text;
+  }
+
+  &__buttonsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  &__closeBtn {
+    width: 100px;
+  }
+}

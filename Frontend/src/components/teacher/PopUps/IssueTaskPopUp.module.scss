@@ -1,0 +1,92 @@
+@import '../../../mixins.scss';
+
+.issueTask {
+  min-width: 900px;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  // header
+  &__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+  }
+
+  &__labelHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  &__label {
+    @include textBold;
+  }
+
+  &__text {
+    @include text;
+    color: var(--light-text-color);
+  }
+
+  &__search {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 50%;
+  }
+
+  &__searchLabel {
+    @include text;
+    color: var(--light-text-color);
+    margin-left: 10px;
+  }
+
+  &__searchInput {
+  }
+
+  //content
+  &__frameWrapper {
+    min-width: 100%;
+    height: 450px;
+  }
+
+  &__frameContent {
+    height: 450px - 10px - 10px;
+    gap: 5px;
+  }
+
+  &__issueTargetContainer {
+    padding: 10px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--background-color);
+    cursor: pointer;
+    margin-right: 10px;
+
+    &:hover {
+      background-color: var(--background-focus-2-color);
+    }
+  }
+
+  &__inssueTargetName {
+    @include text;
+  }
+
+  &__issueTargetAdoptInfo {
+    @include text;
+    color: var(--light-text-color);
+    margin-left: 10px;
+
+    &::before {
+      content: '(';
+    }
+    &::after {
+      content: ')';
+    }
+  }
+}

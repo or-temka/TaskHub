@@ -54,11 +54,18 @@ app.patch(
   checkIsTeacher,
   UserServices.delGroupFromStudent
 )
+// Получение пользователей, у которых нет определенного задания
+app.get(
+  '/user/users_without_task/:taskId',
+  checkAuth,
+  checkIsTeacher,
+  UserServices.getUsersWithoutTask
+)
 //#endregion
 //#endregion
 
 //#region User ---------------------------------------------------------------
-// Регистрация пользователя (возможно, с группой) 
+// Регистрация пользователя (возможно, с группой)
 app.post(
   '/user/reg',
   checkAuth,
@@ -150,6 +157,14 @@ app.post(
   checkIsTeacher,
   validation.addUserTaskValidation,
   UserTaskController.add
+)
+// Добавление задания пользователям группы
+app.post(
+  '/userTask/group/:groupId',
+  checkAuth,
+  checkIsTeacher,
+  validation.addUserTaskValidation,
+  UserTaskController.addForGroup
 )
 // Получение задания пользователя (о себе)
 // Получение задания пользователя

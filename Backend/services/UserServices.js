@@ -48,3 +48,36 @@ export const delGroupFromStudent = async (req, res) => {
     })
   }
 }
+
+export const getUsersWithoutTask = async (req, res) => {
+  try {
+    const taskId = req.params.taskId
+
+    if (!taskId) {
+      serverMsg(
+        `Попытка получить пользователей без определенного задания: не указан id задания`
+      )
+      return res.status(400).json({
+        errorMsg: 'Не был получен id задания',
+      })
+    }
+
+    const users = await UserModel.find({
+      role: 'student',
+      tasks: {
+        $not: {
+          $elemMatch: {
+            originalTaskId: taskId,
+          },
+        },
+      },
+    })
+
+    res.json(users)
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({
+      errorMsg: 'Ошибка получения пользователей',
+    })
+  }
+}
