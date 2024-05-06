@@ -38,3 +38,37 @@ export const fetchUpdateUserTask = async (
     throw new Error(error.response.data.errorMsg)
   }
 }
+
+export const fetchAddUserTask = async (userId, taskId) => {
+  try {
+    const { data } = await axios.post(
+      `/userTask/${userId}`,
+      { originalTaskId: taskId },
+      {
+        headers: {
+          Authorization: await getUserToken(),
+        },
+      }
+    )
+    return data
+  } catch (error) {
+    throw new Error(error.response.data.errorMsg)
+  }
+}
+
+export const fetchAddGroupTask = async (groupId, taskId) => {
+  try {
+    const { data } = await axios.post(
+      `/userTask/group/${groupId}`,
+      { originalTaskId: taskId },
+      {
+        headers: {
+          Authorization: await getUserToken(),
+        },
+      }
+    )
+    return data
+  } catch (error) {
+    throw new Error(error.response.data.errorMsg)
+  }
+}

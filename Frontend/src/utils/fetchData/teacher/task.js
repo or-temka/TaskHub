@@ -27,20 +27,3 @@ export const fetchTask = async (taskId) => {
     throw new Error(error.response.data.errorMsg)
   }
 }
-
-export const fetchAddUserTask = async (userId, taskId) => {
-  try {
-    const { data } = await axios.post(
-      `/userTask/${userId}`,
-      { originalTaskId: taskId },
-      {
-        headers: {
-          Authorization: await getUserToken(),
-        },
-      }
-    )
-    return data
-  } catch (error) {
-    throw new Error(error.response.data.errorMsg)
-  }
-}
