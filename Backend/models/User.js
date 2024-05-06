@@ -32,7 +32,7 @@ const UserSchema = new mongoose.Schema(
       type: Object,
       default: {
         complitedTasks: 0,
-        avarageMark: 0,
+        avarageMark: 0.0,
         avarageTaskTime: 0,
         avarageQuestionTime: 0,
       },

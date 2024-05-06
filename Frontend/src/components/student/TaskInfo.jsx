@@ -12,7 +12,6 @@ import styles from './TaskInfo.module.scss'
 
 function TaskInfo({
   task,
-  originalTask,
   taskFiles,
   onStartTaskHandler = () => {},
   className,
@@ -26,7 +25,7 @@ function TaskInfo({
       <header className={styles.taskInfo__header}>
         <div className={styles.taskInfo__labelContainer}>
           <TaskSVG />
-          <h6>Проверочная работа по теме "{originalTask.name}"</h6>
+          <h6>Проверочная работа по теме "{task.name}"</h6>
         </div>
         <div className={styles.taskInfo__headerContentContainer}>
           <div className={styles.taskInfo__headerContent}>
@@ -47,9 +46,9 @@ function TaskInfo({
             ) : (
               ''
             )}
-            <span className={['small-text', styles.taskInfo__date].join(' ')}>
+            {/* <span className={['small-text', styles.taskInfo__date].join(' ')}>
               {task.dateCreate}
-            </span>
+            </span> */}
           </div>
           {task.mark && (
             <div className={styles.taskInfo__markContainer}>
@@ -70,7 +69,7 @@ function TaskInfo({
                     task.mark >= 4
                       ? 'var(--success-light-color)'
                       : task.mark <= 2
-                      ? 'var(--error-color)'
+                      ? 'var(--error-light-color)'
                       : 'var(--warning-color)'
                   }
                 >
@@ -106,9 +105,7 @@ function TaskInfo({
                 >
                   Вопросов:{' '}
                 </span>
-                <span className={'text-bold'}>
-                  {originalTask.questions.length}
-                </span>
+                <span className={'text-bold'}>{task.questionsCount}</span>
               </TextFocus>
               <TextFocus className={styles.taskInfo__focusContainer}>
                 <span
@@ -119,7 +116,7 @@ function TaskInfo({
                   Практических заданий:{' '}
                 </span>
                 <span className={'text-bold'}>
-                  {originalTask.practiceQuestions.length}
+                  {task.practiceQuestionsCount}
                 </span>
               </TextFocus>
               <TextFocus
@@ -136,31 +133,33 @@ function TaskInfo({
                   Времени на выполнение:{' '}
                 </span>
                 <span className={'text-bold'}>
-                  {getTimeExecuteInfo(originalTask.timeForExecute)}
+                  {getTimeExecuteInfo(task.timeForExecute)}
                 </span>
               </TextFocus>
             </div>
           </div>
           <TextFocus className={styles.taskInfo__focusContainer}>
             <span className={'text-bold'}>Инструкции: </span>
-            <span className={'paragraph'}>{originalTask.instruction}</span>
+            <span className={'paragraph'}>{task.instruction}</span>
           </TextFocus>
-          <TextFocus
-            className={[
-              styles.taskInfo__focusContainer,
-              styles.taskInfo__files,
-            ].join(' ')}
-          >
-            <span className={'text-bold'}>Справочный материал: </span>
-            {taskFiles.map((file) => (
-              <File
-                key={file.id}
-                extension={file.extension}
-                fileName={`${file.name}.${file.extension}`}
-                downloadLink={`/assets/files/${file.type}/${file.fileName}.${file.extension}`}
-              />
-            ))}
-          </TextFocus>
+          {taskFiles.length > 0 && (
+            <TextFocus
+              className={[
+                styles.taskInfo__focusContainer,
+                styles.taskInfo__files,
+              ].join(' ')}
+            >
+              <span className={'text-bold'}>Справочный материал: </span>
+              {taskFiles.map((file) => (
+                <File
+                  key={file.id}
+                  extension={file.extension}
+                  fileName={`${file.name}.${file.extension}`}
+                  downloadLink={`/assets/files/${file.type}/${file.fileName}.${file.extension}`}
+                />
+              ))}
+            </TextFocus>
+          )}
         </div>
         <div className={styles.taskInfo__buttons}>
           {task.attemptsCount > 0 ? (
