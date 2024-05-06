@@ -2,6 +2,7 @@ export const userTasks = [
   {
     id: 1,
     originalTaskId: 1,
+    status: 'not_started',
     mark: 4,
     notRoundMark: 3.6,
     newTask: false,

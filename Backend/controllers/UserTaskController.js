@@ -35,6 +35,7 @@ export const add = async (req, res) => {
       originalTaskId: taskId,
       newTask: true,
       attemptsCount: task.attempts,
+      status: 'not_started',
     }
 
     await UserModel.updateOne(
@@ -88,6 +89,7 @@ export const addForGroup = async (req, res) => {
         originalTaskId: taskId,
         newTask: true,
         attemptsCount: task.attempts,
+        status: 'not_started',
       }
 
       await UserModel.updateOne(
