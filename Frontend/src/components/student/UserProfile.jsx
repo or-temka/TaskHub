@@ -80,7 +80,9 @@ function UserProfile({ user, userGroupName, onCancel = () => {} }) {
               Среднее время выполнения задания:
             </span>
             <span className={styles.userProfile__infoValue}>
-              {getTimeExecuteInfo(user.statistics.avarageTaskTime)}
+              {user.statistics.avarageTaskTime
+                ? getTimeExecuteInfo(user.statistics.avarageTaskTime)
+                : 0}
             </span>
           </span>
           <span className={styles.userProfile__infoLine}>
@@ -88,7 +90,9 @@ function UserProfile({ user, userGroupName, onCancel = () => {} }) {
               Среднее время ответа на один вопрос:
             </span>
             <span className={styles.userProfile__infoValue}>
-              {getTimeExecuteInfo(user.statistics.avarageQuestionTime)}
+              {user.statistics.avarageQuestionTime
+                ? getTimeExecuteInfo(user.statistics.avarageQuestionTime)
+                : 0}
             </span>
           </span>
         </ContentContainer>

@@ -13,7 +13,6 @@ function SmallTaskInfo({
   className,
   onStartTaskHandler = () => {},
   task = {},
-  originalTask = {},
   ...params
 }) {
   return (
@@ -28,11 +27,11 @@ function SmallTaskInfo({
         <div className={styles.smallTaskInfo__labelContainer}>
           <TaskSVG />
           <Link
-            to={'task/' + task.id.toString()}
+            to={'task/' + task.id}
             className={styles.smallTaskInfo__labelLink}
           >
             <h6 className={styles.smallTaskInfo__labelText}>
-              Проверочная работа по теме "{originalTask.name}"
+              Проверочная работа по теме "{task.name}"
             </h6>
           </Link>
         </div>
@@ -55,11 +54,11 @@ function SmallTaskInfo({
             ) : (
               ''
             )}
-            <span
+            {/* <span
               className={['small-text', styles.smallTaskInfo__date].join(' ')}
             >
               {task.dateCreate}
-            </span>
+            </span> */}
           </div>
           {task.mark && (
             <div className={styles.smallTaskInfo__markContainer}>
@@ -87,7 +86,7 @@ function SmallTaskInfo({
           <span className={'paragraph'}>
             {task.mark
               ? `Проверочная работа выполнена на оценку ${task.mark}`
-              : `Вам выдано практическое задание на тему "${originalTask.name}". Выполните его как можно скорее! Для этого нажмите на кнопку "Перейти к выполнению" или ознакомьтесь с заданием, нажав кнопку "Подробнее".`}
+              : `Вам выдано практическое задание на тему "${task.name}". Выполните его как можно скорее! Для этого нажмите на кнопку "Перейти к выполнению" или ознакомьтесь с заданием, нажав кнопку "Подробнее".`}
           </span>
           <TextFocus className={styles.smallTaskInfo__attemptsContainer}>
             <span className={'text-bold'}>Осталось попыток: </span>
@@ -103,7 +102,7 @@ function SmallTaskInfo({
         </div>
         <div className={styles.smallTaskInfo__buttons}>
           <Link
-            to={'task/' + task.id.toString()}
+            to={'task/' + task.id}
             className={styles.smallTaskInfo__moreButtonLink}
           >
             <Button

@@ -163,7 +163,48 @@ export const getAllUserTasks = async (req, res) => {
     res.json(tasks)
   } catch (error) {
     serverError(error)
-    res.status(500).json({ errorMsg: 'Произошла ошибка создания группы' })
+    res
+      .status(500)
+      .json({ errorMsg: 'Произошла ошибка получения заданий пользователя' })
+  }
+}
+
+export const getMyUserTasks = async (req, res) => {
+  try {
+    const userId = req.userId
+
+    const user = await UserModel.findById(userId)
+    if (!user) {
+      serverMsg(
+        `Попытка получения данных о задании пользователя: не найден пользователь с id ${userId}`
+      )
+      return res.status(404).json({
+        errorMsg: 'Пользователь не найден',
+      })
+    }
+
+    const { tasks } = user._doc
+
+    // Получаем оригинальное задание и соединяем их
+    const newTasksPromises = tasks.map(async (userTask) => {
+      const originalTask = await TaskModel.findById(userTask.originalTaskId)
+      const newTask = {
+        ...userTask,
+        name: originalTask.name,
+        instruction: originalTask.instruction,
+        filesId: originalTask.filesId,
+        statistic: originalTask.statistic,
+        timeForExecute: originalTask.timeForExecute,
+      }
+      return newTask
+    })
+    const newTasks = await Promise.all(newTasksPromises)
+
+    serverMsg(`Получены данные о заданиях пользователя (о себе) "${user.name}"`)
+    res.json(newTasks)
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({ errorMsg: 'Произошла ошибка получения заданий' })
   }
 }
 
