@@ -7,6 +7,7 @@ import ContentHeaderLabel from '../../components/frames/ContentHeaderLabel'
 import TaskAdoptStatistic from '../../components/student/TaskAdoptStatistic'
 import SpinLoader from '../../components/UI/Loaders/SpinLoader'
 import IssueTaskStudentPopUp from '../../components/teacher/PopUps/IssueTaskStudentPopUp'
+import IssueTaskGroupPopUp from '../../components/teacher/PopUps/IssueTaskGroupPopUp'
 
 import { files } from '../../data/files'
 import { fetchTask } from '../../utils/fetchData/teacher/task'
@@ -20,6 +21,7 @@ function TaskInfo({ setPageName }) {
 
   const [showIssueTaskStudentPopUp, setShowIssueTaskStudentPopUp] =
     useState(false)
+  const [showIssueTaskGroupPopUp, setShowIssueTaskGroupPopUp] = useState(false)
 
   const [task, setTask] = useState()
   const [taskFiles, setTaskFiles] = useState()
@@ -71,7 +73,7 @@ function TaskInfo({ setPageName }) {
         <TaskInfoComponent
           task={task}
           taskFiles={taskFiles}
-          onClickIssueTaskGroup={() => {}}
+          onClickIssueTaskGroup={() => setShowIssueTaskGroupPopUp(true)}
           onClickIssueTaskStudent={() => setShowIssueTaskStudentPopUp(true)}
         />
 
@@ -91,6 +93,13 @@ function TaskInfo({ setPageName }) {
           groups={groups}
           taskId={taskId}
           onCancel={() => setShowIssueTaskStudentPopUp(false)}
+        />
+      )}
+      {showIssueTaskGroupPopUp && (
+        <IssueTaskGroupPopUp
+          groups={groups}
+          taskId={taskId}
+          onCancel={() => setShowIssueTaskGroupPopUp(false)}
         />
       )}
     </>
