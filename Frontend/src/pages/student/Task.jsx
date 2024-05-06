@@ -11,7 +11,10 @@ import SpinLoader from '../../components/UI/Loaders/SpinLoader'
 
 import { files } from '../../data/files'
 
-import { fetchMyUserTask } from '../../utils/fetchData/student/userTask'
+import {
+  fetchMyUserTask,
+  fetchMarkUserTaskAsNotNew,
+} from '../../utils/fetchData/student/userTask'
 
 import styles from './Task.module.scss'
 
@@ -46,6 +49,12 @@ function Task({ setPageName }) {
     )
   }
 
+  // Назначение, что задание не новое, если оно просмотрено
+  if (userTask.newTask) {
+    fetchMarkUserTaskAsNotNew(userTask.id).catch((err) => console.log(err))
+  }
+
+  // Получение файлов задания
   let taskFiles = []
   if (userTask.filesId) {
     taskFiles = files.filter((file) => userTask.filesId.includes(file.id))

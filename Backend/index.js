@@ -15,6 +15,7 @@ import * as TaskController from './controllers/TaskController.js'
 import * as UserTaskController from './controllers/UserTaskController.js'
 import * as GroupServices from './services/GroupServices.js'
 import * as UserServices from './services/UserServices.js'
+import * as UserTaskServices from './services/UserTaskServices.js'
 
 mongoose
   .connect(
@@ -60,6 +61,14 @@ app.get(
   checkAuth,
   checkIsTeacher,
   UserServices.getUsersWithoutTask
+)
+//#endregion
+//#region UserTask
+// Изменения статуса задания пользователя с newTask "true" -> "false"
+app.patch(
+  '/userTask/mark_task_not_new/:taskId',
+  checkAuth,
+  UserTaskServices.markUserTaskNotNew
 )
 //#endregion
 //#endregion
