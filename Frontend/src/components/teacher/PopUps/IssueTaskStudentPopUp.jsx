@@ -7,9 +7,9 @@ import PopUpNotification from '../../UI/PopUps/PopUpNotification'
 import Input from '../../UI/Inputs/Input'
 
 import { fetchUsersWithoutTask } from '../../../utils/fetchData/teacher/user'
+import { fetchAddUserTask } from '../../../utils/fetchData/teacher/userTask'
 
-import styles from './IssueTaskStudentPopUp.module.scss'
-import { fetchAddUserTask } from '../../../utils/fetchData/teacher/task'
+import styles from './IssueTaskPopUp.module.scss'
 
 function IssueTaskStudentPopUp({
   groups,
@@ -49,7 +49,6 @@ function IssueTaskStudentPopUp({
 
   // Обработчик выдачи задания нужному пользователю
   const issueTaskHanler = () => {
-    // TODO Отправка данных на сервер
     fetchAddUserTask(enteredUserId, taskId)
       .then((res) => {
         setUsers((prev) => prev.filter((user) => user._id !== enteredUserId))
@@ -97,7 +96,9 @@ function IssueTaskStudentPopUp({
           contentClassName={styles.issueTask__frameContent}
         >
           {users
-            .filter((user) => user.name.includes(searchValue))
+            .filter((user) =>
+              user.name.toLowerCase().includes(searchValue.toLowerCase())
+            )
             .map((user) => {
               const userGroupName = groups.find(
                 (group) => group._id === user.groupId
