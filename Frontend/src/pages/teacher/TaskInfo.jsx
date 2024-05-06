@@ -6,33 +6,56 @@ import TaskInfoComponent from '../../components/teacher/TaskInfo'
 import ContentHeaderLabel from '../../components/frames/ContentHeaderLabel'
 import TaskAdoptStatistic from '../../components/student/TaskAdoptStatistic'
 import SpinLoader from '../../components/UI/Loaders/SpinLoader'
+import IssueTaskStudentPopUp from '../../components/teacher/PopUps/IssueTaskStudentPopUp'
 
 import { files } from '../../data/files'
 import { fetchTask } from '../../utils/fetchData/teacher/task'
+import { fetchUsers } from '../../utils/fetchData/teacher/user'
+import { fetchGroups } from '../../utils/fetchData/teacher/group'
 
 import styles from './TaskInfo.module.scss'
 
 function TaskInfo({ setPageName }) {
   const taskId = useParams().taskId
 
+  const [showIssueTaskStudentPopUp, setShowIssueTaskStudentPopUp] =
+    useState(false)
+
   const [task, setTask] = useState()
   const [taskFiles, setTaskFiles] = useState()
+  const [users, setUsers] = useState([])
+  const [groups, setGroups] = useState([])
 
-  const [taskLoading, setTaskLoading] = useState(true)
+  const [taskLoading, setTaskLoading] = useState(3)
 
-  // Получение задания
   useEffect(() => {
+    // Получение задания
     fetchTask(taskId)
       .then((res) => {
         setTaskFiles(files.filter((file) => res.filesId.includes(file.id)))
         setTask(res)
         setPageName(`Задание "${res.name}"`)
-        setTaskLoading(false)
+        setTaskLoading((prev) => prev - 1)
+      })
+      .catch((err) => console.log(err))
+    // Получение пользователей
+    fetchUsers()
+      .then((res) => {
+        setUsers(res)
+        setTaskLoading((prev) => prev - 1)
+      })
+      .catch((err) => console.log(err))
+
+    // Получение групп
+    fetchGroups()
+      .then((res) => {
+        setGroups(res)
+        setTaskLoading((prev) => prev - 1)
       })
       .catch((err) => console.log(err))
   }, [])
 
-  if (taskLoading) {
+  if (taskLoading > 0) {
     return (
       <div className="wrapper spinLoaderWrapper">
         <SpinLoader />
@@ -41,20 +64,36 @@ function TaskInfo({ setPageName }) {
   }
 
   return (
-    <div className={['wrapper', styles.taskInfo].join(' ')}>
-      <ContentHeader title={`Задание "${task.name}"`} />
+    <>
+      <div className={['wrapper', styles.taskInfo].join(' ')}>
+        <ContentHeader title={`Задание "${task.name}"`} />
 
-      <TaskInfoComponent task={task} taskFiles={taskFiles} />
+        <TaskInfoComponent
+          task={task}
+          taskFiles={taskFiles}
+          onClickIssueTaskGroup={() => {}}
+          onClickIssueTaskStudent={() => setShowIssueTaskStudentPopUp(true)}
+        />
 
-      <ContentHeaderLabel
-        title="Статистика по заданию"
-        className={styles.taskInfo__labelHeader}
-      />
-      <TaskAdoptStatistic
-        taskStatistic={task.statistic[0]}
-        questionsCount={task.questions.length}
-      />
-    </div>
+        <ContentHeaderLabel
+          title="Статистика по заданию"
+          className={styles.taskInfo__labelHeader}
+        />
+        <TaskAdoptStatistic
+          taskStatistic={task.statistic[0]}
+          questionsCount={task.questions.length}
+        />
+      </div>
+
+      {/* PopUp`s */}
+      {showIssueTaskStudentPopUp && (
+        <IssueTaskStudentPopUp
+          groups={groups}
+          taskId={taskId}
+          onCancel={() => setShowIssueTaskStudentPopUp(false)}
+        />
+      )}
+    </>
   )
 }
 

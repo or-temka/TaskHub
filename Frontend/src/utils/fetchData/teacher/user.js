@@ -120,3 +120,16 @@ export const fetchDeleteUser = async (userId) => {
     console.log(error)
   }
 }
+
+export const fetchUsersWithoutTask = async (taskId) => {
+  try {
+    const { data } = await axios.get(`/user/users_without_task/${taskId}`, {
+      headers: {
+        Authorization: await getUserToken(),
+      },
+    })
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}

@@ -2,12 +2,20 @@ import ContentContainer from '../frames/ContentContainer'
 import TextFocus from '../UI/Texts/TextFocus'
 import { ReactComponent as TaskSVG } from '../../assets/svg/tasks.svg'
 import File from '../UI/Files/File'
+import Button from '../UI/Buttons/Button'
 
 import getTimeExecuteInfo from '../../utils/getTimeExecuteInfo'
 
 import styles from './TaskInfo.module.scss'
 
-function TaskInfo({ task, taskFiles, className, ...params }) {
+function TaskInfo({
+  task,
+  taskFiles,
+  onClickIssueTaskStudent = () => {},
+  onClickIssueTaskGroup = () => {},
+  className,
+  ...params
+}) {
   return (
     <ContentContainer
       {...params}
@@ -100,6 +108,18 @@ function TaskInfo({ task, taskFiles, className, ...params }) {
               ))}
             </TextFocus>
           )}
+
+          {/* Кнопки управления заданием для учителя */}
+          <div className={styles.taskInfo__buttons}>
+            <Button
+              title="Выдать задание студенту"
+              onClick={onClickIssueTaskStudent}
+            />
+            <Button
+              title="Выдать задание группе"
+              onClick={onClickIssueTaskGroup}
+            />
+          </div>
         </div>
       </main>
     </ContentContainer>
