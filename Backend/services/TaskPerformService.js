@@ -110,3 +110,80 @@ export const startTask = async (req, res) => {
     })
   }
 }
+
+// Отправка ответа в задание
+export const sendQuestionAnswer = async (req, res) => {
+  try {
+    const userId = req.userId
+    const userTaskId = req.params.taskId
+    const user = req.user
+    const currentTask = req.currentTask
+    const questionId = req.body.questionId
+    const answer = req.body.answer
+
+    const newAnswer = {
+      questionId,
+      answer,
+    }
+
+    let newUser
+    // Если ответы ещё не заносились
+    if (!currentTask.questions) {
+      newUser = await UserModel.findOneAndUpdate(
+        {
+          _id: userId,
+          'tasks.id': userTaskId,
+        },
+        {
+          $set: {
+            'tasks.$.questions': [newAnswer],
+          },
+        }
+      )
+    } else {
+      // Если ответы уже были
+      // Проверка, был ли занесен уже такой вопрос-ответ
+      const isAnswerWasAlreadyIndex = currentTask.questions.findIndex(
+        (question) => question.questionId === questionId
+      )
+      // Если нашел уже такой ответ
+      if (isAnswerWasAlreadyIndex !== -1) {
+        currentTask.questions.splice(isAnswerWasAlreadyIndex, 1)
+      }
+
+      newUser = await UserModel.findOneAndUpdate(
+        {
+          _id: userId,
+          'tasks.id': userTaskId,
+        },
+        {
+          $set: {
+            'tasks.$.questions': [
+              ...(currentTask.questions ? currentTask.questions : {}),
+              newAnswer,
+            ],
+          },
+        },
+        { new: true }
+      )
+    }
+
+    // Отправка ответа
+    const newUserTask = newUser.tasks.find(
+      (tempTask) => tempTask.id === userTaskId
+    )
+    res.json({
+      id: newUserTask.id,
+      originalTaskId: newUserTask.originalTaskId,
+      newTask: newUserTask.newTask,
+      attemptsCount: newUserTask.attemptsCount,
+      notTime: newUserTask.notTime,
+      questions: newUserTask.questions,
+    })
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({
+      errorMsg: 'Ошибка отправки ответа в задание',
+    })
+  }
+}

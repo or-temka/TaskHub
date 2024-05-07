@@ -37,6 +37,13 @@ app.use(cors())
 //#region task perform
 // начало выполнения задания
 app.post('/taskPerform/start/:taskId', checkAuth, TaskPerformService.startTask)
+// отправка ответа question
+app.post(
+  '/taskPerform/send_question_answer/:taskId',
+  checkAuth,
+  checkTaskStarted,
+  TaskPerformService.sendQuestionAnswer
+)
 //#endregion
 //#region group
 // Добавление пользователя в группу (также удаление из прошлой группы, если она была)
