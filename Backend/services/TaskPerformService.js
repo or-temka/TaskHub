@@ -52,7 +52,14 @@ export const startTask = async (req, res) => {
         _id: userId,
         'tasks.id': userTaskId,
       },
-      { $set: { 'tasks.$.nowTime': 0, 'tasks.$.status': 'started' } }
+      {
+        $set: {
+          'tasks.$.nowTime': 0,
+          'tasks.$.status': 'started',
+          'tasks.$.questions': [],
+          'tasks.$.practiceQuestions': [],
+        },
+      }
     )
     const taskTimeInterval = setInterval(async () => {
       // Проверка не завершено ли задание уже (пользователь решил его раньше времени) (каждые 10 секунд проверка)
@@ -179,6 +186,87 @@ export const sendQuestionAnswer = async (req, res) => {
       attemptsCount: newUserTask.attemptsCount,
       notTime: newUserTask.notTime,
       questions: newUserTask.questions,
+      practiceQuestions: newUserTask.practiceQuestions,
+    })
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({
+      errorMsg: 'Ошибка отправки ответа в задание',
+    })
+  }
+}
+
+// Отправка ответа в задание на практический вопрос
+export const sendPracticeQuestionAnswer = async (req, res) => {
+  try {
+    const userId = req.userId
+    const userTaskId = req.params.taskId
+    const user = req.user
+    const currentTask = req.currentTask
+    const questionId = req.body.questionId
+    const answer = req.body.answer
+
+    const newAnswer = {
+      questionId,
+      answer,
+    }
+
+    let newUser
+    // Если ответы ещё не заносились
+    if (!currentTask.questions) {
+      newUser = await UserModel.findOneAndUpdate(
+        {
+          _id: userId,
+          'tasks.id': userTaskId,
+        },
+        {
+          $set: {
+            'tasks.$.practiceQuestions': [newAnswer],
+          },
+        }
+      )
+    } else {
+      // Если ответы уже были
+      // Проверка, был ли занесен уже такой вопрос-ответ
+      const isAnswerWasAlreadyIndex = currentTask.practiceQuestions.findIndex(
+        (practiceQuestion) => practiceQuestion.questionId === questionId
+      )
+      // Если нашел уже такой ответ
+      if (isAnswerWasAlreadyIndex !== -1) {
+        currentTask.practiceQuestions.splice(isAnswerWasAlreadyIndex, 1)
+      }
+
+      newUser = await UserModel.findOneAndUpdate(
+        {
+          _id: userId,
+          'tasks.id': userTaskId,
+        },
+        {
+          $set: {
+            'tasks.$.practiceQuestions': [
+              ...(currentTask.practiceQuestions
+                ? currentTask.practiceQuestions
+                : {}),
+              newAnswer,
+            ],
+          },
+        },
+        { new: true }
+      )
+    }
+
+    // Отправка ответа
+    const newUserTask = newUser.tasks.find(
+      (tempTask) => tempTask.id === userTaskId
+    )
+    res.json({
+      id: newUserTask.id,
+      originalTaskId: newUserTask.originalTaskId,
+      newTask: newUserTask.newTask,
+      attemptsCount: newUserTask.attemptsCount,
+      notTime: newUserTask.notTime,
+      questions: newUserTask.questions,
+      practiceQuestions: newUserTask.practiceQuestions,
     })
   } catch (error) {
     serverError(error)

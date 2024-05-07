@@ -44,6 +44,13 @@ app.post(
   checkTaskStarted,
   TaskPerformService.sendQuestionAnswer
 )
+// отправка ответа на практический вопрос practiceQuestion
+app.post(
+  '/taskPerform/send_practice_question_answer/:taskId',
+  checkAuth,
+  checkTaskStarted,
+  TaskPerformService.sendPracticeQuestionAnswer
+)
 //#endregion
 //#region group
 // Добавление пользователя в группу (также удаление из прошлой группы, если она была)
