@@ -16,12 +16,18 @@ import { tasks } from '../../data/tasks'
 import styles from './TaskPerform.module.scss'
 import InfoForPracticeQuestions from '../../components/student/InfoForPracticeQuestions'
 
-function TaskPerform({ setPageName }) {
+function TaskPerform({
+  user = {},
+  setUser = () => {},
+  userGroup = {},
+  setUserGroup = () => {},
+  setPageName,
+}) {
   const [showAnswerTablePopUp, setShowAnswerTablePopUp] = useState(false)
 
   const navigate = useNavigate()
 
-  const taskId = +useParams().taskId
+  const taskId = useParams().taskId
 
   useEffect(() => {
     setPageName('Выполнение задания')

@@ -105,6 +105,7 @@ export const tasks = [
         id: 1,
         text: 'Для данной выборки вычислить выборочное среднее.',
         answerFormule: 'function ...',
+        roundForce: 0.01, // На сколько может разниться ответ
       },
       // {
       //   id: 2,

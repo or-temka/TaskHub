@@ -13,7 +13,7 @@ export const userTasks = [
       avarageQuestionTime: 15,
       trueAnswersCount: 4,
     },
-    questions: [{ qustionId: 1, answerId: 2 }],
+    questions: [{ qustionId: 1, answer: 2 }],
     forPracticeData: [1, 3, 6, 7, 2],
     practiceQuestions: [
       {
