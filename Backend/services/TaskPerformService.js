@@ -43,7 +43,9 @@ export const startTask = async (req, res) => {
     )
 
     // Запуск таймера задания
-    const timerTime = 30 // в секундах
+    // Получаем оригинальное задание
+    const originalTask = await TaskModel.findById(currentTask.originalTaskId)
+    const timerTime = originalTask.timeForExecute // в секундах
     const requestRateTime = 1000 // как часто будут отправляться и изменяться запросы (в мс)
     const timerTimeMsc = timerTime * 1000
     let nowTime = 0
@@ -63,7 +65,7 @@ export const startTask = async (req, res) => {
     )
     const taskTimeInterval = setInterval(async () => {
       // Проверка не завершено ли задание уже (пользователь решил его раньше времени) (каждые 10 секунд проверка)
-      if (nowTime % 10000 === 0) {
+      if (nowTime % 1000 === 0) {
         const user = await UserModel.findById(userId)
         const currentTask = user.tasks.find((task) => task.id === userTaskId)
         if (currentTask.status === 'user_complete') {
@@ -85,7 +87,7 @@ export const startTask = async (req, res) => {
       if (nowTime > timerTimeMsc) {
         // Завершение, если время вышло
         clearInterval(taskTimeInterval)
-        await UserModel.findOneAndUpdate(
+        const userFinal = await UserModel.findOneAndUpdate(
           {
             _id: userId,
             'tasks.id': userTaskId,

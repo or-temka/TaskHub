@@ -19,7 +19,6 @@ export const userTasks = [
       {
         qustionId: 1,
         answer: 'Привет',
-        trueAnswer: 3,
       },
     ],
   },
