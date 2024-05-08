@@ -5,6 +5,61 @@ import TaskModel from '../models/Task.js'
 import GroupModel from '../models/Group.js'
 import UserModel from '../models/User.js'
 
+// Подсчёт результатов выполненного задания
+const calculationResults = async (
+  user,
+  userTaskId,
+  originalTask,
+  taskRuntime
+) => {
+  try {
+    const userTask = user.tasks.find((task) => task.id === userTaskId)
+    const questions = userTask.questions
+    const practiceQuestions = userTask.practiceQuestions
+    const originalQuestions = originalTask.questions
+    const originalPracticeQuestions = originalTask.practiceQuestions
+
+    // Подсчёт результатов за тест
+    let trueQuestionsAnswersCount = 0
+    let questionsAnswersCount = 0
+    questions.map((userQuestion) => {
+      const originalQuestion = originalQuestions.find(
+        (originalQuestion) => originalQuestion.id === userQuestion.questionId
+      )
+      if (!originalQuestion) return
+      const originalAnswer = originalQuestion.trueAnswer
+        .toString()
+        .toLowerCase()
+
+      const userAnswer = userQuestion.answer.toString().toLowerCase()
+      questionsAnswersCount++
+      if (originalAnswer === userAnswer) trueQuestionsAnswersCount++
+    })
+
+    // Подсчёт результатов за практические задания
+
+    // Запись итогов и статистик
+    const taskTimeRuntime = taskRuntime / 1000 - 1
+    await UserModel.findOneAndUpdate(
+      {
+        _id: user._id,
+        'tasks.id': userTaskId,
+      },
+      {
+        $set: {
+          'tasks.$.statistics': {
+            taskRuntime: taskTimeRuntime,
+            avarageQuestionTime: taskTimeRuntime / questionsAnswersCount,
+            trueAnswersCount: trueQuestionsAnswersCount,
+          },
+        },
+      }
+    )
+  } catch (error) {
+    serverError(error)
+  }
+}
+
 // Начинает выполнение задания (отсчёт таймера) и завершение по истечению времени
 export const startTask = async (req, res) => {
   try {
@@ -70,7 +125,7 @@ export const startTask = async (req, res) => {
         const currentTask = user.tasks.find((task) => task.id === userTaskId)
         if (currentTask.status === 'user_complete') {
           clearInterval(taskTimeInterval)
-          await UserModel.findOneAndUpdate(
+          const userFinal = await UserModel.findOneAndUpdate(
             {
               _id: userId,
               'tasks.id': userTaskId,
@@ -79,7 +134,13 @@ export const startTask = async (req, res) => {
               $unset: { 'tasks.$.nowTime': 0 },
             }
           )
-          return
+          // Подведение итогов
+          return await calculationResults(
+            userFinal,
+            userTaskId,
+            originalTask,
+            nowTime
+          )
         }
       }
 
@@ -97,7 +158,13 @@ export const startTask = async (req, res) => {
             $unset: { 'tasks.$.nowTime': 0 },
           }
         )
-        return
+        // Подведение итогов
+        return await calculationResults(
+          userFinal,
+          userTaskId,
+          originalTask,
+          nowTime
+        )
       }
 
       // Если прошло все проверки:
