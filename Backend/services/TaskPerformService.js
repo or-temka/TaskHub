@@ -40,6 +40,38 @@ const calculationResults = async (
     })
 
     // Подсчёт результатов за практические задания
+    practiceQuestions.map((userPracticeQuestion) => {
+      const originalPracticeQuestion = originalPracticeQuestions.find(
+        (originalPracticeQuestion) =>
+          originalPracticeQuestion.id === userPracticeQuestion.questionId
+      )
+      if (!originalPracticeQuestion) return
+
+      const userAnswer = userPracticeQuestion.answer
+
+      questionsAnswersCount++
+
+      const originalPracticeQuestionType = originalPracticeQuestion.type
+      // Сравнение ответа под нужный тип задания
+      // sampleFun - ответ высчитывается по формуле
+      if (originalPracticeQuestionType === 'sampleFun') {
+        const formule = eval(originalPracticeQuestion.answerFormule)
+        const roundForce = originalPracticeQuestion.roundForce
+
+        // Ответы на задание, которые должны быть (округленные до двух знаков после запятой)
+        const originalAnswer = formule(userPracticeData).toFixed(2)
+        const originalAnswersRound = [
+          (+originalAnswer).toFixed(2),
+          (+originalAnswer - roundForce).toFixed(2),
+          (+originalAnswer + roundForce).toFixed(2),
+        ]
+
+        // Проверка на правильность ответа пользователем
+        if (originalAnswersRound.includes(userAnswer.toFixed(2)))
+          trueQuestionsAnswersCount++
+      }
+      // Другие типы заданий...
+    })
 
     // Запись итогов и статистик
     const taskTimeRuntime = taskRuntime / 1000 - 1
@@ -107,6 +139,18 @@ export const startTask = async (req, res) => {
     const requestRateTime = 1000 // как часто будут отправляться и изменяться запросы (в мс)
     const timerTimeMsc = timerTime * 1000
     let nowTime = 0
+    // Работаем с созданием практических заданий (например, создаем выборку, по которой будут решаться задания)
+    const practiceData = originalTask.forPracticeData
+    const practiceDataType = practiceData.type
+    let practiceDataForUserTask
+    // Если тип randomNums (выборка)
+    if (practiceDataType === 'randomNums') {
+      // Вернёт массив выборки
+      const formule = eval(practiceData.formule)
+
+      practiceDataForUserTask = formule()
+    }
+
     await UserModel.findOneAndUpdate(
       {
         _id: userId,
@@ -118,6 +162,7 @@ export const startTask = async (req, res) => {
           'tasks.$.status': 'started',
           'tasks.$.questions': [],
           'tasks.$.practiceQuestions': [],
+          'tasks.$.forPracticeData': practiceDataForUserTask,
         },
       }
     )
