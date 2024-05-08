@@ -104,17 +104,11 @@ export const tasks = [
       {
         id: 1,
         text: 'Для данной выборки вычислить выборочное среднее.',
-        answerFormule: 'function ...',
+        type: 'sampleFun',
+        answerFormule:
+          '(numbers) {if (!Array.isArray(numbers) || numbers.length === 0) {return 0;}const sum = numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);const mean = sum / numbers.length;return mean;}',
         roundForce: 0.01, // На сколько может разниться ответ
       },
-      // {
-      //   id: 2,
-      //   text: 'Уже вторая задача с более интересным текстом',
-      //   answersSrc: [33, 44, 55],
-      //   images: [],
-      //   unit: 'н.',
-      //   beforeAnswerText: 'Вес равен',
-      // },
     ],
     statistic: {
       usersExecuted: 2,

@@ -18,15 +18,18 @@ const calculationResults = async (
     const practiceQuestions = userTask.practiceQuestions
     const originalQuestions = originalTask.questions
     const originalPracticeQuestions = originalTask.practiceQuestions
+    const userPracticeData = userTask.forPracticeData
 
-    // Подсчёт результатов за тест
     let trueQuestionsAnswersCount = 0
     let questionsAnswersCount = 0
+
+    // Подсчёт результатов за тест
     questions.map((userQuestion) => {
       const originalQuestion = originalQuestions.find(
         (originalQuestion) => originalQuestion.id === userQuestion.questionId
       )
       if (!originalQuestion) return
+
       const originalAnswer = originalQuestion.trueAnswer
         .toString()
         .toLowerCase()
@@ -51,6 +54,7 @@ const calculationResults = async (
             taskRuntime: taskTimeRuntime,
             avarageQuestionTime: taskTimeRuntime / questionsAnswersCount,
             trueAnswersCount: trueQuestionsAnswersCount,
+            answersCount: questionsAnswersCount,
           },
         },
       }
@@ -97,9 +101,8 @@ export const startTask = async (req, res) => {
       { $set: { 'tasks.$.attemptsCount': currentAttemptsTaskCount - 1 } }
     )
 
-    // Запуск таймера задания
-    // Получаем оригинальное задание
     const originalTask = await TaskModel.findById(currentTask.originalTaskId)
+    // Запуск таймера задания
     const timerTime = originalTask.timeForExecute // в секундах
     const requestRateTime = 1000 // как часто будут отправляться и изменяться запросы (в мс)
     const timerTimeMsc = timerTime * 1000
@@ -118,6 +121,7 @@ export const startTask = async (req, res) => {
         },
       }
     )
+
     const taskTimeInterval = setInterval(async () => {
       // Проверка не завершено ли задание уже (пользователь решил его раньше времени) (каждые 10 секунд проверка)
       if (nowTime % 1000 === 0) {
