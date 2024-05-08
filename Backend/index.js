@@ -51,6 +51,13 @@ app.post(
   checkTaskStarted,
   TaskPerformService.sendPracticeQuestionAnswer
 )
+// завершение задания пользователем раньше времени
+app.post(
+  '/taskPerform/end_user_task/:taskId',
+  checkAuth,
+  checkTaskStarted,
+  TaskPerformService.onEndUserTask
+)
 //#endregion
 //#region group
 // Добавление пользователя в группу (также удаление из прошлой группы, если она была)

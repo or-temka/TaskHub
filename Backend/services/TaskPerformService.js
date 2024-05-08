@@ -118,6 +118,33 @@ export const startTask = async (req, res) => {
   }
 }
 
+// Пользователь раньше времени заканчивает задание
+export const onEndUserTask = async (req, res) => {
+  try {
+    const userId = req.userId
+    const userTaskId = req.params.taskId
+
+    await UserModel.findOneAndUpdate(
+      {
+        _id: userId,
+        'tasks.id': userTaskId,
+      },
+      {
+        $set: {
+          'tasks.$.status': 'user_complete',
+        },
+      }
+    )
+
+    res.json({ end: true })
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({
+      errorMsg: 'Ошибка завершения задания раньше времени',
+    })
+  }
+}
+
 // Отправка ответа в задание
 export const sendQuestionAnswer = async (req, res) => {
   try {
