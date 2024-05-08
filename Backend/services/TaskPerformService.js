@@ -5,6 +5,8 @@ import TaskModel from '../models/Task.js'
 import GroupModel from '../models/Group.js'
 import UserModel from '../models/User.js'
 
+import calculateGrade from '../utils/calculateGrade.js'
+
 // Подсчёт результатов выполненного задания
 const calculationResults = async (
   user,
@@ -19,11 +21,13 @@ const calculationResults = async (
     const originalQuestions = originalTask.questions
     const originalPracticeQuestions = originalTask.practiceQuestions
     const userPracticeData = userTask.forPracticeData
+    const totalQuestions =
+      originalTask.questions.length + originalTask.practiceQuestions.length
 
     let trueQuestionsAnswersCount = 0
     let questionsAnswersCount = 0
 
-    // Подсчёт результатов за тест
+    // Подсчёт результатов за тест -------------------------------------------------------------------------------
     questions.map((userQuestion) => {
       const originalQuestion = originalQuestions.find(
         (originalQuestion) => originalQuestion.id === userQuestion.questionId
@@ -39,7 +43,7 @@ const calculationResults = async (
       if (originalAnswer === userAnswer) trueQuestionsAnswersCount++
     })
 
-    // Подсчёт результатов за практические задания
+    // Подсчёт результатов за практические задания --------------------------------------------------------------
     practiceQuestions.map((userPracticeQuestion) => {
       const originalPracticeQuestion = originalPracticeQuestions.find(
         (originalPracticeQuestion) =>
@@ -73,7 +77,13 @@ const calculationResults = async (
       // Другие типы заданий...
     })
 
-    // Запись итогов и статистик
+    // Запись итогов и статистик -----------------------------------------------------------
+    // В пользовательское задание ------------------------
+    // Вычисление оценки
+    const tempMark = calculateGrade(trueQuestionsAnswersCount, totalQuestions)
+    const mark = +tempMark > 2 ? +tempMark : 2
+    const roundedMark = Math.round(mark)
+    // Запись данных
     const taskTimeRuntime = taskRuntime / 1000 - 1
     await UserModel.findOneAndUpdate(
       {
@@ -83,10 +93,42 @@ const calculationResults = async (
       {
         $set: {
           'tasks.$.statistics': {
-            taskRuntime: taskTimeRuntime,
-            avarageQuestionTime: taskTimeRuntime / questionsAnswersCount,
+            taskRuntime: taskTimeRuntime ? taskTimeRuntime : 0,
+            avarageQuestionTime: questionsAnswersCount
+              ? taskTimeRuntime / questionsAnswersCount
+              : 0,
             trueAnswersCount: trueQuestionsAnswersCount,
             answersCount: questionsAnswersCount,
+          },
+          'tasks.$.mark': roundedMark,
+          'tasks.$.notRoundMark': mark,
+        },
+      }
+    )
+
+    // В оригинальное задание ---------------------------
+    const oldOriginalTaskStatistic = originalTask.statistic
+    const originalTaskExecuted = +oldOriginalTaskStatistic.executedCount
+    const newStatisticForOriginalTask = {
+      executedCount: originalTaskExecuted + 1,
+      avarageMark:
+        (oldOriginalTaskStatistic.avarageMark * originalTaskExecuted + mark) /
+        (originalTaskExecuted + 1),
+      avarageTimeTask: 0,
+      avarageTimeQuestion: 0,
+      leastCorrectAnswers: 0,
+      mostCorrectAnswers: 0,
+    }
+
+    await TaskModel.findOneAndUpdate(
+      {
+        _id: originalTask._id,
+      },
+      {
+        $set: {
+          statistic: {
+            ...oldOriginalTaskStatistic,
+            ...newStatisticForOriginalTask,
           },
         },
       }
@@ -134,6 +176,11 @@ export const startTask = async (req, res) => {
     )
 
     const originalTask = await TaskModel.findById(currentTask.originalTaskId)
+    // Если задание никогда не выполнялось
+    if (currentTask.status === 'not_started') {
+      originalTask.statistic.usersExecuted++
+    }
+
     // Запуск таймера задания
     const timerTime = originalTask.timeForExecute // в секундах
     const requestRateTime = 1000 // как часто будут отправляться и изменяться запросы (в мс)
