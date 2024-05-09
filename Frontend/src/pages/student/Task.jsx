@@ -89,7 +89,7 @@ function Task({ setPageName }) {
           className={styles.task__fieldHeader}
         />
         <TaskAdoptStatistic
-          taskStatistic={userTask.statistic[0]}
+          taskStatistic={userTask.statistic}
           questionsCount={userTask.questionsCount}
         />
       </div>
