@@ -11,9 +11,11 @@ import AnswersTableOfQuestions from '../../components/student/AnswersTableOfQues
 import PopUp from '../../components/UI/PopUps/PopUp'
 import InfoForPracticeQuestions from '../../components/student/InfoForPracticeQuestions'
 import SpinLoader from '../../components/UI/Loaders/SpinLoader'
+import Button from '../../components/UI/Buttons/Button'
+
+import { fetchUserTaskStatus } from '../../utils/fetchData/student/userTask'
 
 import styles from './TaskPerform.module.scss'
-import { fetchUserTaskStatus } from '../../utils/fetchData/student/userTask'
 
 function TaskPerform({
   user = {},
@@ -24,6 +26,7 @@ function TaskPerform({
 }) {
   const [showAnswerTablePopUp, setShowAnswerTablePopUp] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [taskStatus, setTaskStatus] = useState('not_started')
 
   const [userTask, setUserTask] = useState({})
   const [originalTask, setOriginalTask] = useState({})
@@ -35,15 +38,12 @@ function TaskPerform({
   useEffect(() => {
     setPageName('Выполнение задания')
 
+    // Получение задания
     fetchUserTaskStatus(taskId)
       .then((res) => {
         // Если задание не начато
-        if (res.status !== 'started') {
-          console.log('Задание не начато')
-        } else {
-          // Если задание начато
-          console.log('Задание начато')
-        }
+        setTaskStatus(res.status)
+        setLoading(false)
       })
       .catch((err) => console.log(err))
   }, [])
@@ -52,6 +52,43 @@ function TaskPerform({
     return (
       <div className="wrapper spinLoaderWrapper">
         <SpinLoader />
+      </div>
+    )
+  }
+
+  // Вывод, если задание не начато
+  if (taskStatus === 'not_started') {
+    return (
+      <div className="wrapper spinLoaderWrapper">
+        <div className={styles.taskPerform__notStartedTaskBox}>
+          <span className="text">
+            Вы не запустили задание. Нажмите кнопку "начать задание" на странице
+            задания.
+          </span>
+          <Button
+            title="К заданию"
+            onClick={() =>
+              navigate(`../../task/${taskId}`, { relative: 'path' })
+            }
+          />
+        </div>
+      </div>
+    )
+  }
+
+  // Вывод, если задание уже выполнено и не начато
+  if (taskStatus === 'user_complete' || taskStatus === 'complete') {
+    return (
+      <div className="wrapper spinLoaderWrapper">
+        <div className={styles.taskPerform__notStartedTaskBox}>
+          <span className="text">Вы выполнили данное задание.</span>
+          <Button
+            title="К заданию"
+            onClick={() =>
+              navigate(`../../task/${taskId}`, { relative: 'path' })
+            }
+          />
+        </div>
       </div>
     )
   }
