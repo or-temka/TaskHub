@@ -79,7 +79,9 @@ function Task({ setPageName }) {
             />
             <MyTaskStatistics
               userTask={userTask}
-              questionsCount={userTask.questionsCount}
+              questionsCount={
+                userTask.questionsCount + userTask.practiceQuestionsCount
+              }
             />
           </>
         )}
@@ -90,7 +92,9 @@ function Task({ setPageName }) {
         />
         <TaskAdoptStatistic
           taskStatistic={userTask.statistic}
-          questionsCount={userTask.questionsCount}
+          questionsCount={
+            userTask.questionsCount + userTask.practiceQuestionsCount
+          }
         />
       </div>
       {showPopUpStartTask && (

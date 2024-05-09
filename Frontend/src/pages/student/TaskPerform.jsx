@@ -141,7 +141,7 @@ function TaskPerform({
           </>
         )}
 
-        {task.questions && (
+        {task.questions.length > 0 && (
           <>
             <ContentHeaderLabel
               title="Теоретические вопросы"
@@ -163,7 +163,7 @@ function TaskPerform({
           </>
         )}
 
-        {task.practiceQuestions && (
+        {task.practiceQuestions.length > 0 && (
           <>
             <ContentHeaderLabel
               title="Для выполнения практических заданий"

@@ -16,8 +16,8 @@ const calculationResults = async (
 ) => {
   try {
     const userTask = user.tasks.find((task) => task.id === userTaskId)
-    const questions = userTask.questions
-    const practiceQuestions = userTask.practiceQuestions
+    const questions = userTask.answersOnQuestions
+    const practiceQuestions = userTask.answersOnPracticeQuestions
     const originalQuestions = originalTask.questions
     const originalPracticeQuestions = originalTask.practiceQuestions
     const userPracticeData = userTask.forPracticeData
@@ -28,7 +28,7 @@ const calculationResults = async (
     let questionsAnswersCount = 0
 
     // Подсчёт результатов за тест -------------------------------------------------------------------------------
-    questions.map((userQuestion) => {
+    questions.map(async (userQuestion) => {
       const originalQuestion = originalQuestions.find(
         (originalQuestion) => originalQuestion.id === userQuestion.questionId
       )
@@ -40,7 +40,11 @@ const calculationResults = async (
 
       const userAnswer = userQuestion.answer.toString().toLowerCase()
       questionsAnswersCount++
-      if (originalAnswer === userAnswer) trueQuestionsAnswersCount++
+      if (
+        originalAnswer.toString().toLowerCase() ===
+        userAnswer.toString().toLowerCase()
+      )
+        trueQuestionsAnswersCount++
     })
 
     // Подсчёт результатов за практические задания --------------------------------------------------------------
@@ -52,6 +56,7 @@ const calculationResults = async (
       if (!originalPracticeQuestion) return
 
       const userAnswer = userPracticeQuestion.answer
+      const userAnswerAsNumber = Number(userAnswer) ? Number(userAnswer) : 0
 
       questionsAnswersCount++
 
@@ -73,7 +78,7 @@ const calculationResults = async (
         ]
 
         // Проверка на правильность ответа пользователем
-        if (originalAnswersRound.includes(userAnswer.toFixed(2)))
+        if (originalAnswersRound.includes(userAnswerAsNumber.toFixed(2)))
           trueQuestionsAnswersCount++
       }
       // Другие типы заданий...
@@ -84,7 +89,8 @@ const calculationResults = async (
     // Вычисление оценки
     let tempMark = calculateGrade(trueQuestionsAnswersCount, totalQuestions)
     tempMark = +tempMark > 2 ? +tempMark : 2
-    const mark = userTask.mark > tempMark ? userTask.mark : tempMark // Если оценка "до" была лучше
+    const mark =
+      userTask.notRoundMark > tempMark ? userTask.notRoundMark : tempMark // Если оценка "до" была лучше
     const roundedMark = Math.round(mark)
     // Запись данных
     const taskTimeRuntime = taskRuntime / 1000 - 1
@@ -115,7 +121,8 @@ const calculationResults = async (
     const newStatisticForOriginalTask = {
       executedCount: originalTaskExecuted + 1,
       avarageMark:
-        (oldOriginalTaskStatistic.avarageMark * originalTaskExecuted + mark) /
+        (oldOriginalTaskStatistic.avarageMark * originalTaskExecuted +
+          tempMark) /
         (originalTaskExecuted + 1),
       avarageTimeTask: 0,
       avarageTimeQuestion: 0,

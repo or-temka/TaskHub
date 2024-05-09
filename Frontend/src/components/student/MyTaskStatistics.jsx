@@ -1,7 +1,10 @@
-import getTimeExecuteInfo from '../../utils/getTimeExecuteInfo'
-import ContentContainer from '../frames/ContentContainer'
-import styles from './MyTaskStatistics.module.scss'
 import TaskAdoptStatisticLine from './TaskAdoptStatisticLine'
+import ContentContainer from '../frames/ContentContainer'
+
+import getTimeExecuteInfo from '../../utils/getTimeExecuteInfo'
+import rounder from '../../utils/rounder'
+
+import styles from './MyTaskStatistics.module.scss'
 
 function MyTaskStatistics({ userTask, questionsCount, className, ...params }) {
   const taskStatistics = userTask.statistics
@@ -14,7 +17,7 @@ function MyTaskStatistics({ userTask, questionsCount, className, ...params }) {
       <div className={styles.myTaskStatistics__linesWithStatistics}>
         <TaskAdoptStatisticLine
           title="Балл за задание:"
-          value={userTask.notRoundMark}
+          value={rounder(userTask.notRoundMark)}
           valueChangeTo={userTask.mark}
           valueBackgroundColor={
             userTask.notRoundMark >= 4
