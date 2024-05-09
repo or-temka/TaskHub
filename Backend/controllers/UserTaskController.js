@@ -324,3 +324,37 @@ export const updateUserTask = async (req, res) => {
       .json({ errorMsg: 'Произошла ошибка обновления задания пользователя' })
   }
 }
+
+// дополнительные
+export const getMyUserTaskStatus = async (req, res) => {
+  try {
+    const userId = req.userId
+    const userTaskId = req.params.taskId
+
+    const user = await UserModel.findById(userId)
+    if (!user) {
+      return res.status(404).json({
+        errorMsg: 'Пользователь не найден',
+      })
+    }
+
+    const userTask = user._doc.tasks.find(
+      (userTask) => userTask.id === userTaskId
+    )
+    if (!userTask) {
+      return res.status(404).json({
+        errorMsg: 'Задание не найдено у пользователя',
+      })
+    }
+
+    res.json({ status: userTask.status })
+  } catch (error) {
+    serverError(error)
+    res
+      .status(500)
+      .json({
+        errorMsg:
+          'Произошла ошибка получения статуса пользовательского задания',
+      })
+  }
+}

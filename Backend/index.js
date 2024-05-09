@@ -189,6 +189,12 @@ app.get('/task/:id', checkAuth, checkIsTeacher, TaskController.getTask)
 app.get('/userTask/all', checkAuth, UserTaskController.getMyUserTasks)
 // Получение задания пользователя (о себе)
 app.get('/userTask/my/:taskId', checkAuth, UserTaskController.getMyUserTask)
+// Получение статуса (status) задания пользователя (о себе)
+app.get(
+  '/userTask/my_task_status/:taskId',
+  checkAuth,
+  UserTaskController.getMyUserTaskStatus
+)
 // Добавление задания пользователя
 app.post(
   '/userTask/:userId',

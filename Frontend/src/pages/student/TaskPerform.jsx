@@ -9,12 +9,11 @@ import PracticeQuestions from '../../components/student/PracticeQuestions'
 import PrimaryButton from '../../components/UI/Buttons/PrimaryButton'
 import AnswersTableOfQuestions from '../../components/student/AnswersTableOfQuestions'
 import PopUp from '../../components/UI/PopUps/PopUp'
-
-import { userTasks } from '../../data/userTasks'
-import { tasks } from '../../data/tasks'
+import InfoForPracticeQuestions from '../../components/student/InfoForPracticeQuestions'
+import SpinLoader from '../../components/UI/Loaders/SpinLoader'
 
 import styles from './TaskPerform.module.scss'
-import InfoForPracticeQuestions from '../../components/student/InfoForPracticeQuestions'
+import { fetchUserTaskStatus } from '../../utils/fetchData/student/userTask'
 
 function TaskPerform({
   user = {},
@@ -24,6 +23,10 @@ function TaskPerform({
   setPageName,
 }) {
   const [showAnswerTablePopUp, setShowAnswerTablePopUp] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  const [userTask, setUserTask] = useState({})
+  const [originalTask, setOriginalTask] = useState({})
 
   const navigate = useNavigate()
 
@@ -31,16 +34,27 @@ function TaskPerform({
 
   useEffect(() => {
     setPageName('Выполнение задания')
+
+    fetchUserTaskStatus(taskId)
+      .then((res) => {
+        // Если задание не начато
+        if (res.status !== 'started') {
+          console.log('Задание не начато')
+        } else {
+          // Если задание начато
+          console.log('Задание начато')
+        }
+      })
+      .catch((err) => console.log(err))
   }, [])
 
-  const task = userTasks.find((task) => task.id === taskId)
-  const originalTask = tasks.find(
-    (originalTask) => originalTask.id === task.originalTaskId
-  )
-
-  useEffect(() => {
-    setPageName(`Выполнение задания "${originalTask.name}"`)
-  }, [])
+  if (loading) {
+    return (
+      <div className="wrapper spinLoaderWrapper">
+        <SpinLoader />
+      </div>
+    )
+  }
 
   // TODO обработка завершения задания по нажатию клавиши "Завершить"
   const endTaskHandler = () => {
@@ -65,7 +79,7 @@ function TaskPerform({
         <ContentHeader
           title={`Выполнение задания "${originalTask.name}"`}
         ></ContentHeader>
-        <TaskPerformHeader task={task} originalTask={originalTask} />
+        <TaskPerformHeader task={userTask} originalTask={originalTask} />
 
         {originalTask.answersTable && (
           <>
