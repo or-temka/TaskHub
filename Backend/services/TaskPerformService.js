@@ -80,8 +80,9 @@ const calculationResults = async (
     // Запись итогов и статистик -----------------------------------------------------------
     // В пользовательское задание ------------------------
     // Вычисление оценки
-    const tempMark = calculateGrade(trueQuestionsAnswersCount, totalQuestions)
-    const mark = +tempMark > 2 ? +tempMark : 2
+    let tempMark = calculateGrade(trueQuestionsAnswersCount, totalQuestions)
+    tempMark = +tempMark > 2 ? +tempMark : 2
+    const mark = userTask.mark > tempMark ? userTask.mark : tempMark // Если оценка "до" была лучше
     const roundedMark = Math.round(mark)
     // Запись данных
     const taskTimeRuntime = taskRuntime / 1000 - 1
@@ -207,8 +208,8 @@ export const startTask = async (req, res) => {
         $set: {
           'tasks.$.nowTime': 0,
           'tasks.$.status': 'started',
-          'tasks.$.questions': [],
-          'tasks.$.practiceQuestions': [],
+          'tasks.$.answersOnQuestions': [],
+          'tasks.$.answersOnPracticeQuestions': [],
           'tasks.$.forPracticeData': practiceDataForUserTask,
         },
       }
@@ -327,7 +328,7 @@ export const sendQuestionAnswer = async (req, res) => {
 
     let newUser
     // Если ответы ещё не заносились
-    if (!currentTask.questions) {
+    if (!currentTask.answersOnQuestions) {
       newUser = await UserModel.findOneAndUpdate(
         {
           _id: userId,
@@ -335,19 +336,19 @@ export const sendQuestionAnswer = async (req, res) => {
         },
         {
           $set: {
-            'tasks.$.questions': [newAnswer],
+            'tasks.$.answersOnQuestions': [newAnswer],
           },
         }
       )
     } else {
       // Если ответы уже были
       // Проверка, был ли занесен уже такой вопрос-ответ
-      const isAnswerWasAlreadyIndex = currentTask.questions.findIndex(
-        (question) => question.questionId === questionId
+      const isAnswerWasAlreadyIndex = currentTask.answersOnQuestions.findIndex(
+        (answerOnQuestion) => answerOnQuestion.questionId === questionId
       )
       // Если нашел уже такой ответ
       if (isAnswerWasAlreadyIndex !== -1) {
-        currentTask.questions.splice(isAnswerWasAlreadyIndex, 1)
+        currentTask.answersOnQuestions.splice(isAnswerWasAlreadyIndex, 1)
       }
 
       newUser = await UserModel.findOneAndUpdate(
@@ -357,8 +358,10 @@ export const sendQuestionAnswer = async (req, res) => {
         },
         {
           $set: {
-            'tasks.$.questions': [
-              ...(currentTask.questions ? currentTask.questions : {}),
+            'tasks.$.answersOnQuestions': [
+              ...(currentTask.answersOnQuestions
+                ? currentTask.answersOnQuestions
+                : {}),
               newAnswer,
             ],
           },
@@ -377,8 +380,8 @@ export const sendQuestionAnswer = async (req, res) => {
       newTask: newUserTask.newTask,
       attemptsCount: newUserTask.attemptsCount,
       notTime: newUserTask.notTime,
-      questions: newUserTask.questions,
-      practiceQuestions: newUserTask.practiceQuestions,
+      answersOnQuestions: newUserTask.answersOnQuestions,
+      answersOnPracticeQuestions: newUserTask.answersOnPracticeQuestions,
     })
   } catch (error) {
     serverError(error)
@@ -405,7 +408,7 @@ export const sendPracticeQuestionAnswer = async (req, res) => {
 
     let newUser
     // Если ответы ещё не заносились
-    if (!currentTask.questions) {
+    if (!currentTask.answersOnPracticeQuestions) {
       newUser = await UserModel.findOneAndUpdate(
         {
           _id: userId,
@@ -413,19 +416,24 @@ export const sendPracticeQuestionAnswer = async (req, res) => {
         },
         {
           $set: {
-            'tasks.$.practiceQuestions': [newAnswer],
+            'tasks.$.answersOnPracticeQuestions': [newAnswer],
           },
         }
       )
     } else {
       // Если ответы уже были
       // Проверка, был ли занесен уже такой вопрос-ответ
-      const isAnswerWasAlreadyIndex = currentTask.practiceQuestions.findIndex(
-        (practiceQuestion) => practiceQuestion.questionId === questionId
-      )
+      const isAnswerWasAlreadyIndex =
+        currentTask.answersOnPracticeQuestions.findIndex(
+          (answerOnPracticeQuestion) =>
+            answerOnPracticeQuestion.questionId === questionId
+        )
       // Если нашел уже такой ответ
       if (isAnswerWasAlreadyIndex !== -1) {
-        currentTask.practiceQuestions.splice(isAnswerWasAlreadyIndex, 1)
+        currentTask.answersOnPracticeQuestions.splice(
+          isAnswerWasAlreadyIndex,
+          1
+        )
       }
 
       newUser = await UserModel.findOneAndUpdate(
@@ -435,9 +443,9 @@ export const sendPracticeQuestionAnswer = async (req, res) => {
         },
         {
           $set: {
-            'tasks.$.practiceQuestions': [
-              ...(currentTask.practiceQuestions
-                ? currentTask.practiceQuestions
+            'tasks.$.answersOnPracticeQuestions': [
+              ...(currentTask.answersOnPracticeQuestions
+                ? currentTask.answersOnPracticeQuestions
                 : {}),
               newAnswer,
             ],
@@ -457,8 +465,8 @@ export const sendPracticeQuestionAnswer = async (req, res) => {
       newTask: newUserTask.newTask,
       attemptsCount: newUserTask.attemptsCount,
       notTime: newUserTask.notTime,
-      questions: newUserTask.questions,
-      practiceQuestions: newUserTask.practiceQuestions,
+      answersOnQuestions: newUserTask.answersOnQuestions,
+      answersOnPracticeQuestions: newUserTask.answersOnPracticeQuestions,
     })
   } catch (error) {
     serverError(error)
