@@ -1,21 +1,27 @@
 import { useState } from 'react'
 import ContentContainer from '../frames/ContentContainer'
 import AnswerButton from '../UI/Testing/AnswerButton'
+import Input from '../UI/Inputs/Input'
+
+import { fetchSendAnswerOfQuestion } from '../../utils/fetchData/taskPerform'
 
 import styles from './Questions.module.scss'
-import Input from '../UI/Inputs/Input'
 
 function Questions({
   questions,
+  userTaskId,
+  initialEnteredAnswers = {},
   onClickOpenAnswersTable = () => {},
   className,
   ...params
 }) {
-  const [choicedAnswers, setChoicedAnswers] = useState({}) // {questionId1: choicedAnswerId1, ...} ex: {1: 2, 2: 4, 3: 1, 4: 1}
+  const [choicedAnswers, setChoicedAnswers] = useState(initialEnteredAnswers) // {questionId1: choicedAnswerId1, ...} ex: {1: 2, 2: 4, 3: 1, 4: 1}
 
   // Обработка выбора ответа
   const choiceAnswer = (questionId, answer) => {
-    // TODO отправка данных на сервер - выбранный ответ
+    fetchSendAnswerOfQuestion(userTaskId, questionId, answer)
+      .then((res) => {})
+      .catch((err) => console.log(err))
 
     setChoicedAnswers({
       ...choicedAnswers,

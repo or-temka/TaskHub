@@ -4,18 +4,23 @@ import ContentContainer from '../frames/ContentContainer'
 import Input from '../UI/Inputs/Input'
 
 import styles from './PracticeQuestions.module.scss'
+import { fetchSendAnswerOfPracticeQuestion } from '../../utils/fetchData/taskPerform'
 
 function PracticeQuestions({
   questions,
+  initialEnteredAnswers = {},
+  userTaskId,
   originalTaskId,
   className,
   ...params
 }) {
-  const [enteredAnswers, setEnteredAnswers] = useState({}) // {questionId1: enteredAnswer, ...} ex: {1: "Привет", 2: "Пока",}
+  const [enteredAnswers, setEnteredAnswers] = useState(initialEnteredAnswers) // {questionId1: enteredAnswer, ...} ex: {1: "Привет", 2: "Пока",}
 
   // Обработка написания ответа (изменения input-ов)
   const inputAnswer = (questionId, answer) => {
-    // TODO отправка данных на сервер - написанный ответ
+    fetchSendAnswerOfPracticeQuestion(userTaskId, questionId, answer)
+      .then((res) => {})
+      .catch((err) => console.log(err))
 
     setEnteredAnswers({
       ...enteredAnswers,

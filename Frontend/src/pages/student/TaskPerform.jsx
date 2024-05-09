@@ -149,7 +149,16 @@ function TaskPerform({
             />
             <Questions
               questions={task.questions}
+              userTaskId={task.id}
               onClickOpenAnswersTable={() => setShowAnswerTablePopUp(true)}
+              initialEnteredAnswers={
+                task.answersOnQuestions.length > 0
+                  ? task.answersOnQuestions.reduce((obj, item) => {
+                      obj[item.questionId] = item.answer
+                      return obj
+                    }, {})
+                  : {}
+              }
             />
           </>
         )}
@@ -171,7 +180,16 @@ function TaskPerform({
             />
             <PracticeQuestions
               questions={task.practiceQuestions}
+              userTaskId={task.id}
               originalTaskId={task.originalTaskId}
+              initialEnteredAnswers={
+                task.answersOnPracticeQuestions.length > 0
+                  ? task.answersOnPracticeQuestions.reduce((obj, item) => {
+                      obj[item.questionId] = item.answer
+                      return obj
+                    }, {})
+                  : {}
+              }
             />
           </>
         )}
