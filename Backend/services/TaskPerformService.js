@@ -68,6 +68,8 @@ const calculationResults = async (
           (+originalAnswer).toFixed(2),
           (+originalAnswer - roundForce).toFixed(2),
           (+originalAnswer + roundForce).toFixed(2),
+          (+originalAnswer - roundForce * 2).toFixed(2),
+          (+originalAnswer + roundForce * 2).toFixed(2),
         ]
 
         // Проверка на правильность ответа пользователем
@@ -514,6 +516,25 @@ export const getMyUserTaskPerform = async (req, res) => {
       })
     }
 
+    // Рефакторинг вопросов перед выдачей их пользователю (чтобы он не знал ответов) ---------
+    // обычных вопросов
+    const refQuestions = originalTask.questions.map((question) => ({
+      id: question.id,
+      questionText: question.questionText,
+      type: question.type,
+      ...(question.type === 'choice' ? { answers: question.answers } : {}), // Для вопроса с выбором будут передаваться и варианты ответа
+    }))
+    // практических вопросов
+    const refPracticeQuestions = originalTask.practiceQuestions.map(
+      (practiceQuestion) => ({
+        id: practiceQuestion.id,
+        text: practiceQuestion.text,
+        ...(practiceQuestion.roundForce
+          ? { roundForce: practiceQuestion.roundForce }
+          : {}), // Если указано округление
+      })
+    )
+    // Запись всех данных для отправки --------
     const newTask = {
       // from myself
       id: userTask.id,
@@ -527,6 +548,8 @@ export const getMyUserTaskPerform = async (req, res) => {
       // from original
       name: originalTask.name,
       filesId: originalTask.filesId,
+      questions: refQuestions,
+      practiceQuestions: refPracticeQuestions,
       timeForExecute: originalTask.timeForExecute,
       questionsCount: originalTask.questions.length,
       practiceQuestionsCount: originalTask.practiceQuestions.length,
