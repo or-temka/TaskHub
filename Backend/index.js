@@ -58,6 +58,13 @@ app.post(
   checkTaskStarted,
   TaskPerformService.onEndUserTask
 )
+// получение информации о задании, которое будет выполняться
+app.get(
+  '/taskPerform/get_my_task_perform/:taskId',
+  checkAuth,
+  checkTaskStarted,
+  TaskPerformService.getMyUserTaskPerform
+)
 //#endregion
 //#region group
 // Добавление пользователя в группу (также удаление из прошлой группы, если она была)

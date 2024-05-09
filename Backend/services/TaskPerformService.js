@@ -475,3 +475,70 @@ export const sendPracticeQuestionAnswer = async (req, res) => {
     })
   }
 }
+
+// Получение основной информации о задании для его выполнения
+export const getMyUserTaskPerform = async (req, res) => {
+  try {
+    const userId = req.userId
+    const userTaskId = req.params.taskId
+
+    const user = await UserModel.findById(userId)
+    if (!user) {
+      serverMsg(
+        `Попытка получения данных о задании пользователя: не найден пользователь с id ${userId}`
+      )
+      return res.status(404).json({
+        errorMsg: 'Пользователь не найден',
+      })
+    }
+
+    const userTask = user._doc.tasks.find(
+      (userTask) => userTask.id === userTaskId
+    )
+    if (!userTask) {
+      serverMsg(
+        `Попытка получения данных о задании пользователя: не найдено задание с id ${userTaskId}`
+      )
+      return res.status(404).json({
+        errorMsg: 'Задание не найдено у пользователя',
+      })
+    }
+
+    const originalTask = await TaskModel.findById(userTask.originalTaskId)
+    if (!originalTask) {
+      serverMsg(
+        `Попытка получения данных о задании пользователя: не найдено оригинальное задание с id ${userTask.originalTaskId}`
+      )
+      return res.status(404).json({
+        errorMsg: 'Оригинальное задание не найдено',
+      })
+    }
+
+    const newTask = {
+      // from myself
+      id: userTask.id,
+      originalTaskId: userTask.originalTaskId,
+      attemptsCount: userTask.attemptsCount,
+      forPracticeData: userTask.forPracticeData,
+      answersOnQuestions: userTask.answersOnQuestions,
+      answersOnPracticeQuestions: userTask.answersOnPracticeQuestions,
+      mark: userTask.mark,
+      notRoundMark: userTask.notRoundMark,
+      // from original
+      name: originalTask.name,
+      filesId: originalTask.filesId,
+      timeForExecute: originalTask.timeForExecute,
+      questionsCount: originalTask.questions.length,
+      practiceQuestionsCount: originalTask.practiceQuestions.length,
+      answersTable: originalTask.answersTable,
+    }
+
+    serverMsg(
+      `Получены данные для выполнения о задании "${newTask.name}" пользователя (о себе) "${user.name}"`
+    )
+    res.json(newTask)
+  } catch (error) {
+    serverError(error)
+    res.status(500).json({ errorMsg: 'Произошла ошибка получения заданий' })
+  }
+}
