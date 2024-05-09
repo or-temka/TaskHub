@@ -1,93 +1,53 @@
 const users = [
   {
-    id: 1,
-    name: 'Черепягина Елизавета Николаевна',
-    password: 'fsfgdfgj43444',
-    groupId: 1,
-    tasksId: [1, 2],
-    statistics: {
-      complitedTasks: 1,
-      avarageMark: 3.4,
-      avarageTaskTime: 540,
-      avarageQuestionTime: 23,
+    // Учитель
+    _id: {
+      $oid: '662b37c90d719b7f007f313b',
     },
-  },
-  {
-    id: 2,
-    name: 'Волкова Наталья Владимировна',
-    password: '1234',
-    groupId: 1,
-    tasksId: [1, 2],
-    statistics: {
-      complitedTasks: 2,
-      avarageMark: 2.8,
-      avarageTaskTime: 870,
-      avarageQuestionTime: 44,
-    },
-  },
-  {
-    id: 3,
-    name: 'Распутина Кристина Олеговна',
-    password: '0000',
-    groupId: 2,
-    tasksId: [],
-    statistics: {
-      complitedTasks: 4,
-      avarageMark: 5,
-      avarageTaskTime: 220,
-      avarageQuestionTime: 12,
-    },
-  },
-  {
-    id: 4,
-    name: 'Балашов Егор Владимирович',
-    password: 'яРусский',
-    groupId: 6,
-    tasksId: [],
+    name: 'Королев Леонид Владимирович',
+    role: 'teacher',
+    login: 'korolev',
+    password: '123456',
+    tasks: [],
     statistics: {
       complitedTasks: 0,
       avarageMark: 0,
       avarageTaskTime: 0,
       avarageQuestionTime: 0,
     },
-  },
-  {
-    id: 5,
-    name: 'Щегорцов Артем Михайлович',
-    password: 'h[3k&64',
-    groupId: 7,
-    tasksId: [2],
-    statistics: {
-      complitedTasks: 1,
-      avarageMark: 4.4,
-      avarageTaskTime: 330,
-      avarageQuestionTime: 19,
+    createdAt: {
+      $date: '2024-04-26T05:12:41.577Z',
     },
-  },
-  {
-    id: 6,
-    name: 'Киселев Илья Муромец Первый на руси матушке такой единственный',
-    password: 'пвавпвап',
-    groupId: 7,
-    tasksId: [2],
-    statistics: {
-      complitedTasks: 1,
-      avarageMark: 4.4,
-      avarageTaskTime: 330,
-      avarageQuestionTime: 19,
+    updatedAt: {
+      $date: '2024-04-26T05:12:41.577Z',
     },
+    __v: 0,
   },
+  // Студенты
   {
-    id: 7,
-    name: 'Хайдаров Франклин Калебович',
-    password: 'апвроавравправпрвапрваправравравправправравпр',
-    groupId: 3,
-    tasksId: [],
+    _id: {
+      $oid: '6634a88cdeef9a6961d0d88f',
+    },
+    name: 'Волнухин М.А.',
+    role: 'student',
+    login: 'volnukhin.m',
+    password: 'tLb1ELIK5TOs',
+    groupId: {
+      $oid: '6634a88cdeef9a6961d0d88c',
+    },
+    tasks: [],
     statistics: {
-      complitedTasks: 6,
-      avarageMark: 2.1,
-      avarageTaskTime: 555,
-      avarageQuestionTime: 31,
+      complitedTasks: 0,
+      avarageMark: 0,
+      avarageTaskTime: 0,
+      avarageQuestionTime: 0,
+    },
+    __v: 0,
+    createdAt: {
+      $date: '2024-05-03T09:04:12.920Z',
+    },
+    updatedAt: {
+      $date: '2024-05-09T11:18:55.266Z',
     },
   },
 ]

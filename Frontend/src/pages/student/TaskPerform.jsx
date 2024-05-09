@@ -35,6 +35,7 @@ function TaskPerform({
 
   const taskId = useParams().taskId
 
+  // Первоначальная настройка и получение данных
   useEffect(() => {
     setPageName('Выполнение задания')
 
@@ -48,6 +49,7 @@ function TaskPerform({
       .catch((err) => console.log(err))
   }, [])
 
+  // Загрузка
   if (loading) {
     return (
       <div className="wrapper spinLoaderWrapper">
