@@ -4,7 +4,7 @@ import TextFocus from '../UI/Texts/TextFocus'
 
 import styles from './TaskPerformHeader.module.scss'
 
-function TaskPerformHeader({ task, originalTask, className, ...params }) {
+function TaskPerformHeader({ task, className, ...params }) {
   return (
     <ContentContainer
       {...params}
@@ -28,19 +28,19 @@ function TaskPerformHeader({ task, originalTask, className, ...params }) {
         </TextFocus>
         <TextFocus className={styles.taskPerformHeader__infoField}>
           <span className={styles.taskPerformHeader__infoLabel}>Вопросов:</span>
-          <span>{originalTask.questions.length}</span>
+          <span>{task.questionsCount}</span>
         </TextFocus>
         <TextFocus className={styles.taskPerformHeader__infoField}>
           <span className={styles.taskPerformHeader__infoLabel}>
             Практических заданий:
           </span>
-          <span>{originalTask.practiceQuestions.length}</span>
+          <span>{task.practiceQuestionsCount}</span>
         </TextFocus>
         <TextFocus className={styles.taskPerformHeader__infoField}>
           <span className={styles.taskPerformHeader__infoLabel}>
             Времени на выполнение:
           </span>
-          <span>{getTimeExecuteInfo(originalTask.timeForExecute)}</span>
+          <span>{getTimeExecuteInfo(task.timeForExecute)}</span>
         </TextFocus>
       </div>
       <TextFocus

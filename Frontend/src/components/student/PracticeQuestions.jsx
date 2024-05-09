@@ -5,7 +5,12 @@ import Input from '../UI/Inputs/Input'
 
 import styles from './PracticeQuestions.module.scss'
 
-function PracticeQuestions({ questions, className, ...params }) {
+function PracticeQuestions({
+  questions,
+  originalTaskId,
+  className,
+  ...params
+}) {
   const [enteredAnswers, setEnteredAnswers] = useState({}) // {questionId1: enteredAnswer, ...} ex: {1: "Привет", 2: "Пока",}
 
   // Обработка написания ответа (изменения input-ов)
@@ -34,7 +39,13 @@ function PracticeQuestions({ questions, className, ...params }) {
           <span className={styles.practiceQuestions__taskText}>
             {question.text}
           </span>
-          <img src="" alt="" className={styles.practiceQuestions__image} />
+          {question.imgSrc && (
+            <img
+              src={require(`../../assets/images/tasks/${originalTaskId}/${question.imgSrc}`)}
+              alt={question.imgSrc}
+              className={styles.practiceQuestions__image}
+            />
+          )}
           <div className={styles.practiceQuestions__answer}>
             <span className={styles.practiceQuestions__answerBeforeText}>
               Ответ:

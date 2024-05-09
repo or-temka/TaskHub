@@ -547,6 +547,7 @@ export const getMyUserTaskPerform = async (req, res) => {
       notRoundMark: userTask.notRoundMark,
       // from original
       name: originalTask.name,
+      forPracticeDataType: originalTask.forPracticeData.type,
       filesId: originalTask.filesId,
       questions: refQuestions,
       practiceQuestions: refPracticeQuestions,

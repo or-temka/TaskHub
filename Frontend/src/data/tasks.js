@@ -77,6 +77,7 @@ export const tasks = [
         answerFormule:
           '(numbers) => {if (!Array.isArray(numbers) || numbers.length === 0) {return 0;}const sum = numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);const mean = sum / numbers.length;return mean;}',
         roundForce: 0.01,
+        imgSrc: 'imageName',
         type: 'sampleFun',
       },
       {
@@ -85,6 +86,7 @@ export const tasks = [
         answerFormule:
           '(numbers) => {if (!Array.isArray(numbers) || numbers.length === 0) {return 0;}const sortedNumbers = numbers.slice().sort((a, b) => a - b);const middle = Math.floor(sortedNumbers.length / 2);if (sortedNumbers.length % 2 === 0) {return (sortedNumbers[middle - 1] + sortedNumbers[middle]) / 2;} else {return sortedNumbers[middle];}}',
         roundForce: 0.01,
+        imgSrc: 'imageName',
         type: 'sampleFun',
       },
       {

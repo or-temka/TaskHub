@@ -14,6 +14,7 @@ import SpinLoader from '../../components/UI/Loaders/SpinLoader'
 import Button from '../../components/UI/Buttons/Button'
 
 import { fetchUserTaskStatus } from '../../utils/fetchData/student/userTask'
+import { fetchUserTaskPerform } from '../../utils/fetchData/taskPerform'
 
 import styles from './TaskPerform.module.scss'
 
@@ -28,8 +29,7 @@ function TaskPerform({
   const [loading, setLoading] = useState(true)
   const [taskStatus, setTaskStatus] = useState('not_started')
 
-  const [userTask, setUserTask] = useState({})
-  const [originalTask, setOriginalTask] = useState({})
+  const [task, setTask] = useState({})
 
   const navigate = useNavigate()
 
@@ -42,9 +42,17 @@ function TaskPerform({
     // Получение задания
     fetchUserTaskStatus(taskId)
       .then((res) => {
-        // Если задание не начато
-        setTaskStatus(res.status)
-        setLoading(false)
+        if (res.status !== 'started') {
+          setTaskStatus(res.status)
+          setLoading(false)
+        } else {
+          // Если задание начато
+          fetchUserTaskPerform(taskId).then((res) => {
+            setTask(res)
+            setTaskStatus('started')
+            setLoading(false)
+          })
+        }
       })
       .catch((err) => console.log(err))
   }, [])
@@ -106,9 +114,9 @@ function TaskPerform({
   // Определение типа условия практических заданий и установка условия всех заданий
   let infoForPracticeLabel
   let infoForPracticeText
-  if (originalTask.forPracticeData.type === 'randomNums') {
-    infoForPracticeLabel = 'Выборка:'
-    const numbers = eval(originalTask.forPracticeData.formule)()
+  if (task.forPracticeDataType === 'randomNums') {
+    infoForPracticeLabel = 'Выборка'
+    const numbers = task.forPracticeData
     infoForPracticeText = numbers.join(', ')
   }
 
@@ -116,46 +124,57 @@ function TaskPerform({
     <>
       <div className={'wrapper'}>
         <ContentHeader
-          title={`Выполнение задания "${originalTask.name}"`}
+          title={`Выполнение задания "${task.name}"`}
         ></ContentHeader>
-        <TaskPerformHeader task={userTask} originalTask={originalTask} />
+        <TaskPerformHeader task={task} />
 
-        {originalTask.answersTable && (
+        {task.answersTable && (
           <>
             <ContentHeaderLabel
               title="Варианты ответов на теоретические вопросы"
               className={styles.taskPerform__titleHeader}
             />
             <AnswersTableOfQuestions
-              answersTable={originalTask.answersTable}
-              taskId={originalTask.id}
+              answersTable={task.answersTable}
+              taskId={task.originalTaskId}
             />
           </>
         )}
 
-        <ContentHeaderLabel
-          title="Теоретические вопросы"
-          className={styles.taskPerform__titleHeader}
-        />
-        <Questions
-          questions={originalTask.questions}
-          onClickOpenAnswersTable={() => setShowAnswerTablePopUp(true)}
-        />
+        {task.questions && (
+          <>
+            <ContentHeaderLabel
+              title="Теоретические вопросы"
+              className={styles.taskPerform__titleHeader}
+            />
+            <Questions
+              questions={task.questions}
+              onClickOpenAnswersTable={() => setShowAnswerTablePopUp(true)}
+            />
+          </>
+        )}
 
-        <ContentHeaderLabel
-          title="Для выполнения практических заданий"
-          className={styles.taskPerform__titleHeader}
-        />
-        <InfoForPracticeQuestions
-          labelText={infoForPracticeLabel}
-          text={infoForPracticeText}
-        />
+        {task.practiceQuestions && (
+          <>
+            <ContentHeaderLabel
+              title="Для выполнения практических заданий"
+              className={styles.taskPerform__titleHeader}
+            />
+            <InfoForPracticeQuestions
+              labelText={infoForPracticeLabel}
+              text={infoForPracticeText}
+            />
 
-        <ContentHeaderLabel
-          title="Практические задания"
-          className={styles.taskPerform__titleHeader}
-        />
-        <PracticeQuestions questions={originalTask.practiceQuestions} />
+            <ContentHeaderLabel
+              title="Практические задания"
+              className={styles.taskPerform__titleHeader}
+            />
+            <PracticeQuestions
+              questions={task.practiceQuestions}
+              originalTaskId={task.originalTaskId}
+            />
+          </>
+        )}
 
         <div className={styles.taskPerform__endButtonContainer}>
           <PrimaryButton
@@ -174,8 +193,8 @@ function TaskPerform({
           onClickBack={() => setShowAnswerTablePopUp(false)}
         >
           <AnswersTableOfQuestions
-            answersTable={originalTask.answersTable}
-            taskId={originalTask.id}
+            answersTable={task.answersTable}
+            taskId={task.originalTaskId}
           />
         </PopUp>
       )}

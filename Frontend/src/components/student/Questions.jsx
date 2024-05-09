@@ -53,7 +53,7 @@ function Questions({
               </div>
             </ContentContainer>
           )
-        } else if (question.type === 'enterFormuleNum') {
+        } else if (question.type === 'enter') {
           return (
             // Задачи с вписанием ответа в поле
             <ContentContainer
