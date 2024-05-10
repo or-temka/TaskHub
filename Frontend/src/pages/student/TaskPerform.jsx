@@ -20,6 +20,7 @@ import {
 } from '../../utils/fetchData/taskPerform'
 
 import styles from './TaskPerform.module.scss'
+import { fetchUserData } from '../../utils/fetchData/student/user'
 
 function TaskPerform({
   user = {},
@@ -112,8 +113,10 @@ function TaskPerform({
     setDisabledEndTaskBtn(true)
     fetchEndTaskPerform(taskId)
       .then((res) => {
-        setDisabledEndTaskBtn(false)
-        navigate(`../../task/${taskId}`, { relative: 'path' })
+        setTimeout(() => {
+          setDisabledEndTaskBtn(false)
+          navigate(`../../task/${taskId}`, { relative: 'path' })
+        }, 1000)
       })
       .catch((err) => {
         setDisabledEndTaskBtn(false)
@@ -142,7 +145,7 @@ function TaskPerform({
         ></ContentHeader>
         <TaskPerformHeader task={task} />
 
-        {task.answersTable && (
+        {task.answersTable.length > 0 && (
           <>
             <ContentHeaderLabel
               title="Варианты ответов на теоретические вопросы"

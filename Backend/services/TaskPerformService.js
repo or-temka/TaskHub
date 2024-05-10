@@ -124,10 +124,22 @@ const calculationResults = async (
         (oldOriginalTaskStatistic.avarageMark * originalTaskExecuted +
           tempMark) /
         (originalTaskExecuted + 1),
-      avarageTimeTask: 0,
-      avarageTimeQuestion: 0,
-      leastCorrectAnswers: 0,
-      mostCorrectAnswers: 0,
+      avarageTimeTask:
+        (oldOriginalTaskStatistic.avarageTimeTask * originalTaskExecuted +
+          taskTimeRuntime) /
+        (originalTaskExecuted + 1),
+      avarageTimeQuestion:
+        (oldOriginalTaskStatistic.avarageTimeQuestion * originalTaskExecuted +
+          taskTimeRuntime / questionsAnswersCount) /
+        (originalTaskExecuted + 1),
+      leastCorrectAnswers:
+        oldOriginalTaskStatistic.leastCorrectAnswers > trueQuestionsAnswersCount
+          ? trueQuestionsAnswersCount
+          : oldOriginalTaskStatistic.leastCorrectAnswers,
+      mostCorrectAnswers:
+        oldOriginalTaskStatistic.mostCorrectAnswers < trueQuestionsAnswersCount
+          ? trueQuestionsAnswersCount
+          : oldOriginalTaskStatistic.mostCorrectAnswers,
     }
 
     await TaskModel.findOneAndUpdate(

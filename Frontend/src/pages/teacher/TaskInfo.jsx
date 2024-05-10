@@ -82,7 +82,7 @@ function TaskInfo({ setPageName }) {
           className={styles.taskInfo__labelHeader}
         />
         <TaskAdoptStatistic
-          taskStatistic={task.statistic[0]}
+          taskStatistic={task.statistic}
           questionsCount={task.questions.length}
         />
       </div>

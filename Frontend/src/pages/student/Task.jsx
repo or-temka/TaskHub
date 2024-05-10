@@ -8,6 +8,7 @@ import TaskAdoptStatistic from '../../components/student/TaskAdoptStatistic'
 import MyTaskStatistics from '../../components/student/MyTaskStatistics'
 import StartExecuteTaskPopUpWarning from '../../components/student/StartExecuteTaskPopUpWarning'
 import SpinLoader from '../../components/UI/Loaders/SpinLoader'
+import PopUpConfirmation from '../../components/UI/PopUps/PopUpConfirmation'
 
 import { files } from '../../data/files'
 
@@ -18,7 +19,6 @@ import {
 import { fetchStartTaskPerform } from '../../utils/fetchData/taskPerform'
 
 import styles from './Task.module.scss'
-import PopUpConfirmation from '../../components/UI/PopUps/PopUpConfirmation'
 
 function Task({ setPageName }) {
   const navigate = useNavigate()
