@@ -4,13 +4,23 @@ import ContentContainer from '../frames/ContentContainer'
 import Input from '../UI/Inputs/Input'
 
 import styles from './PracticeQuestions.module.scss'
+import { fetchSendAnswerOfPracticeQuestion } from '../../utils/fetchData/taskPerform'
 
-function PracticeQuestions({ questions, className, ...params }) {
-  const [enteredAnswers, setEnteredAnswers] = useState({}) // {questionId1: enteredAnswer, ...} ex: {1: "Привет", 2: "Пока",}
+function PracticeQuestions({
+  questions,
+  initialEnteredAnswers = {},
+  userTaskId,
+  originalTaskId,
+  className,
+  ...params
+}) {
+  const [enteredAnswers, setEnteredAnswers] = useState(initialEnteredAnswers) // {questionId1: enteredAnswer, ...} ex: {1: "Привет", 2: "Пока",}
 
   // Обработка написания ответа (изменения input-ов)
   const inputAnswer = (questionId, answer) => {
-    // TODO отправка данных на сервер - написанный ответ
+    fetchSendAnswerOfPracticeQuestion(userTaskId, questionId, answer)
+      .then((res) => {})
+      .catch((err) => console.log(err))
 
     setEnteredAnswers({
       ...enteredAnswers,
@@ -34,7 +44,13 @@ function PracticeQuestions({ questions, className, ...params }) {
           <span className={styles.practiceQuestions__taskText}>
             {question.text}
           </span>
-          <img src="" alt="" className={styles.practiceQuestions__image} />
+          {question.imgSrc && (
+            <img
+              src={require(`../../assets/images/tasks/${originalTaskId}/${question.imgSrc}`)}
+              alt={question.imgSrc}
+              className={styles.practiceQuestions__image}
+            />
+          )}
           <div className={styles.practiceQuestions__answer}>
             <span className={styles.practiceQuestions__answerBeforeText}>
               Ответ:

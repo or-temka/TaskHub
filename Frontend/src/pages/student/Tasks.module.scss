@@ -4,4 +4,17 @@
     flex-direction: column;
     gap: 15px;
   }
+
+  &__blank {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+    height: 40vh;
+  }
+
+  &__blankText {
+    color: var(--light-text-color);
+  }
 }

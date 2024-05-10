@@ -9,12 +9,16 @@ import { serverError, serverLog } from './utils/serverLog.js'
 import * as validation from './validations.js'
 import checkAuth from './utils/checkAuth.js'
 import checkIsTeacher from './utils/checkIsTeacher.js'
+import checkTaskStarted from './utils/checks/checkTaskStarted.js'
+
 import * as UserController from './controllers/UserController.js'
 import * as GroupController from './controllers/GroupController.js'
 import * as TaskController from './controllers/TaskController.js'
 import * as UserTaskController from './controllers/UserTaskController.js'
 import * as GroupServices from './services/GroupServices.js'
 import * as UserServices from './services/UserServices.js'
+import * as UserTaskServices from './services/UserTaskServices.js'
+import * as TaskPerformService from './services/TaskPerformService.js'
 
 mongoose
   .connect(
@@ -30,6 +34,38 @@ app.use(express.json())
 app.use(cors())
 
 //#region services
+//#region task perform
+// начало выполнения задания
+app.post('/taskPerform/start/:taskId', checkAuth, TaskPerformService.startTask)
+// отправка ответа question
+app.post(
+  '/taskPerform/send_question_answer/:taskId',
+  checkAuth,
+  checkTaskStarted,
+  TaskPerformService.sendQuestionAnswer
+)
+// отправка ответа на практический вопрос practiceQuestion
+app.post(
+  '/taskPerform/send_practice_question_answer/:taskId',
+  checkAuth,
+  checkTaskStarted,
+  TaskPerformService.sendPracticeQuestionAnswer
+)
+// завершение задания пользователем раньше времени
+app.post(
+  '/taskPerform/end_user_task/:taskId',
+  checkAuth,
+  checkTaskStarted,
+  TaskPerformService.onEndUserTask
+)
+// получение информации о задании, которое будет выполняться
+app.get(
+  '/taskPerform/get_my_task_perform/:taskId',
+  checkAuth,
+  checkTaskStarted,
+  TaskPerformService.getMyUserTaskPerform
+)
+//#endregion
 //#region group
 // Добавление пользователя в группу (также удаление из прошлой группы, если она была)
 app.patch(
@@ -62,8 +98,17 @@ app.get(
   UserServices.getUsersWithoutTask
 )
 //#endregion
+//#region UserTask
+// Изменения статуса задания пользователя с newTask "true" -> "false"
+app.patch(
+  '/userTask/mark_task_not_new/:taskId',
+  checkAuth,
+  UserTaskServices.markUserTaskNotNew
+)
+//#endregion
 //#endregion
 
+//#region controllers
 //#region User ---------------------------------------------------------------
 // Регистрация пользователя (возможно, с группой)
 app.post(
@@ -109,7 +154,6 @@ app.delete('/user', checkAuth, UserController.deleteMyUser)
 // Удаление пользователя
 app.delete('/user/:id', checkAuth, checkIsTeacher, UserController.deleteUser)
 //#endregion
-
 //#region Group --------------------------------------------------------------
 // Создание группы
 app.post(
@@ -141,19 +185,23 @@ app.patch(
 // Удаление группы
 app.delete('/group/:id', checkAuth, checkIsTeacher, GroupController.deleteGroup)
 //#endregion
-
 //#region Task ---------------------------------------------------------------
 // Получение данных о заданиях
 app.get('/task/all', checkAuth, checkIsTeacher, TaskController.getAllTasks)
 // Получение данных о задании
 app.get('/task/:id', checkAuth, checkIsTeacher, TaskController.getTask)
 //#endregion
-
 //#region UserTask ------------------------------------------------------------
 // Получение заданиий пользователя (о себе)
 app.get('/userTask/all', checkAuth, UserTaskController.getMyUserTasks)
 // Получение задания пользователя (о себе)
 app.get('/userTask/my/:taskId', checkAuth, UserTaskController.getMyUserTask)
+// Получение статуса (status) задания пользователя (о себе)
+app.get(
+  '/userTask/my_task_status/:taskId',
+  checkAuth,
+  UserTaskController.getMyUserTaskStatus
+)
 // Добавление задания пользователя
 app.post(
   '/userTask/:userId',
@@ -194,6 +242,7 @@ app.patch(
   validation.updateUserTaskValidation,
   UserTaskController.updateUserTask
 )
+//#endregion
 //#endregion
 
 app.listen(PORT, (err) => {

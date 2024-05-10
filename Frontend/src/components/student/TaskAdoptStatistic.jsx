@@ -1,8 +1,10 @@
 import getTimeExecuteInfo from '../../utils/getTimeExecuteInfo'
 import ContentContainer from '../frames/ContentContainer'
+import TaskAdoptStatisticLine from './TaskAdoptStatisticLine'
+
+import rounder from '../../utils/rounder'
 
 import styles from './TaskAdoptStatistic.module.scss'
-import TaskAdoptStatisticLine from './TaskAdoptStatisticLine'
 
 function TaskAdoptStatistic({
   className,
@@ -23,7 +25,7 @@ function TaskAdoptStatistic({
         <div className={styles.taskAdoptStatistic__linesWithStatistics}>
           <TaskAdoptStatisticLine
             title="Средний балл других студентов за это задание"
-            value={taskAvarageMark}
+            value={rounder(taskAvarageMark)}
             valueBackgroundColor={
               taskAvarageMark >= 4
                 ? 'var(--success-light-color)'

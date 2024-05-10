@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import styles from './PopUpSkeleton.module.scss'
+
 import CloseButton from '../../Buttons/CloseButton'
+
+import styles from './PopUpSkeleton.module.scss'
 
 function PopUpSkeleton({
   children,

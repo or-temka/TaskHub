@@ -19,7 +19,11 @@ function SmallTaskInfo({
     <ContentContainer
       {...params}
       headBorderColor={
-        task.mark ? 'var(--success-light-color)' : 'var(--warning-light-color)'
+        task.mark
+          ? task.mark >= 3
+            ? 'var(--success-light-color)'
+            : 'var(--error-light-color)'
+          : 'var(--warning-light-color)'
       }
       className={[styles.smallTaskInfo, className].join(' ')}
     >

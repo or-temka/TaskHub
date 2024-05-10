@@ -8,10 +8,15 @@ import TaskAdoptStatistic from '../../components/student/TaskAdoptStatistic'
 import MyTaskStatistics from '../../components/student/MyTaskStatistics'
 import StartExecuteTaskPopUpWarning from '../../components/student/StartExecuteTaskPopUpWarning'
 import SpinLoader from '../../components/UI/Loaders/SpinLoader'
+import PopUpConfirmation from '../../components/UI/PopUps/PopUpConfirmation'
 
 import { files } from '../../data/files'
 
-import { fetchMyUserTask } from '../../utils/fetchData/student/userTask'
+import {
+  fetchMyUserTask,
+  fetchMarkUserTaskAsNotNew,
+} from '../../utils/fetchData/student/userTask'
+import { fetchStartTaskPerform } from '../../utils/fetchData/taskPerform'
 
 import styles from './Task.module.scss'
 
@@ -20,7 +25,9 @@ function Task({ setPageName }) {
   const taskId = useParams().taskId
 
   const [showPopUpStartTask, setShowPopUpStartTask] = useState(false)
+  const [showPopUpContinueTask, setShowPopUpContinueTask] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [disabledStartTaskBtn, setDisabledStartTaskBtn] = useState(false)
 
   const [userTask, setUserTask] = useState()
 
@@ -46,9 +53,34 @@ function Task({ setPageName }) {
     )
   }
 
+  // Назначение, что задание не новое, если оно просмотрено
+  if (userTask.newTask) {
+    fetchMarkUserTaskAsNotNew(userTask.id).catch((err) => console.log(err))
+  }
+
+  // Получение файлов задания
   let taskFiles = []
   if (userTask.filesId) {
     taskFiles = files.filter((file) => userTask.filesId.includes(file.id))
+  }
+
+  // Обработчик нажатия кнопки "начать задание"
+  const onStartTaskPerformHandler = () => {
+    setDisabledStartTaskBtn(true)
+    fetchStartTaskPerform(taskId)
+      .then((res) => {
+        {
+          setDisabledStartTaskBtn(false)
+          navigate(`../../taskPerform/${taskId}`, { relative: 'path' })
+        }
+      })
+      .catch((err) => {
+        setDisabledStartTaskBtn(false)
+        // Если задание уже начато
+        if (err.message === 'Задание уже начато.') {
+          setShowPopUpContinueTask(true)
+        }
+      })
   }
 
   return (
@@ -70,7 +102,9 @@ function Task({ setPageName }) {
             />
             <MyTaskStatistics
               userTask={userTask}
-              questionsCount={userTask.questionsCount}
+              questionsCount={
+                userTask.questionsCount + userTask.practiceQuestionsCount
+              }
             />
           </>
         )}
@@ -80,16 +114,39 @@ function Task({ setPageName }) {
           className={styles.task__fieldHeader}
         />
         <TaskAdoptStatistic
-          taskStatistic={userTask.statistic[0]}
-          questionsCount={userTask.questionsCount}
+          taskStatistic={userTask.statistic}
+          questionsCount={
+            userTask.questionsCount + userTask.practiceQuestionsCount
+          }
         />
       </div>
+
       {showPopUpStartTask && (
         <StartExecuteTaskPopUpWarning
+          disabledConfirmBtn={disabledStartTaskBtn}
           onCancel={() => setShowPopUpStartTask(false)}
-          onConfirm={() =>
-            navigate(`../../taskPerform/${taskId}`, { relative: 'path' })
-          }
+          onConfirm={onStartTaskPerformHandler}
+        />
+      )}
+
+      {showPopUpContinueTask && (
+        <PopUpConfirmation
+          labelText="Задание уже начато, желаете продолжить его выполнение?"
+          text='Чтобы завершить задание, вам необходимо перейти к его выполнению и нажать кнопку "завершить"'
+          headerLabelText="Продолжить выполнение?"
+          onCancel={() => {
+            setShowPopUpStartTask(false)
+            setShowPopUpContinueTask(false)
+          }}
+          onClickBack={() => {
+            setShowPopUpStartTask(false)
+            setShowPopUpContinueTask(false)
+          }}
+          onConfirm={() => {
+            navigate(`../../taskPerform/${taskId}`, {
+              relative: 'path',
+            })
+          }}
         />
       )}
     </>

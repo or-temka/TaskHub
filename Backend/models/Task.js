@@ -29,9 +29,17 @@ const TaskSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
-    statistic: {
+    answersTable: {
       type: Array,
       default: [],
+    },
+    statistic: {
+      type: Object,
+      default: {},
+    },
+    forPracticeData: {
+      type: Object,
+      default: {},
     },
   },
   {

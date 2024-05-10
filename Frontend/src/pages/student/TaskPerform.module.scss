@@ -1,4 +1,13 @@
 .taskPerform {
+  // not started
+  &__notStartedTaskBox {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  //content
+
   &__titleHeader {
     margin-top: 30px;
   }

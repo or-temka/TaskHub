@@ -1,0 +1,39 @@
+.skeleton {
+  position: fixed;
+  z-index: 100;
+
+  // postitions
+  &_horizontal {
+    &_left {
+      left: 0;
+      margin-left: 20px;
+    }
+    &_center {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    &_right {
+      right: 0;
+      margin-right: 20px;
+    }
+  }
+
+  &_vertical {
+    &_top {
+      top: 0;
+      margin-top: 20px;
+    }
+    &_center {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    &_bottom {
+      bottom: 0;
+      margin-bottom: 20px;
+    }
+  }
+
+  &_center {
+    transform: translate(-50%, -50%);
+  }
+}
