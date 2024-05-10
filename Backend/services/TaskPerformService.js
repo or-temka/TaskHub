@@ -566,6 +566,7 @@ export const getMyUserTaskPerform = async (req, res) => {
       answersOnQuestions: userTask.answersOnQuestions,
       answersOnPracticeQuestions: userTask.answersOnPracticeQuestions,
       mark: userTask.mark,
+      nowTime: userTask.nowTime,
       notRoundMark: userTask.notRoundMark,
       // from original
       name: originalTask.name,

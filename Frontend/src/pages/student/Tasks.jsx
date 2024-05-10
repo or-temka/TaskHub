@@ -6,12 +6,12 @@ import SmallTaskInfo from '../../components/student/SmallTaskInfo'
 import StartExecuteTaskPopUpWarning from '../../components/student/StartExecuteTaskPopUpWarning'
 import SpinLoader from '../../components/UI/Loaders/SpinLoader'
 import { ReactComponent as BlankSVG } from '../../assets/svg/blank.svg'
+import PopUpConfirmation from '../../components/UI/PopUps/PopUpConfirmation'
 
 import { fetchMyUserTasks } from '../../utils/fetchData/student/userTask'
+import { fetchStartTaskPerform } from '../../utils/fetchData/taskPerform'
 
 import styles from './Tasks.module.scss'
-import { fetchStartTaskPerform } from '../../utils/fetchData/taskPerform'
-import PopUpConfirmation from '../../components/UI/PopUps/PopUpConfirmation'
 
 const PAGE_NAME = 'Задания'
 

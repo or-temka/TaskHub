@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import TaskPerformHeader from '../../components/student/TaskPerformHeader'
@@ -12,6 +12,7 @@ import PopUp from '../../components/UI/PopUps/PopUp'
 import InfoForPracticeQuestions from '../../components/student/InfoForPracticeQuestions'
 import SpinLoader from '../../components/UI/Loaders/SpinLoader'
 import Button from '../../components/UI/Buttons/Button'
+import Timer from '../../components/UI/FloatingPanels/Timer'
 
 import { fetchUserTaskStatus } from '../../utils/fetchData/student/userTask'
 import {
@@ -19,8 +20,9 @@ import {
   fetchUserTaskPerform,
 } from '../../utils/fetchData/taskPerform'
 
+import getTimeLeft from '../../utils/getTimeLeft'
+
 import styles from './TaskPerform.module.scss'
-import { fetchUserData } from '../../utils/fetchData/student/user'
 
 function TaskPerform({
   user = {},
@@ -36,13 +38,16 @@ function TaskPerform({
 
   const [task, setTask] = useState({})
 
+  const [timerTime, setTimerTime] = useState({ minutes: 0, seconds: 0 })
+  const timerActive = useRef(true)
+
   const navigate = useNavigate()
 
   const taskId = useParams().taskId
 
   // Первоначальная настройка и получение данных
   useEffect(() => {
-    setPageName('Выполнение задания')
+    // setPageName('Выполнение задания')
 
     // Получение задания
     fetchUserTaskStatus(taskId)
@@ -54,6 +59,12 @@ function TaskPerform({
           // Если задание начато
           fetchUserTaskPerform(taskId).then((res) => {
             setTask(res)
+            // Установка таймера
+            const nowTime = res.nowTime
+            const timeForExecute = res.timeForExecute * 1000
+            setTimerTime(getTimeLeft(timeForExecute, nowTime))
+
+            // другие установки
             setTaskStatus('started')
             setLoading(false)
           })
@@ -61,6 +72,33 @@ function TaskPerform({
       })
       .catch((err) => console.log(err))
   }, [])
+
+  // Таймер
+  useEffect(() => {
+    if (timerActive.current === true) {
+      timerActive.current = false
+      const timer = setInterval(() => {
+        console.log(1)
+        setTimerTime((prev) => {
+          if (prev.seconds > 0) {
+            return { minutes: prev.minutes, seconds: prev.seconds - 1 }
+          }
+          if (prev.seconds === 0) {
+            if (prev.minutes === 0) {
+              clearInterval(timer)
+              // Действие при заканчивание времени
+              setTimeout(() => {
+                navigate(`../../task/${taskId}`, { relative: 'path' })
+              }, 2000)
+              return { minutes: 0, seconds: 0 }
+            } else {
+              return { minutes: prev.minutes - 1, seconds: 59 }
+            }
+          }
+        })
+      }, 1000)
+    }
+  }, [timerTime])
 
   // Загрузка
   if (loading) {
@@ -234,6 +272,12 @@ function TaskPerform({
           />
         </PopUp>
       )}
+
+      <Timer
+        time={`${timerTime.minutes}:${
+          timerTime.seconds > 9 ? timerTime.seconds : '0' + timerTime.seconds
+        }`}
+      />
     </>
   )
 }
