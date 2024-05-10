@@ -23,7 +23,7 @@ function TaskPerformHeader({ task, className, ...params }) {
                 : '',
             ].join(' ')}
           >
-            {task.attemptsCount - 1}
+            {task.attemptsCount}
           </span>
         </TextFocus>
         <TextFocus className={styles.taskPerformHeader__infoField}>

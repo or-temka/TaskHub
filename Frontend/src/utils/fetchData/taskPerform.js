@@ -65,3 +65,37 @@ export const fetchSendAnswerOfPracticeQuestion = async (
     throw new Error(error.response.data.errorMsg)
   }
 }
+
+export const fetchStartTaskPerform = async (userTaskId) => {
+  try {
+    const { data } = await axios.post(
+      `/taskPerform/start/${userTaskId}`,
+      {},
+      {
+        headers: {
+          Authorization: await getUserToken(),
+        },
+      }
+    )
+    return data
+  } catch (error) {
+    throw new Error(error.response.data.errorMsg)
+  }
+}
+
+export const fetchEndTaskPerform = async (userTaskId) => {
+  try {
+    const { data } = await axios.post(
+      `/taskPerform/end_user_task/${userTaskId}`,
+      {},
+      {
+        headers: {
+          Authorization: await getUserToken(),
+        },
+      }
+    )
+    return data
+  } catch (error) {
+    throw new Error(error)
+  }
+}

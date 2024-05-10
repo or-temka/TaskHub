@@ -10,6 +10,8 @@ import { ReactComponent as BlankSVG } from '../../assets/svg/blank.svg'
 import { fetchMyUserTasks } from '../../utils/fetchData/student/userTask'
 
 import styles from './Tasks.module.scss'
+import { fetchStartTaskPerform } from '../../utils/fetchData/taskPerform'
+import PopUpConfirmation from '../../components/UI/PopUps/PopUpConfirmation'
 
 const PAGE_NAME = 'Задания'
 
@@ -27,7 +29,9 @@ function Tasks({
   }, [])
 
   const [showPopUpStartTask, setShowPopUpStartTask] = useState(false)
+  const [showPopUpContinueTask, setShowPopUpContinueTask] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [disabledStartTaskBtn, setDisabledStartTaskBtn] = useState(false)
 
   const [selectedTaskId, setSelectedTaskId] = useState()
 
@@ -41,6 +45,25 @@ function Tasks({
       })
       .catch((err) => console.log(err))
   }, [])
+
+  // Обработка старта задания
+  const onStartTaskHandler = () => {
+    setDisabledStartTaskBtn(true)
+    fetchStartTaskPerform(selectedTaskId)
+      .then((res) => {
+        setDisabledStartTaskBtn(false)
+        navigate(`taskPerform/${selectedTaskId}`, {
+          relative: 'path',
+        })
+      })
+      .catch((err) => {
+        setDisabledStartTaskBtn(false)
+        // Если задание уже начато
+        if (err.message === 'Задание уже начато.') {
+          setShowPopUpContinueTask(true)
+        }
+      })
+  }
 
   return (
     <>
@@ -72,14 +95,32 @@ function Tasks({
           </div>
         )}
       </div>
+
       {showPopUpStartTask && (
         <StartExecuteTaskPopUpWarning
           onCancel={() => setShowPopUpStartTask(false)}
-          onConfirm={() =>
+          onConfirm={onStartTaskHandler}
+        />
+      )}
+
+      {showPopUpContinueTask && (
+        <PopUpConfirmation
+          labelText="Задание уже начато, желаете продолжить его выполнение?"
+          text='Чтобы завершить задание, вам необходимо перейти к его выполнению и нажать кнопку "завершить"'
+          headerLabelText="Продолжить выполнение?"
+          onCancel={() => {
+            setShowPopUpStartTask(false)
+            setShowPopUpContinueTask(false)
+          }}
+          onClickBack={() => {
+            setShowPopUpStartTask(false)
+            setShowPopUpContinueTask(false)
+          }}
+          onConfirm={() => {
             navigate(`taskPerform/${selectedTaskId}`, {
               relative: 'path',
             })
-          }
+          }}
         />
       )}
     </>

@@ -156,16 +156,13 @@ export const startTask = async (req, res) => {
 
     const user = await UserModel.findById(userId)
     if (!user) {
-      serverMsg(
-        `Попытка изменения задания в статус "не новое": не найден пользователь с id ${userId}`
-      )
       return res.status(404).json({
         errorMsg: 'Не найден пользователь',
       })
     }
 
-    // Работа с попытками
     const currentTask = user.tasks.find((task) => task.id === userTaskId)
+    // Работа с попытками
     const currentAttemptsTaskCount = currentTask.attemptsCount
     // Если попыток больше не осталось
     if (currentAttemptsTaskCount <= 0) {
@@ -176,7 +173,13 @@ export const startTask = async (req, res) => {
         errorMsg: 'Не осталось попыток для решения задания.',
       })
     }
-    // Если попытки остались (идем дальше)
+    // Проверка, что задание уже не начато
+    if (currentTask.status === 'started') {
+      return res.status(409).json({
+        errorMsg: 'Задание уже начато.',
+      })
+    }
+    // Идем дальше, если всё ок
     await UserModel.findOneAndUpdate(
       {
         _id: userId,
@@ -288,7 +291,7 @@ export const startTask = async (req, res) => {
   } catch (error) {
     serverError(error)
     res.status(500).json({
-      errorMsg: 'Ошибка отметки нового задания как просмотренного',
+      errorMsg: 'Ошибка начала задания',
     })
   }
 }

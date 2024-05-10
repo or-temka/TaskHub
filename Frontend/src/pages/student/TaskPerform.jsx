@@ -14,7 +14,10 @@ import SpinLoader from '../../components/UI/Loaders/SpinLoader'
 import Button from '../../components/UI/Buttons/Button'
 
 import { fetchUserTaskStatus } from '../../utils/fetchData/student/userTask'
-import { fetchUserTaskPerform } from '../../utils/fetchData/taskPerform'
+import {
+  fetchEndTaskPerform,
+  fetchUserTaskPerform,
+} from '../../utils/fetchData/taskPerform'
 
 import styles from './TaskPerform.module.scss'
 
@@ -28,6 +31,7 @@ function TaskPerform({
   const [showAnswerTablePopUp, setShowAnswerTablePopUp] = useState(false)
   const [loading, setLoading] = useState(true)
   const [taskStatus, setTaskStatus] = useState('not_started')
+  const [disabledEndTaskBtn, setDisabledEndTaskBtn] = useState(false)
 
   const [task, setTask] = useState({})
 
@@ -105,8 +109,18 @@ function TaskPerform({
 
   // TODO обработка завершения задания по нажатию клавиши "Завершить"
   const endTaskHandler = () => {
-    // TODO отправка данных на сервер
-    navigate(`../../task/${taskId}`, { relative: 'path' })
+    setDisabledEndTaskBtn(true)
+    fetchEndTaskPerform(taskId)
+      .then((res) => {
+        setDisabledEndTaskBtn(false)
+        navigate(`../../task/${taskId}`, { relative: 'path' })
+      })
+      .catch((err) => {
+        setDisabledEndTaskBtn(false)
+        if (err.message === 'AxiosError: Request failed with status code 403') {
+          navigate(`../../task/${taskId}`, { relative: 'path' })
+        }
+      })
   }
 
   // TODO обработка завершения задания автоматически по окончанию времени
@@ -196,6 +210,7 @@ function TaskPerform({
 
         <div className={styles.taskPerform__endButtonContainer}>
           <PrimaryButton
+            disabled={disabledEndTaskBtn}
             title="Завершить"
             onClick={endTaskHandler}
             className={styles.taskPerform__endButton}
