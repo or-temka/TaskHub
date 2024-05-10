@@ -115,6 +115,39 @@ const calculationResults = async (
       }
     )
 
+    // В самого пользователя (его статистика)
+    const userComplitedTasks = user.statistics.complitedTasks
+      ? user.statistics.complitedTasks
+      : 0
+    await UserModel.findOneAndUpdate(
+      {
+        _id: user._id,
+      },
+      {
+        $set: {
+          statistics: {
+            complitedTasks: userComplitedTasks + 1,
+            avarageMark: user.statistics.avarageMark
+              ? (user.statistics.avarageMark * userComplitedTasks + tempMark) /
+                (userComplitedTasks + 1)
+              : tempMark,
+            avarageTaskTime: user.statistics.avarageTimeTask
+              ? (user.statistics.avarageTimeTask * userComplitedTasks +
+                  taskTimeRuntime) /
+                (userComplitedTasks + 1)
+              : taskTimeRuntime,
+            avarageQuestionTime: user.statistics.avarageTimeQuestion
+              ? (user.statistics.avarageTimeQuestion * userComplitedTasks +
+                  taskTimeRuntime / questionsAnswersCount) /
+                (userComplitedTasks + 1)
+              : questionsAnswersCount
+              ? taskTimeRuntime / questionsAnswersCount
+              : 0,
+          },
+        },
+      }
+    )
+
     // В оригинальное задание ---------------------------
     const oldOriginalTaskStatistic = originalTask.statistic
     const originalTaskExecuted = +oldOriginalTaskStatistic.executedCount
