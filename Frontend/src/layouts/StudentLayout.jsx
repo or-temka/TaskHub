@@ -35,7 +35,11 @@ function StudentLayout({ pageName }) {
         setUserGroup(res)
         setLoading((prev) => prev - 1)
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        setUserGroup(null)
+        setLoading((prev) => prev - 1)
+        console.log(err)
+      })
   }, [])
 
   if (loading > 0) {

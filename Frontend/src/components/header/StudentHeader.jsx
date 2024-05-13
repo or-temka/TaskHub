@@ -9,7 +9,7 @@ import UserProfile from '../student/UserProfile'
 function StudentHeader({ user, userGroup, pageName }) {
   const [showProfile, setShowProfile] = useState(false)
 
-  const userGroupName = userGroup.name
+  const userGroupName = userGroup ? userGroup.name : 'Не добавлена в группу'
 
   const menuButtons = [
     <Link to="./">
