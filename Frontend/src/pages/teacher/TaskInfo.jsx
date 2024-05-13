@@ -83,7 +83,7 @@ function TaskInfo({ setPageName }) {
         />
         <TaskAdoptStatistic
           taskStatistic={task.statistic}
-          questionsCount={task.questions.length}
+          questionsCount={task.questions.length + task.practiceQuestions.length}
         />
       </div>
 

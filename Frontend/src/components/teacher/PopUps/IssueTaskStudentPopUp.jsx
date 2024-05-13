@@ -100,9 +100,11 @@ function IssueTaskStudentPopUp({
               user.name.toLowerCase().includes(searchValue.toLowerCase())
             )
             .map((user) => {
-              const userGroupName = groups.find(
+              const userGroup = groups.find(
                 (group) => group._id === user.groupId
-              ).name
+              )
+              let userGroupName = ''
+              if (userGroup) userGroupName = userGroup.name
               return (
                 <div
                   className={styles.issueTask__issueTargetContainer}
